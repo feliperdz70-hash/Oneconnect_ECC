@@ -39,4 +39,21 @@ Cada entrada indica: qué se pidió, qué se cambió (archivo y objeto SAP), y s
 
 ---
 
+## 2026-07-10 — Revisión UX de la pantalla 0100 (ZONT_ONECM)
+
+**Pedido**: revisión general de experiencia de usuario de la pantalla principal.
+
+**Hallazgos reportados** (ver detalle completo en el historial de la conversación):
+1. Campos superiores (Entity/Domain/Type/Description) son solo-lectura; se llenan únicamente con doble clic en el ALV — puede confundir a un usuario que intente escribir para buscar.
+2. El botón `CLONE` (agregado en la entrada anterior) no está incluido en la validación de "selecciona una entidad primero" que sí tienen `DISPLAY/CHANGE/DELETE/EXECUTE` en `user_command_0100` — puede abrir el popup de clonado con el campo Domain en blanco sin avisar.
+3. Inconsistencia de autorización: `CLONE` nunca fue excluido del PF-STATUS cuando `gv_system` está vacío (a diferencia de Create/Change/Delete/Generate/Upload).
+4. En `init_alv_info_tab`, el mensaje `i018(zon_cl_oc)` arma variables `mes1`/`mes2` con el detalle de la advertencia pero nunca las pasa al `MESSAGE` (falta `WITH mes1 mes2`).
+5. Punto positivo: `DELETE` sí tiene confirmación (`POPUP_TO_CONFIRM`), buen patrón a replicar si se decide agregar confirmación a Clone.
+
+**Decisión del usuario**: **no se toca la pantalla 0100 por ahora** — se deja como está. Ningún hallazgo de esta entrada se aplicó al código.
+
+**Estado**: ⏸️ En espera — revisar más adelante si se decide actuar sobre alguno de estos puntos.
+
+---
+
 <!-- Nuevas entradas se agregan arriba de esta línea, con fecha y el mismo formato. -->
