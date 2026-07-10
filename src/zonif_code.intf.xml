@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_INTF" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOINTERF>
+    <CLSNAME>ZONIF_CODE</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>One Connect</DESCRIPT>
+    <EXPOSURE>2</EXPOSURE>
+    <STATE>1</STATE>
+    <UNICODE>X</UNICODE>
+   </VSEOINTERF>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>SEND_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Send Data</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>SET_WHERE_CODE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Set Where Code</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_DATA</CMPNAME>
+     <SCONAME>IV_DATA</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Customizing for One Connect.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_DATA</CMPNAME>
+     <SCONAME>IV_DEST</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Logical Destination (Specified in Function Call)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_DATA</CMPNAME>
+     <SCONAME>IV_ENTITY</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Entity</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_DATA</CMPNAME>
+     <SCONAME>IV_WHERE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Where Clause</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

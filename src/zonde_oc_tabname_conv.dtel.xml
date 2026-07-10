@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZONDE_OC_TABNAME_CONV</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>AS4TAB</DOMNAME>
+    <MEMORYID>DTB</MEMORYID>
+    <HEADLEN>30</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>15</SCRLEN2>
+    <SCRLEN3>20</SCRLEN3>
+    <DDTEXT>Conversion Tablename</DDTEXT>
+    <REPTEXT>Conversion Tablename</REPTEXT>
+    <SCRTEXT_S>ConvTable</SCRTEXT_S>
+    <SCRTEXT_M>Conv. Table</SCRTEXT_M>
+    <SCRTEXT_L>Conversion Tablename</SCRTEXT_L>
+    <APPLCLASS>SDIC</APPLCLASS>
+    <AUTHCLASS>01</AUTHCLASS>
+    <DTELMASTER>D</DTELMASTER>
+    <DEFFDNAME>TABNAME</DEFFDNAME>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>1</LANGU>
+    <LANGU>2</LANGU>
+    <LANGU>3</LANGU>
+    <LANGU>5</LANGU>
+    <LANGU>6</LANGU>
+    <LANGU>9</LANGU>
+    <LANGU>A</LANGU>
+    <LANGU>B</LANGU>
+    <LANGU>C</LANGU>
+    <LANGU>D</LANGU>
+    <LANGU>F</LANGU>
+    <LANGU>G</LANGU>
+    <LANGU>H</LANGU>
+    <LANGU>I</LANGU>
+    <LANGU>J</LANGU>
+    <LANGU>L</LANGU>
+    <LANGU>M</LANGU>
+    <LANGU>N</LANGU>
+    <LANGU>P</LANGU>
+    <LANGU>Q</LANGU>
+    <LANGU>R</LANGU>
+    <LANGU>S</LANGU>
+    <LANGU>T</LANGU>
+    <LANGU>W</LANGU>
+    <LANGU>X</LANGU>
+    <LANGU>Y</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>1</DDLANGUAGE>
+     <DDTEXT>表名</DDTEXT>
+     <REPTEXT>表名</REPTEXT>
+     <SCRTEXT_S>表</SCRTEXT_S>
+     <SCRTEXT_M>表名</SCRTEXT_M>
+     <SCRTEXT_L>表名</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>2</DDLANGUAGE>
+     <DDTEXT>ชื่อตาราง</DDTEXT>
+     <SCRTEXT_S>ตาราง</SCRTEXT_S>
+     <SCRTEXT_M>ชื่อตาราง</SCRTEXT_M>
+     <SCRTEXT_L>ชื่อตาราง</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>3</DDLANGUAGE>
+     <DDTEXT>테이블이름</DDTEXT>
+     <REPTEXT>테이블이름</REPTEXT>
+     <SCRTEXT_S>테이블</SCRTEXT_S>
+     <SCRTEXT_M>테이블이름</SCRTEXT_M>
+     <SCRTEXT_L>테이블이름</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>5</DDLANGUAGE>
+     <DDTEXT>Ime tabele</DDTEXT>
+     <REPTEXT>Ime tabele</REPTEXT>
+     <SCRTEXT_S>Tabela</SCRTEXT_S>
+     <SCRTEXT_M>Ime tabele</SCRTEXT_M>
+     <SCRTEXT_L>Ime tabele</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>6</DDLANGUAGE>
+     <DDTEXT>Naziv tabele</DDTEXT>
+     <REPTEXT>Naziv tabele</REPTEXT>
+     <SCRTEXT_S>Tabela</SCRTEXT_S>
+     <SCRTEXT_M>Naziv tabele</SCRTEXT_M>
+     <SCRTEXT_L>Naziv tabele</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>9</DDLANGUAGE>
+     <DDTEXT>Tabeli nimi</DDTEXT>
+     <REPTEXT>Tabeli nimi</REPTEXT>
+     <SCRTEXT_S>Tabel</SCRTEXT_S>
+     <SCRTEXT_M>Tabeli nimi</SCRTEXT_M>
+     <SCRTEXT_L>Tabeli nimi</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>A</DDLANGUAGE>
+     <DDTEXT>اسم الجدول</DDTEXT>
+     <REPTEXT>اسم الجدول</REPTEXT>
+     <SCRTEXT_S>جدول</SCRTEXT_S>
+     <SCRTEXT_M>اسم الجدول</SCRTEXT_M>
+     <SCRTEXT_L>اسم الجدول</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>B</DDLANGUAGE>
+     <DDTEXT>שם טבלה</DDTEXT>
+     <REPTEXT>שם טבלה</REPTEXT>
+     <SCRTEXT_S>טבלה</SCRTEXT_S>
+     <SCRTEXT_M>שם טבלה</SCRTEXT_M>
+     <SCRTEXT_L>שם טבלה</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>C</DDLANGUAGE>
+     <DDTEXT>Název tabulky</DDTEXT>
+     <REPTEXT>Název tabulky</REPTEXT>
+     <SCRTEXT_S>Tabulka</SCRTEXT_S>
+     <SCRTEXT_M>Název tabulky</SCRTEXT_M>
+     <SCRTEXT_L>Název tabulky</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Conversion Tablename</DDTEXT>
+     <REPTEXT>Conversion Tablename</REPTEXT>
+     <SCRTEXT_S>ConvTable</SCRTEXT_S>
+     <SCRTEXT_M>Conv. Table</SCRTEXT_M>
+     <SCRTEXT_L>Conversion Tablename</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>F</DDLANGUAGE>
+     <DDTEXT>Nom de table</DDTEXT>
+     <REPTEXT>Nom de la table</REPTEXT>
+     <SCRTEXT_S>Table</SCRTEXT_S>
+     <SCRTEXT_M>Nom de table</SCRTEXT_M>
+     <SCRTEXT_L>Nom de table</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>G</DDLANGUAGE>
+     <DDTEXT>Ονομα πίνακα</DDTEXT>
+     <REPTEXT>Ονομα πίνακα</REPTEXT>
+     <SCRTEXT_S>Πίνακας</SCRTEXT_S>
+     <SCRTEXT_M>Ονομα πίνακα</SCRTEXT_M>
+     <SCRTEXT_L>Ονομα πίνακα</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>H</DDLANGUAGE>
+     <DDTEXT>Táblanév</DDTEXT>
+     <REPTEXT>Táblanév</REPTEXT>
+     <SCRTEXT_S>Tábla</SCRTEXT_S>
+     <SCRTEXT_M>Táblanév</SCRTEXT_M>
+     <SCRTEXT_L>Táblanév</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Nome tabella</DDTEXT>
+     <REPTEXT>Nome tabella</REPTEXT>
+     <SCRTEXT_S>Tabella</SCRTEXT_S>
+     <SCRTEXT_M>Nome tabella</SCRTEXT_M>
+     <SCRTEXT_L>Nome tabella</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>J</DDLANGUAGE>
+     <DDTEXT>テーブル名</DDTEXT>
+     <REPTEXT>テーブル名</REPTEXT>
+     <SCRTEXT_S>テーブル</SCRTEXT_S>
+     <SCRTEXT_M>テーブル名</SCRTEXT_M>
+     <SCRTEXT_L>テーブル名</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>L</DDLANGUAGE>
+     <DDTEXT>Nazwa tabeli</DDTEXT>
+     <REPTEXT>Nazwa tabeli</REPTEXT>
+     <SCRTEXT_S>Tabela</SCRTEXT_S>
+     <SCRTEXT_M>Nazwa tabeli</SCRTEXT_M>
+     <SCRTEXT_L>Nazwa tabeli</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>M</DDLANGUAGE>
+     <DDTEXT>表格名稱</DDTEXT>
+     <SCRTEXT_S>表格</SCRTEXT_S>
+     <SCRTEXT_M>表格名稱</SCRTEXT_M>
+     <SCRTEXT_L>表格名稱</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>N</DDLANGUAGE>
+     <DDTEXT>Tabelnaam</DDTEXT>
+     <REPTEXT>Tabelnaam</REPTEXT>
+     <SCRTEXT_S>Tabel</SCRTEXT_S>
+     <SCRTEXT_M>Tabelnaam</SCRTEXT_M>
+     <SCRTEXT_L>Tabelnaam</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>P</DDLANGUAGE>
+     <DDTEXT>Nome da tabela</DDTEXT>
+     <REPTEXT>Nome da tabela</REPTEXT>
+     <SCRTEXT_S>Tabela</SCRTEXT_S>
+     <SCRTEXT_M>Nome da tabela</SCRTEXT_M>
+     <SCRTEXT_L>Nome da tabela</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Q</DDLANGUAGE>
+     <DDTEXT>Náz.tabuľky</DDTEXT>
+     <REPTEXT>Názov tabuľky</REPTEXT>
+     <SCRTEXT_S>Tabuľka</SCRTEXT_S>
+     <SCRTEXT_M>Názov tabuľky</SCRTEXT_M>
+     <SCRTEXT_L>Názov tabuľky</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>R</DDLANGUAGE>
+     <DDTEXT>Имя таблицы</DDTEXT>
+     <REPTEXT>Имя таблицы</REPTEXT>
+     <SCRTEXT_S>Таблица</SCRTEXT_S>
+     <SCRTEXT_M>Имя таблицы</SCRTEXT_M>
+     <SCRTEXT_L>Имя таблицы</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>S</DDLANGUAGE>
+     <DDTEXT>Nombre de tabla</DDTEXT>
+     <REPTEXT>Nombre de tabla</REPTEXT>
+     <SCRTEXT_S>Tabla</SCRTEXT_S>
+     <SCRTEXT_M>Nombre de tabla</SCRTEXT_M>
+     <SCRTEXT_L>Nombre de tabla</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>T</DDLANGUAGE>
+     <DDTEXT>Tablo adı</DDTEXT>
+     <REPTEXT>Tablo adı</REPTEXT>
+     <SCRTEXT_S>Tablo</SCRTEXT_S>
+     <SCRTEXT_M>Tablo adı</SCRTEXT_M>
+     <SCRTEXT_L>Tablo adı</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>W</DDLANGUAGE>
+     <DDTEXT>Наименование на таблицата</DDTEXT>
+     <REPTEXT>Име на таблица</REPTEXT>
+     <SCRTEXT_S>Таблица</SCRTEXT_S>
+     <SCRTEXT_M>Име на таблица</SCRTEXT_M>
+     <SCRTEXT_L>Име на таблица</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>X</DDLANGUAGE>
+     <DDTEXT>Lentelės pavadinimas</DDTEXT>
+     <REPTEXT>Lentelės pavadinimas</REPTEXT>
+     <SCRTEXT_S>Lentelė</SCRTEXT_S>
+     <SCRTEXT_M>Lent. pavad.</SCRTEXT_M>
+     <SCRTEXT_L>Lentelės pavadinimas</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Y</DDLANGUAGE>
+     <DDTEXT>Tabulas nosaukums</DDTEXT>
+     <REPTEXT>Tabulas nosaukums</REPTEXT>
+     <SCRTEXT_S>Tabula</SCRTEXT_S>
+     <SCRTEXT_L>Tabulas nosaukums</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

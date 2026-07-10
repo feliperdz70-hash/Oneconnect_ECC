@@ -1,0 +1,164 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_PROG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <PROGDIR>
+    <NAME>ZONPG_RSDBC1XX</NAME>
+    <SUBC>I</SUBC>
+    <APPL>S</APPL>
+    <RSTAT>S</RSTAT>
+    <RLOAD>D</RLOAD>
+    <FIXPT>X</FIXPT>
+   </PROGDIR>
+   <TPOOL>
+    <item>
+     <ID>R</ID>
+     <ENTRY>RSDBRUNT: Common Part: 1: RSDBRUNT, XX: all others</ENTRY>
+     <LENGTH>50</LENGTH>
+    </item>
+   </TPOOL>
+   <I18N_TPOOL>
+    <item>
+     <LANGUAGE>1</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 常规部分: 1: RSDBRUNT, XX: 其他</ENTRY>
+       <LENGTH>41</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>2</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: ส่วนปกติ: 1: RSDBRUNT, XX: อื่นทั้งหมด</ENTRY>
+       <LENGTH>48</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>3</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 공통부분: 1: RSDBRUNT, XX: 그외 기타</ENTRY>
+       <LENGTH>46</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>C</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Common Part: 1: RSDBRUNT, XX: všechny ostatní</ENTRY>
+       <LENGTH>55</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>D</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Common Part: 1: RSDBRUNT, XX: alle anderen</ENTRY>
+       <LENGTH>61</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>F</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT : partie commune : 1: RSDBRUNT, XX: tous les autres</ENTRY>
+       <LENGTH>60</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>H</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Common Part: 1: RSDBRUNT, XX: minden egyéb</ENTRY>
+       <LENGTH>52</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>I</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: parte comune: 1: RSDBRUNT, XX: tutto il resto</ENTRY>
+       <LENGTH>55</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>J</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 共通部分: 1: RSDBRUNT, XX: その他すべて</ENTRY>
+       <LENGTH>49</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>M</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 一般部份: 1: RSDBRUNT, XX: 其他的</ENTRY>
+       <LENGTH>43</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>P</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: parte comum: 1: RSDBRUNT, XX: todas as outras</ENTRY>
+       <LENGTH>55</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>Q</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Common Part: 1: RSDBRUNT, XX: všetky ostatné</ENTRY>
+       <LENGTH>54</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>R</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: общий компонет: 1: RSDBRUNT, XX: все остальные</ENTRY>
+       <LENGTH>56</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>S</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Parte común: 1: RSDBRUNT, XX: todo el resto</ENTRY>
+       <LENGTH>53</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+   </I18N_TPOOL>
+  </asx:values>
+ </asx:abap>
+</abapGit>

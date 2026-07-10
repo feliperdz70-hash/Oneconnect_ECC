@@ -1,0 +1,29 @@
+FUNCTION ZONFM_FREE_SELECTIONS_WHERE2EX.
+*"--------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(WHERE_CLAUSES) TYPE  RSDS_TWHERE
+*"  EXPORTING
+*"     VALUE(EXPRESSIONS) TYPE  RSDS_TEXPR
+*"  EXCEPTIONS
+*"      INCORRECT_EXPRESSION
+*"--------------------------------------------------------------------
+
+  DATA L_WHERE TYPE RSDS_WHERE.
+  DATA L_EXPR  TYPE RSDS_EXPR.
+  DATA L_SUBRC LIKE SY-SUBRC.
+
+  CLEAR EXPRESSIONS.
+
+  LOOP AT WHERE_CLAUSES INTO L_WHERE.
+    MOVE L_WHERE-TABLENAME TO L_EXPR-TABLENAME.
+    PERFORM WHERE_TAB_2_EXPR_TAB USING    L_WHERE-WHERE_TAB
+                                 CHANGING L_EXPR-EXPR_TAB
+                                          L_SUBRC.
+    IF L_SUBRC > 0.
+      RAISE INCORRECT_EXPRESSION.
+    ENDIF.
+    APPEND L_EXPR TO EXPRESSIONS.
+  ENDLOOP.
+
+ENDFUNCTION.

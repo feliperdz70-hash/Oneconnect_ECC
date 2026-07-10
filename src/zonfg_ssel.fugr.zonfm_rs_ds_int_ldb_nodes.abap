@@ -1,0 +1,77 @@
+FUNCTION ZONFM_RS_DS_INT_LDB_NODES.
+*"--------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(P_LDB) LIKE  RSLDB-LDB
+*"     VALUE(P_WITH_TEXT) DEFAULT SPACE
+*"  TABLES
+*"      P_NODES STRUCTURE  RSDFSNODES
+*"  EXCEPTIONS
+*"      SAPDB_CANNOT_BE_GENERATED
+*"      LDB_NOT_FOUND
+*"--------------------------------------------------------------------
+
+  DATA: BEGIN OF L_SSCR OCCURS 50.
+          INCLUDE STRUCTURE RSSCR.
+  DATA: END   OF L_SSCR.
+
+  DATA L_LDBPG LIKE SY-LDBPG.
+  DATA L_SUBRC LIKE SY-SUBRC.
+  DATA L_EX.
+
+  CHECK    P_LDB(2) NE SPACE AND P_LDB(2) NE '$$'
+       AND P_LDB(2) NE '__'  AND P_LDB(2) NE 'D$'.
+
+  CALL FUNCTION 'LDB_CONVERT_LDBNAME_2_DBPROG'
+       EXPORTING
+            LDB_NAME                  = P_LDB
+            FLAG_EXISTENCE_CHECK      = 'X'
+       IMPORTING
+            DB_NAME                   = L_LDBPG
+            FLAG_LDB_EXISTENT         = L_EX
+       EXCEPTIONS
+            WRONG_POSITION_OF_SLASHES = 1
+            LDB_NAME_TOO_LONG         = 2
+            OTHERS                    = 3.
+
+  IF SY-SUBRC NE 0 OR L_EX = SPACE.
+    RAISE LDB_NOT_FOUND.
+  ENDIF.
+
+  LOAD REPORT L_LDBPG PART 'SSCR' INTO L_SSCR.
+  L_SUBRC = SY-SUBRC.
+  IF L_SUBRC NE 0.
+    GENERATE REPORT L_LDBPG.
+    L_SUBRC = SY-SUBRC.
+    IF L_SUBRC NE 0.
+      GENERATE REPORT L_LDBPG WITHOUT SELECTION-SCREEN.
+      L_SUBRC = SY-SUBRC.
+      IF L_SUBRC EQ 0.
+        LOAD REPORT L_LDBPG PART 'SSCR' INTO L_SSCR.
+        L_SUBRC = SY-SUBRC.
+      ENDIF.
+    ELSE.
+      LOAD REPORT L_LDBPG PART 'SSCR' INTO L_SSCR.
+      L_SUBRC = SY-SUBRC.
+    ENDIF.
+  ENDIF.
+
+  IF L_SUBRC NE 0.
+    RAISE SAPDB_CANNOT_BE_GENERATED.
+  ENDIF.
+
+  REFRESH P_NODES.
+
+  LOOP AT L_SSCR WHERE KIND = 'D'.
+    MOVE: L_SSCR-DBFIELD TO P_NODES-LDBNODE.
+    SELECT SINGLE NODETEXT
+           INTO P_NODES-NODETEXT
+           FROM LDBNT
+           WHERE SPRAS   = SY-LANGU
+           AND   LDBNAME = P_LDB
+           AND   LDBNODE = P_NODES-LDBNODE.
+    APPEND P_NODES.
+    CLEAR  P_NODES.
+  ENDLOOP.
+
+ENDFUNCTION.

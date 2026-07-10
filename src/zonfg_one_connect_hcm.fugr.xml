@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_FUGR" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <AREAT>One Connect HCM</AREAT>
+   <INCLUDES>
+    <SOBJ_NAME>SAPLZONFG_ONE_CONNECT_HCM</SOBJ_NAME>
+   </INCLUDES>
+   <FUNCTIONS>
+    <item>
+     <FUNCNAME>ZONFM_ONE_CONNECT_HCM</FUNCNAME>
+     <UPDATE_TASK>1</UPDATE_TASK>
+     <SHORT_TEXT>OneConnect HCM</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IS_NEW_INNNN</PARAMETER>
+       <TYP>PRELP</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_TCLAS</PARAMETER>
+       <TYP>TCLAS</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_DELETE</PARAMETER>
+       <TYP>BOOLEAN</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_UPDATE</PARAMETER>
+       <TYP>BOOLEAN</TYP>
+      </RSIMP>
+     </IMPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IS_NEW_INNNN</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>HR Master Data Buffer</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_TCLAS</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Transaction Class for Data Retention</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_DELETE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Boolean Variable (X = True, - = False, Space = Unknown)</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_UPDATE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Boolean Variable (X = True, - = False, Space = Unknown)</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+    <item>
+     <FUNCNAME>ZONFM_ONE_CONNECT_ORG</FUNCNAME>
+     <UPDATE_TASK>1</UPDATE_TASK>
+     <SHORT_TEXT>OneConnect HCM</SHORT_TEXT>
+     <IMPORT>
+      <RSIMP>
+       <PARAMETER>IS_NEW_IMAGE</PARAMETER>
+       <TYP>AFT_IMAGE</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_DELETE</PARAMETER>
+       <TYP>BOOLEAN</TYP>
+      </RSIMP>
+      <RSIMP>
+       <PARAMETER>IV_UPDATE</PARAMETER>
+       <TYP>BOOLEAN</TYP>
+      </RSIMP>
+     </IMPORT>
+     <DOCUMENTATION>
+      <RSFDO>
+       <PARAMETER>IS_NEW_IMAGE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>After-Image for Creating Events when Updating Database</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_DELETE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Boolean Variable (X = True, - = False, Space = Unknown)</STEXT>
+      </RSFDO>
+      <RSFDO>
+       <PARAMETER>IV_UPDATE</PARAMETER>
+       <KIND>P</KIND>
+       <STEXT>Boolean Variable (X = True, - = False, Space = Unknown)</STEXT>
+      </RSFDO>
+     </DOCUMENTATION>
+    </item>
+   </FUNCTIONS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

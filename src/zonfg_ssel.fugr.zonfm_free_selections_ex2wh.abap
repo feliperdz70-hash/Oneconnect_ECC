@@ -1,0 +1,57 @@
+FUNCTION ZONFM_FREE_SELECTIONS_EX2WH.
+*"--------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(EXPRESSIONS) TYPE  RSDS_TEXPR
+*"  EXPORTING
+*"     VALUE(WHERE_CLAUSES) TYPE  RSDS_TWHERE
+*"  EXCEPTIONS
+*"      EXPRESSION_NOT_SUPPORTED
+*"--------------------------------------------------------------------
+
+  DATA L_FIELDS LIKE RSDSFIELDS OCCURS 10 WITH HEADER LINE.
+  DATA L_LOW_LEN TYPE I.
+  DATA L_HIGH_LEN TYPE I.
+  DATA L_SUBRC LIKE SY-SUBRC.
+  DATA L_TABIX LIKE SY-TABIX.
+  DATA L_RSDSEXPR   LIKE RSDSEXPR.
+  DATA L_EXPR TYPE RSDS_EXPR.
+  DATA L_TABFI LIKE generic_field.
+
+  LOOP AT EXPRESSIONS INTO L_EXPR.
+    MOVE L_EXPR-TABLENAME TO L_TABFI-TABLENAME.
+    LOOP AT L_EXPR-EXPR_TAB INTO L_RSDSEXPR WHERE FIELDNAME NE SPACE.
+      L_LOW_LEN = STRLEN( L_RSDSEXPR-LOW ).
+      L_HIGH_LEN = STRLEN( L_RSDSEXPR-HIGH ).
+      IF L_LOW_LEN = 0.
+        L_LOW_LEN = 1.
+      ENDIF.
+      MOVE L_TABFI-TABLENAME TO L_FIELDS-TABLENAME.
+      MOVE L_RSDSEXPR-FIELDNAME TO: L_FIELDS-FIELDNAME,
+                                    L_TABFI-FIELDNAME.
+      READ TABLE L_FIELDS WITH KEY
+           tablename = l_fields-tablename
+           fieldname = l_fields-fieldname
+                                  BINARY SEARCH.
+      L_TABIX = SY-TABIX.
+      L_SUBRC = SY-SUBRC.
+      IF L_LOW_LEN > L_FIELDS-WHERE_LENG.
+        L_FIELDS-WHERE_LENG = L_LOW_LEN.
+      ENDIF.
+      IF L_HIGH_LEN > L_FIELDS-WHERE_LENG.
+        L_FIELDS-WHERE_LENG = L_HIGH_LEN.
+      ENDIF.
+      IF L_SUBRC = 0.
+        MODIFY L_FIELDS INDEX L_TABIX.
+      ELSE.
+        INSERT L_FIELDS INDEX L_TABIX.
+      ENDIF.
+      CLEAR  L_FIELDS.
+    ENDLOOP.
+  ENDLOOP.
+
+  PERFORM BUILD_WHERE_FROM_EXP TABLES   L_FIELDS
+                               USING    EXPRESSIONS
+                               CHANGING WHERE_CLAUSES.
+
+ENDFUNCTION.

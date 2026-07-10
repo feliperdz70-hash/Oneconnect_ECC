@@ -1,0 +1,9 @@
+PROCESS BEFORE OUTPUT.
+  MODULE status_0400.
+*
+PROCESS AFTER INPUT.
+  MODULE user_command_0400.
+
+
+PROCESS ON VALUE-REQUEST.
+  FIELD zonta_oc_variant-variant MODULE f4_variant.

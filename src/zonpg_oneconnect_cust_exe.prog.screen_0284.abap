@@ -1,0 +1,7 @@
+
+PROCESS BEFORE OUTPUT.
+  MODULE status_0284.
+  MODULE init_variantatt.
+
+PROCESS AFTER INPUT.
+  MODULE user_command_0284.

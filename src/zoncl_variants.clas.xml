@@ -1,0 +1,146 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZONCL_VARIANTS</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Variants</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>195</KEY>
+     <ENTRY>T: Table Variable from TVARVC</ENTRY>
+     <LENGTH>58</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>196</KEY>
+     <ENTRY>D: Dynamic Date Calculation (Local Date)</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>197</KEY>
+     <ENTRY>B: User-Defined Variables</ENTRY>
+     <LENGTH>50</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>235</KEY>
+     <ENTRY>Z: Dynamic Time Calculation (Local Time)</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>236</KEY>
+     <ENTRY>X: Dynamic Date Calculation (System Date)</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>237</KEY>
+     <ENTRY>Y: Dynamic Time Calculation (System Time)</ENTRY>
+     <LENGTH>80</LENGTH>
+    </item>
+   </TPOOL>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_VARIANT_VALUES</CMPNAME>
+     <SCONAME>ET_RANGE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: General Structure for PARAMETERS and SELECT-OPTIONS</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_VARIANT_VALUES</CMPNAME>
+     <SCONAME>ET_RANGE_ALL</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table type for Variants</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_VARIANT_VALUES</CMPNAME>
+     <SCONAME>IS_VARIANT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>One Connect variant table</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_VALID_VARIANT</CMPNAME>
+     <SCONAME>EV_VARIANT_OLD</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: Name of variant (without program name)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_VALID_VARIANT</CMPNAME>
+     <SCONAME>IS_OBJ_OC</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Customizing for One Connect.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_VALID_VARIANT</CMPNAME>
+     <SCONAME>IV_VARIANT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: Name of variant (without program name)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_VALID_VARIANT</CMPNAME>
+     <SCONAME>RS_VALID</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>EV_VARIANT_EXISTS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IS_OBJ_OC</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Customizing for One Connect.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IS_VARIANT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: Name of variant (without program name)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IT_FIELDTAB</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Screen Selections: Table Type RSDSFIELDS</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IT_VARIANT_POS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>One Connect variant table</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IT_VARIANT_VALUES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table type for zonta_oc_variant</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>IV_SAVE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SAVE_VARIANT_DB</CMPNAME>
+     <SCONAME>RS_SUCCESS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

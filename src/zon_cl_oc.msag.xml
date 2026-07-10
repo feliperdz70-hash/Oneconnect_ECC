@@ -1,0 +1,791 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_MSAG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <T100A>
+    <ARBGB>ZON_CL_OC</ARBGB>
+    <MASTERLANG>E</MASTERLANG>
+   </T100A>
+   <T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>000</MSGNR>
+     <TEXT>Error while saving Main Customizing data for &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>001</MSGNR>
+     <TEXT>Error while saving Relations for &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>002</MSGNR>
+     <TEXT>Error while saving Relations for &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>003</MSGNR>
+     <TEXT>Entity. &amp;1 successfully saved without RELATIONS and COLUMNS.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>004</MSGNR>
+     <TEXT>Please make an entry on Mandatory fields before proceeding.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>005</MSGNR>
+     <TEXT>Entity &amp;1 successfully saved with RELATIONS and COLUMNS.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>006</MSGNR>
+     <TEXT>Successfully generated Entity &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>007</MSGNR>
+     <TEXT>Please select an Entity.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>008</MSGNR>
+     <TEXT>Entity &amp;1 already exists, please validate.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>009</MSGNR>
+     <TEXT>Error on records. Domain and Entity are MANDATORY.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>010</MSGNR>
+     <TEXT>Error saving Main Customizing, please check.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>011</MSGNR>
+     <TEXT>Successfully load Relations and customizing. Please review and complete.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>012</MSGNR>
+     <TEXT>Some records do not have corresponding entry in RELATIONS table.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>013</MSGNR>
+     <TEXT>Successfully load Column data. Please review and complete.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>014</MSGNR>
+     <TEXT>You MUST provide Table Name.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>015</MSGNR>
+     <TEXT>Some ALIAS were modified to accomplish the rules.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>016</MSGNR>
+     <TEXT>Table was already added, please check.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>017</MSGNR>
+     <TEXT>&amp;1 &amp;2 &amp;3 &amp;4</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>018</MSGNR>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>019</MSGNR>
+     <TEXT>Field &amp;1 exists in different domain, not possible to change alias.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>020</MSGNR>
+     <TEXT>Alias &amp;1 does not met the criteria, please review..</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>021</MSGNR>
+     <TEXT>Table &amp;1 does not exist in Entity &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>022</MSGNR>
+     <TEXT>Field &amp;1 from table &amp;2 does not exist in Entity &amp;3</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>023</MSGNR>
+     <TEXT>Successfully loaded Filters.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>024</MSGNR>
+     <TEXT>Error while opening Excel, please review Sheet name.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>025</MSGNR>
+     <TEXT>Key fields will not be removed</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>026</MSGNR>
+     <TEXT>Not possible to delete entries in different transport.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>027</MSGNR>
+     <TEXT>Entity &amp;1 successfully saved into Transport: &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>028</MSGNR>
+     <TEXT>Records were inserted into new table ZONTA_OC_COL_ALL</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>029</MSGNR>
+     <TEXT>Records were not converted into new table</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>030</MSGNR>
+     <TEXT>Please provide Authorization object first</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>031</MSGNR>
+     <TEXT>File path MUST be filled to continue.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>032</MSGNR>
+     <TEXT>Error while copying class. Please copy manually.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>033</MSGNR>
+     <TEXT>Class Successfully copied. You can add your own code later.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>034</MSGNR>
+     <TEXT>You do not have authorization to change/delete.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>035</MSGNR>
+     <TEXT>Column field lenght &gt; 30. Please validate the results.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>036</MSGNR>
+     <TEXT>Repeated column names.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>037</MSGNR>
+     <TEXT>Alias Table MUST be different to Table Name.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>038</MSGNR>
+     <TEXT>&amp;1 Entries successfully deleted</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>039</MSGNR>
+     <TEXT>The entity name &amp;1 is already in use by another entity.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>040</MSGNR>
+     <TEXT>Please fill variant name.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>041</MSGNR>
+     <TEXT>Introduce a valid TVARVC entry.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>042</MSGNR>
+     <TEXT>Dynamic variant was successfully saved.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>043</MSGNR>
+     <TEXT>Variant &amp;1 is already in use.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>044</MSGNR>
+     <TEXT>Variant name lenght should be less than 14.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>045</MSGNR>
+     <TEXT>No data found for variant &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>046</MSGNR>
+     <TEXT>Variant &amp;1 not found</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>047</MSGNR>
+     <TEXT>File path &amp;1 does not exist or it is not accesible.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>048</MSGNR>
+     <TEXT>Authorization error to open &amp;1 in EDIT mode.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>049</MSGNR>
+     <TEXT>Please change the File in CHANGE option.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>050</MSGNR>
+     <TEXT>Table &amp;1 does not exist in SAP. Please check.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>051</MSGNR>
+     <TEXT>Error while inserting SLG1 LOG.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>052</MSGNR>
+     <TEXT>Table &amp;1 - Message &amp;2 &amp;3.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>053</MSGNR>
+     <TEXT>Review customizing in SLG0 for ZONI_OC.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>054</MSGNR>
+     <TEXT>Check the correct Domain for your Entity.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>055</MSGNR>
+     <TEXT>Review Authorizations to create standard log (SLG0 and SLG1).</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>056</MSGNR>
+     <TEXT>Error while generating the log from zoncl_json_save_log.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>057</MSGNR>
+     <TEXT>A log handle is invalid.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>058</MSGNR>
+     <TEXT>A message structure is inconsistent.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>059</MSGNR>
+     <TEXT>The log was never created or it is already closed.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>060</MSGNR>
+     <TEXT>Mandatory data is missing.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>061</MSGNR>
+     <TEXT>Validate the RAP event configuration for &amp;1 and &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>062</MSGNR>
+     <TEXT>Error on the GET_DATA method.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>063</MSGNR>
+     <TEXT>Inconsistence on Entity &amp;1, its relations and columns.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>064</MSGNR>
+     <TEXT>Error on input parameters.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>065</MSGNR>
+     <TEXT>Access Data modeler with Entity &amp;1 and re-generate it.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>066</MSGNR>
+     <TEXT>An internal error occurred while opening the selection dialog.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>067</MSGNR>
+     <TEXT>The selection screen is in an invalid state.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>068</MSGNR>
+     <TEXT>An unexpected error occurred while processing the selection.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>069</MSGNR>
+     <TEXT>Validate the selection values from your Entity &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>070</MSGNR>
+     <TEXT>Execute the Entity again and validate your results.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>071</MSGNR>
+     <TEXT>Invalid field configuration for data selection.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>072</MSGNR>
+     <TEXT>The data source &amp;1 is not available.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>073</MSGNR>
+     <TEXT>Invalid filter conditions were provided.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>074</MSGNR>
+     <TEXT>Invalid relationship definition between data sources.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>075</MSGNR>
+     <TEXT>Internal filtering logic failed.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>076</MSGNR>
+     <TEXT>Review the selection fields and relations from table &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>077</MSGNR>
+     <TEXT>The log file could not be opened for writing.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>078</MSGNR>
+     <TEXT>The specified file path &amp;1 is not accessible.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>079</MSGNR>
+     <TEXT>You are not authorized to write files to the target directory.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>080</MSGNR>
+     <TEXT>An error occurred while writing to the log file.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>081</MSGNR>
+     <TEXT>Verify that the specified file path exists and is accessible.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>082</MSGNR>
+     <TEXT>Ensure the file is not already open in an incompatible mode and retry.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>083</MSGNR>
+     <TEXT>Retry the operation after a few moments.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>084</MSGNR>
+     <TEXT>The execution log could not be saved.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>085</MSGNR>
+     <TEXT>Invalid parameters were provided for log generation.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>086</MSGNR>
+     <TEXT>Retry the operation.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>087</MSGNR>
+     <TEXT>If the issue persists, try re-generating the Entity.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>088</MSGNR>
+     <TEXT>An unexpected error occurred while retrieving the related data.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>089</MSGNR>
+     <TEXT>The configured event handler class: &amp;1 could not be found.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>090</MSGNR>
+     <TEXT>The configured event handler is not active or not available.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>091</MSGNR>
+     <TEXT>An error occurred while preparing the event dispatch.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>092</MSGNR>
+     <TEXT>An error occurred while preparing the event dispatch (class &amp;1)</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>093</MSGNR>
+     <TEXT>The configured event handler isn&apos;t compatible with the expected interface</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>094</MSGNR>
+     <TEXT>An error occurred with the customizing of Entity &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>095</MSGNR>
+     <TEXT>Wrong/missing relation between tables.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>096</MSGNR>
+     <TEXT>Access Data Modeler with Entity &amp;1 and validate tables and relations.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>097</MSGNR>
+     <TEXT>Invalid field configuration for data selection: &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>098</MSGNR>
+     <TEXT>Invalid filter conditions were provided for table &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>099</MSGNR>
+     <TEXT>The data source &amp;1 is not available.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>100</MSGNR>
+     <TEXT>The selected fields do not match the data source.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>101</MSGNR>
+     <TEXT>The selection definition is inconsistent.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>102</MSGNR>
+     <TEXT>The CDS: &amp;1 definition for the selected entity could not be read.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>103</MSGNR>
+     <TEXT>The system could not retrieve metadata for the CDS entity: &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>104</MSGNR>
+     <TEXT>An error occurred while processing CDS metadata.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>105</MSGNR>
+     <TEXT>Review the selection fields and relations from CDS &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>106</MSGNR>
+     <TEXT>Table &amp;1 not created or inactive.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>107</MSGNR>
+     <TEXT>Access Data modeler and Save the entity again.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>108</MSGNR>
+     <TEXT>Invalid dynamic name &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>109</MSGNR>
+     <TEXT>Assign with initial Reference &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>110</MSGNR>
+     <TEXT>Not all tables/structures from Entity are Active.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>111</MSGNR>
+     <TEXT>Not all tables/structures from Entity were created.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>112</MSGNR>
+     <TEXT>Validate Entity &amp;1 before executing it again.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>113</MSGNR>
+     <TEXT>Endpoint &amp;1 provided is not either defined in SM59. Please check.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>114</MSGNR>
+     <TEXT>Structure &amp;1 error while changing. Regenerate whole Entity &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>115</MSGNR>
+     <TEXT>Please regenerate whole Entity &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>116</MSGNR>
+     <TEXT>Entity &amp;1 successfully changed - &amp;2</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>117</MSGNR>
+     <TEXT>Error in Open cursor for table &amp;1</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>118</MSGNR>
+     <TEXT>Try rerunning the extract changing Selection parameters</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>119</MSGNR>
+     <TEXT>Entity &amp;1 has been changed and the structures need to be generated.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>120</MSGNR>
+     <TEXT>Excel file created successfully.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>121</MSGNR>
+     <TEXT>Not possible to download &quot;ANY&quot; entity.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>122</MSGNR>
+     <TEXT>Entity &amp;1 copied successfully to &amp;2.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>123</MSGNR>
+     <TEXT>No corresponding information found for &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>124</MSGNR>
+     <TEXT>Target entity already exists.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>125</MSGNR>
+     <TEXT>No data found.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>126</MSGNR>
+     <TEXT>Possible error in Open cursor.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>127</MSGNR>
+     <TEXT>Not possible to preview JSON with SEND_IMM parameter.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>128</MSGNR>
+     <TEXT>Preview JSON with SEND_IMM parameter, only first data block&apos;s visible.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>129</MSGNR>
+    </T100>
+   </T100>
+  </asx:values>
+ </asx:abap>
+</abapGit>

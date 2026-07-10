@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZONDE_DE_RAW</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>ZONDO_RAW</DOMNAME>
+    <HEADLEN>32</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>15</SCRLEN2>
+    <SCRLEN3>40</SCRLEN3>
+    <DDTEXT>Raw value</DDTEXT>
+    <REPTEXT>Raw</REPTEXT>
+    <SCRTEXT_S>Raw</SCRTEXT_S>
+    <SCRTEXT_M>Raw</SCRTEXT_M>
+    <SCRTEXT_L>Raw</SCRTEXT_L>
+    <DTELMASTER>D</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>1</LANGU>
+    <LANGU>2</LANGU>
+    <LANGU>3</LANGU>
+    <LANGU>4</LANGU>
+    <LANGU>5</LANGU>
+    <LANGU>6</LANGU>
+    <LANGU>7</LANGU>
+    <LANGU>8</LANGU>
+    <LANGU>9</LANGU>
+    <LANGU>A</LANGU>
+    <LANGU>B</LANGU>
+    <LANGU>C</LANGU>
+    <LANGU>D</LANGU>
+    <LANGU>F</LANGU>
+    <LANGU>G</LANGU>
+    <LANGU>H</LANGU>
+    <LANGU>I</LANGU>
+    <LANGU>J</LANGU>
+    <LANGU>K</LANGU>
+    <LANGU>L</LANGU>
+    <LANGU>M</LANGU>
+    <LANGU>N</LANGU>
+    <LANGU>O</LANGU>
+    <LANGU>P</LANGU>
+    <LANGU>Q</LANGU>
+    <LANGU>R</LANGU>
+    <LANGU>S</LANGU>
+    <LANGU>T</LANGU>
+    <LANGU>U</LANGU>
+    <LANGU>V</LANGU>
+    <LANGU>W</LANGU>
+    <LANGU>X</LANGU>
+    <LANGU>Y</LANGU>
+    <LANGU>c</LANGU>
+    <LANGU>d</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>1</DDLANGUAGE>
+     <DDTEXT>针对表的通用唯一标识符</DDTEXT>
+     <REPTEXT>通用唯一标识符</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>通用唯一标识符</SCRTEXT_M>
+     <SCRTEXT_L>通用唯一标识符</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>2</DDLANGUAGE>
+     <DDTEXT>ID ส่วนกลางที่ไม่ซ้ำสำหรับตาราง</DDTEXT>
+     <REPTEXT>Universal Unique Identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>3</DDLANGUAGE>
+     <DDTEXT>테이블에 대한 글로벌 고유 ID</DDTEXT>
+     <REPTEXT>UUID</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>4</DDLANGUAGE>
+     <DDTEXT>ID univoc global pt.tabel</DDTEXT>
+     <REPTEXT>Identificator universal univoc</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>5</DDLANGUAGE>
+     <DDTEXT>Globalni enoznačni ID objekta slovarja</DDTEXT>
+     <REPTEXT>Enoznačni univerzalni identifik.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>6</DDLANGUAGE>
+     <DDTEXT>Globalni jedinstveni ID za tabelu</DDTEXT>
+     <REPTEXT>Jedinstveni univerzalni identif.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>7</DDLANGUAGE>
+     <DDTEXT>ID Unik Global untuk jadual</DDTEXT>
+     <REPTEXT>Pengenl psti universal yang unik</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>8</DDLANGUAGE>
+     <DDTEXT>Глобальний унікальний ІД для таблиці</DDTEXT>
+     <REPTEXT>Унікальний універсал.ідентифік.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>9</DDLANGUAGE>
+     <DDTEXT>Tabeli globaalne ainuidentifikaator</DDTEXT>
+     <REPTEXT>Universaalne ainuidentifikaator</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>A</DDLANGUAGE>
+     <DDTEXT>المعرف الفريد الشامل للجدول</DDTEXT>
+     <REPTEXT>المعرف الفريد العام</REPTEXT>
+     <SCRTEXT_S>معرف عام</SCRTEXT_S>
+     <SCRTEXT_M>معرف فريد عام</SCRTEXT_M>
+     <SCRTEXT_L>المعرف الفريد العام</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>B</DDLANGUAGE>
+     <DDTEXT>זיהוי גלובלי ייחודי עבור טבלה</DDTEXT>
+     <REPTEXT>מזהה אוניברסלי ייחודי</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>C</DDLANGUAGE>
+     <DDTEXT>Globál.jednoznačný ID pro objekt dictionary</DDTEXT>
+     <REPTEXT>Unique universal identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Raw value</DDTEXT>
+     <REPTEXT>Raw</REPTEXT>
+     <SCRTEXT_S>Raw</SCRTEXT_S>
+     <SCRTEXT_M>Raw</SCRTEXT_M>
+     <SCRTEXT_L>Raw</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>F</DDLANGUAGE>
+     <DDTEXT>ID unique global de l&apos;objet du Dictionnaire</DDTEXT>
+     <REPTEXT>Unique universal identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>G</DDLANGUAGE>
+     <DDTEXT>Παγκόσμιο Μοναδικό ID για πίνακα</DDTEXT>
+     <REPTEXT>Μοναδικό παγκόσμιο αναγνωριστικό</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>H</DDLANGUAGE>
+     <DDTEXT>Globális egyértelmű ID Dictionary-objektumhoz</DDTEXT>
+     <REPTEXT>Unique universal azonosító</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>ID globalmente univoco per oggetto Dictionary</DDTEXT>
+     <REPTEXT>ID univoco universale</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>J</DDLANGUAGE>
+     <DDTEXT>テーブルのグローバル一意 ID</DDTEXT>
+     <REPTEXT>一意のユニバーサル ID</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>K</DDLANGUAGE>
+     <DDTEXT>Global entydig ID for Dictionary-objekt</DDTEXT>
+     <REPTEXT>Unique universal identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>L</DDLANGUAGE>
+     <DDTEXT>Globalny unikalny ID dla obiektu Słownika</DDTEXT>
+     <REPTEXT>Unikalny uniwersalny ID</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>M</DDLANGUAGE>
+     <DDTEXT>表格的通用專屬 ID</DDTEXT>
+     <REPTEXT>專屬通用識別碼</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>N</DDLANGUAGE>
+     <DDTEXT>Globale eenduidige ID voor ABAP Dictionary-object</DDTEXT>
+     <REPTEXT>Unique universal identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>O</DDLANGUAGE>
+     <DDTEXT>Global entydig ID for Dictionary-objekt</DDTEXT>
+     <REPTEXT>Universal Unique Identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>P</DDLANGUAGE>
+     <DDTEXT>ID unívoco global para objeto Dictionary</DDTEXT>
+     <REPTEXT>ID único</REPTEXT>
+     <SCRTEXT_S>GUID</SCRTEXT_S>
+     <SCRTEXT_M>GUID</SCRTEXT_M>
+     <SCRTEXT_L>GUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Q</DDLANGUAGE>
+     <DDTEXT>Globálne jednoznačné ID pre objekt Dictionary</DDTEXT>
+     <REPTEXT>Unique universal identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>R</DDLANGUAGE>
+     <DDTEXT>Глобальный однозначный ид. для объекта ABAP-словаря</DDTEXT>
+     <REPTEXT>Уникальный однонозначный ид.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>S</DDLANGUAGE>
+     <DDTEXT>ID único global para objeto de Dictionary ABAP</DDTEXT>
+     <REPTEXT>Identificador universal único</REPTEXT>
+     <SCRTEXT_S>ID único</SCRTEXT_S>
+     <SCRTEXT_M>ID único</SCRTEXT_M>
+     <SCRTEXT_L>ID único</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>T</DDLANGUAGE>
+     <DDTEXT>Sözlük nesnesi için global benzersiz tanıtıcısı</DDTEXT>
+     <REPTEXT>Universal Unique Identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>U</DDLANGUAGE>
+     <DDTEXT>Hakemisto-objektin globaali yksiselitteinen tunnus</DDTEXT>
+     <REPTEXT>UUID</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>V</DDLANGUAGE>
+     <DDTEXT>Global entydig ID för ABAP Dictionary-objekt</DDTEXT>
+     <REPTEXT>Universal Unique Identifier</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>W</DDLANGUAGE>
+     <DDTEXT>Глобален уникален ИД за таблица</DDTEXT>
+     <REPTEXT>Глобален уникален идентификатор</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>X</DDLANGUAGE>
+     <DDTEXT>Visuotinis unikalus ID, skirtas lentelei</DDTEXT>
+     <REPTEXT>Unikalus universalus identifik.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Y</DDLANGUAGE>
+     <DDTEXT>Tabulas globālais unikālais identifikators</DDTEXT>
+     <REPTEXT>Unikālais universālais ID</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>c</DDLANGUAGE>
+     <DDTEXT>ID unívoc global per a objecte de diccionari</DDTEXT>
+     <REPTEXT>Identificador únic universal</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>d</DDLANGUAGE>
+     <DDTEXT>Globalno jedinstveni ID za tabelu</DDTEXT>
+     <REPTEXT>Jedinstveni univerzalni identif.</REPTEXT>
+     <SCRTEXT_S>UUID</SCRTEXT_S>
+     <SCRTEXT_M>UUID</SCRTEXT_M>
+     <SCRTEXT_L>UUID</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

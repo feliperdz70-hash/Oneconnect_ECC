@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZONDE_OC_TRESENAME</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>ZONDO_OC_OBJNAME</DOMNAME>
+    <HEADLEN>10</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>15</SCRLEN2>
+    <SCRLEN3>20</SCRLEN3>
+    <DDTEXT>Reserved name</DDTEXT>
+    <REPTEXT>Name</REPTEXT>
+    <SCRTEXT_S>Name</SCRTEXT_S>
+    <SCRTEXT_M>Name</SCRTEXT_M>
+    <SCRTEXT_L>Reserved name</SCRTEXT_L>
+    <APPLCLASS>SDIC</APPLCLASS>
+    <DTELMASTER>D</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>D</LANGU>
+    <LANGU>F</LANGU>
+    <LANGU>I</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Reservierter Name</DDTEXT>
+     <REPTEXT>Name</REPTEXT>
+     <SCRTEXT_S>Name</SCRTEXT_S>
+     <SCRTEXT_M>Name</SCRTEXT_M>
+     <SCRTEXT_L>Reservierter Name</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>F</DDLANGUAGE>
+     <DDTEXT>Nom réservé</DDTEXT>
+     <REPTEXT>Nom</REPTEXT>
+     <SCRTEXT_S>Nom</SCRTEXT_S>
+     <SCRTEXT_M>Nom</SCRTEXT_M>
+     <SCRTEXT_L>Nom réservé</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Nome riservato</DDTEXT>
+     <REPTEXT>Nome</REPTEXT>
+     <SCRTEXT_S>Nome</SCRTEXT_S>
+     <SCRTEXT_M>Nome</SCRTEXT_M>
+     <SCRTEXT_L>Nome riservato</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

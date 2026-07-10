@@ -1,0 +1,258 @@
+FUNCTION ZONFM_RS_DS_INT_INIT_LDB.
+*"--------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(P_LDBNAME) LIKE  LDBD-LDBNAME OPTIONAL
+*"     VALUE(P_TEXPR) TYPE  RSDS_TEXPR
+*"     VALUE(P_SUBMODE) OPTIONAL
+*"     VALUE(P_LDBPG) TYPE  SYLDBPG OPTIONAL
+*"  EXPORTING
+*"     VALUE(P_TWHERE) TYPE  RSDS_TWHERE
+*"     VALUE(P_SELID) LIKE  RSDYNSEL-SELID
+*"     VALUE(P_TEXPR) TYPE  RSDS_TEXPR
+*"     VALUE(P_ACTNUM) LIKE  SY-TFILL
+*"     VALUE(P_TRANGE) TYPE  RSDS_TRANGE
+*"  TABLES
+*"      P_NODES STRUCTURE  RSDFSNODES OPTIONAL
+*"      P_FIELDS STRUCTURE  RSDSFIELDS
+*"      P_VARIDYN STRUCTURE  RSVARIDYN OPTIONAL
+*"  EXCEPTIONS
+*"      NO_TABLES
+*"      TABLE_NOT_FOUND
+*"      EXPRESSION_NOT_SUPPORTED
+*"      INCORRECT_EXPRESSION
+*"      FIELD_NOT_FOUND
+*"      INCONSISTENT_AREA
+*"      ILLEGAL_LDB
+*"--------------------------------------------------------------------
+
+  DATA L_SUBRC LIKE SY-SUBRC.
+  DATA L_TABIX  LIKE SY-TABIX.
+  DATA L_T_AND_J LIKE RSDSTABS.
+  DATA L_FIELD_SEL_T LIKE CURRENT_INFO-FIELD_SEL.
+  DATA L_FIELD_SEL TYPE FIELD_SEL_TYPE.
+  DATA L_LDB LIKE TRDIR-LDBNAME.
+  DATA L_LDB_EX.
+  DATA L_N_T TYPE N_2_T_LINE_TYPE.
+  DATA L_NODES TYPE NODE_T_TYPE.
+  DATA L_CLIENT_POS LIKE SY-TABIX.
+  DATA L_LDB_TABIX LIKE SY-TABIX.
+  DATA L_LDB_SUBRC LIKE SY-SUBRC.
+  DATA L_LDB_TFILL LIKE SY-TFILL.
+  data l_ldbpg like sy-ldbpg.
+  DATA: L_TABS like tabstruc OCCURS 10 with header line.
+  data l_nota type n_2_t_line_type.
+  DATA: BEGIN OF L_EXPR_FI_INDICES OCCURS 10.
+          INCLUDE STRUCTURE EXPR_FI_INDICES.
+  DATA: END   OF L_EXPR_FI_INDICES.
+
+  CLEAR CURRENT_INFO.
+  IF P_LDBNAME IS INITIAL.
+    if p_ldbpg is initial.
+       l_ldbpg = sy-ldbpg.
+    else.
+       l_ldbpg = p_ldbpg.
+    endif.
+    CALL FUNCTION 'LDB_CONVERT_DBPROG_2_LDBNAME'
+         EXPORTING
+              DBPROG                    = l_LDBPG
+              FLAG_EXISTENCE_CHECK      = 'X'
+         IMPORTING
+              LDBNAME                   = L_LDB
+              FLAG_DBPROG_EXISTENT      = L_LDB_EX
+         EXCEPTIONS
+              OTHERS                    = 1.
+
+    IF SY-SUBRC NE 0 OR L_LDB_EX = SPACE.
+      RAISE ILLEGAL_LDB.
+    ENDIF.
+
+  ELSE.
+    L_LDB = P_LDBNAME.
+  ENDIF.
+  READ TABLE LDB WITH KEY ldbname = L_LDB BINARY SEARCH.
+  L_LDB_TABIX = SY-TABIX.
+  L_LDB_SUBRC = SY-SUBRC.
+  L_LDB_TFILL = SY-TFILL.
+  IF L_LDB_SUBRC NE 0.
+    CLEAR LDB.
+    MOVE: L_LDB TO LDB-LDBNAME,
+          'LD' TO LDB-SELID(2).
+    UNPACK L_LDB_TFILL TO LDB-SELID+2(6).
+  ENDIF.
+  MOVE 'X' TO LDB-INIT.
+
+  MOVE LDB-SELID TO: CURRENT_INFO-SELID, P_SELID.
+
+  IF P_NODES[] IS INITIAL.
+    RAISE NO_TABLES.
+  ENDIF.
+
+
+* Lösche alte Informationen zu dieser SELID.
+  PERFORM ERASE_SELID USING P_SELID.
+
+  LOOP AT P_NODES.
+    APPEND P_NODES-LDBNODE TO L_NODES.
+  ENDLOOP.
+
+  PERFORM FILL_NOTA USING    L_LDB
+                    CHANGING L_NODES
+                             CURRENT_INFO-NOTA.
+
+  CLEAR TABS_AND_JOINS.
+  MOVE P_SELID TO TABS_AND_JOINS-SELID.
+  LOOP AT CURRENT_INFO-NOTA INTO L_N_T.
+    CLEAR L_TABS.
+    MOVE L_N_T-STRUCTURE TO L_TABS-TABLENAME.
+    PERFORM CHECK_TAB_IN_DDIC USING L_TABS-TABLENAME
+                         CHANGING L_CLIENT_POS L_SUBRC.
+    IF L_SUBRC NE 0.
+      RAISE TABLE_NOT_FOUND.
+    ENDIF.
+    COLLECT L_TABS.
+    READ TABLE P_FIELDS WITH KEY TABLENAME = L_N_T-LDBNODE.
+    IF SY-SUBRC = 0.
+      MOVE 'X' TO L_N_T-SELECTED.
+      MODIFY CURRENT_INFO-NOTA FROM L_N_T TRANSPORTING SELECTED.
+    ENDIF.
+    MOVE L_N_T-STRUCTURE TO TABS_AND_JOINS-PRIM_TAB.
+    COLLECT TABS_AND_JOINS.
+  ENDLOOP.
+
+* Feld in keiner Tabelle
+  LOOP AT P_FIELDS.
+    READ TABLE CURRENT_INFO-NOTA                   "#EC *
+                      WITH KEY LDBNODE = P_FIELDS-TABLENAME
+                      into l_nota
+                      TRANSPORTING structure.
+    IF SY-SUBRC NE 0.
+      DELETE P_FIELDS.
+    else.
+      PERFORM CHECK_FIELD_IN_DDIC USING
+                    l_nota-structure P_FIELDS-FIELDNAME L_SUBRC.
+      IF L_SUBRC NE 0.
+        RAISE FIELD_NOT_FOUND.
+      ENDIF.
+    endif.
+  ENDLOOP.
+
+  IF LDB-INIT_JOINS NE SPACE.
+    LOOP AT LDB-TABS_AND_JOINS INTO L_T_AND_J.
+      READ TABLE CURRENT_INFO-NOTA                      "#EC *
+           WITH KEY LDBNODE   = L_T_AND_J-SEC_TAB
+           TRANSPORTING NO FIELDS.
+      IF SY-SUBRC EQ 0.
+        MOVE-CORRESPONDING L_T_AND_J TO TABS_AND_JOINS.
+        COLLECT TABS_AND_JOINS.
+        MOVE 'X' TO CURRENT_INFO-ANY_JOINS.
+      ENDIF.
+    ENDLOOP.
+    CURRENT_INFO-TEXTS = LDB-TEXTS.
+  ENDIF.
+
+  SORT TABS_AND_JOINS BY SELID PRIM_TAB SEC_TAB.
+
+  PERFORM QU_IMPORT_AREA_LDB TABLES    L_TABS
+                                       P_FIELDS
+                              USING    L_LDB
+                              CHANGING L_NODES
+                                       CURRENT_INFO-QU_KEY
+                                       CURRENT_INFO-GROUPS
+                                       L_SUBRC.
+
+  CASE L_SUBRC.
+    WHEN 0.
+      CURRENT_INFO-KIND = 'G'.
+    WHEN 1.               " Sachgebiet nicht da
+      CLEAR CURRENT_INFO-QU_KEY.
+      REFRESH CURRENT_INFO-GROUPS.
+      CURRENT_INFO-KIND = 'N'.
+    WHEN 2.               " Inkonsistentes Sachgebiet
+      RAISE INCONSISTENT_AREA.
+    WHEN 4.               " Feld nicht in DDIC
+      RAISE FIELD_NOT_FOUND.
+    WHEN 8.               " Kein Sachgebietsfeld in einer P_TABLES-Tab.
+      CLEAR CURRENT_INFO-QU_KEY.
+      REFRESH CURRENT_INFO-GROUPS.
+      CURRENT_INFO-KIND = 'T'.
+  ENDCASE.
+
+  PERFORM BUILD_FIELD_SEL TABLES L_EXPR_FI_INDICES
+                          USING    P_TEXPR
+                          CHANGING L_FIELD_SEL_T
+                                   L_SUBRC.
+  CASE L_SUBRC.
+    WHEN 0.
+    WHEN 4.               " Nicht unterstützter Ausdruck
+      RAISE EXPRESSION_NOT_SUPPORTED.
+    WHEN 8.               " Inkorrekter Ausdruck
+      RAISE INCORRECT_EXPRESSION.
+  ENDCASE.
+
+* Bereinigt Schiefstände (Felder nicht mehr da, falsche Feldattribute)
+* in CURRENT_INFO-FIELD_SEL und P_TEXPR, korrigiert Einträge in P_FIELDS
+  PERFORM CLEANUP_P_FIELDS TABLES   P_FIELDS L_EXPR_FI_INDICES
+                           USING    CURRENT_INFO-KIND
+                           CHANGING L_FIELD_SEL_T
+                                    P_TEXPR.
+
+  DESCRIBE TABLE P_FIELDS LINES SY-TFILL.
+  IF SY-TFILL > MAX_FIELDS.
+    REFRESH: P_FIELDS, CURRENT_INFO-FIELD_SEL, L_FIELD_SEL_T.
+  ENDIF.
+
+  DESCRIBE TABLE L_FIELD_SEL_T LINES P_ACTNUM.
+  MOVE P_ACTNUM TO CURRENT_INFO-ACTNUM.
+
+  PERFORM SORT_AND_FILL_FIELD_SEL TABLES   P_FIELDS
+                                  USING    CURRENT_INFO-KIND
+                                           L_FIELD_SEL_T
+                                  CHANGING CURRENT_INFO-FIELD_SEL.
+*B30K013234 Begin
+  CURRENT_INFO-SUB_MODE = P_SUBMODE.
+  LOOP AT P_VARIDYN WHERE VTYPE NE SPACE OR PROTECTED NE SPACE.
+    IF CURRENT_INFO-KIND = 'N' OR
+       CURRENT_INFO-KIND = 'G' AND CURRENT_INFO-QU_KEY-DBNA NE SPACE.
+      READ TABLE CURRENT_INFO-FIELD_SEL WITH KEY           "#EC *
+                 LDBNODE   = P_VARIDYN-TABLENAME
+                 FIELDNAME = P_VARIDYN-FIELDNAME
+                 TRANSPORTING NO FIELDS.
+    ELSE.
+      READ TABLE CURRENT_INFO-FIELD_SEL WITH KEY
+                 TABLENAME = P_VARIDYN-TABLENAME
+                 FIELDNAME = P_VARIDYN-FIELDNAME
+                 TRANSPORTING NO FIELDS.
+    ENDIF.
+    CHECK SY-SUBRC = 0.
+    L_TABIX = SY-TABIX.
+    MOVE: P_VARIDYN-PROTECTED TO L_FIELD_SEL-PROTECTED,
+          P_VARIDYN-VTYPE     TO L_FIELD_SEL-VTYPE.
+    MODIFY CURRENT_INFO-FIELD_SEL FROM L_FIELD_SEL INDEX L_TABIX
+          TRANSPORTING PROTECTED VTYPE.
+  ENDLOOP.
+*B30K013234 End
+  perform  build_curr_quan_relation changing current_info.
+
+  IF P_TWHERE IS REQUESTED.
+    PERFORM GEN_WHERE_CLAUSES USING    CURRENT_INFO
+                              CHANGING P_TWHERE
+                                       L_SUBRC.
+  ENDIF.
+
+  IF P_TRANGE IS REQUESTED.
+    PERFORM BUILD_TRANGE USING    CURRENT_INFO-FIELD_SEL
+                                  CURRENT_INFO-ANY_JOINS
+                         CHANGING P_TRANGE.
+  ENDIF.
+
+  APPEND CURRENT_INFO TO SELID_INFO.
+  SORT SELID_INFO BY SELID.
+
+  IF L_LDB_SUBRC = 0.
+    MODIFY LDB INDEX L_LDB_TABIX.
+  ELSE.
+    INSERT LDB INDEX L_LDB_TABIX.
+  ENDIF.
+
+ENDFUNCTION.

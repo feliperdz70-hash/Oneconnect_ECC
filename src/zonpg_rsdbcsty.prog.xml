@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_PROG" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <PROGDIR>
+    <NAME>ZONPG_RSDBCSTY</NAME>
+    <SUBC>I</SUBC>
+    <APPL>S</APPL>
+    <RSTAT>S</RSTAT>
+    <RLOAD>D</RLOAD>
+   </PROGDIR>
+   <TPOOL>
+    <item>
+     <ID>R</ID>
+     <ENTRY>RSDBRUNT: Equates for SY-SUBTY/ header flags, in RSDBRUNT + RSDBSPVA</ENTRY>
+     <LENGTH>68</LENGTH>
+    </item>
+   </TPOOL>
+   <I18N_TPOOL>
+    <item>
+     <LANGUAGE>1</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 等于 SY-SUBTY/ 标题标志, 在 RSDBRUNT + RSDBSPVA 中</ENTRY>
+       <LENGTH>60</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>2</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: เท่ากับ SY-SUBTY/ แฟลกส่วนหัว, ใน RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>63</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>3</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: RSDBRUNT + RSDBSPVA에서 SY-SUBTY/ 헤더플래그 균일화</ENTRY>
+       <LENGTH>61</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>C</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates pro SY-SUBTY/Header-Flags, v RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>66</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>D</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates fuer SY-SUBTY/Header-Flags, in RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>68</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>F</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates pr SY-SUBTY/témoins en-têtes, ds RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>70</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>H</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates for SY-SUBTY/Header-Flags, in RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>67</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>I</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates per SY-SUBTY/flag testata, in RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>67</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>J</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: SY-SUBTY/ヘッダフラグの計算式（RSDBRUNT + RSDBSPVA）</ENTRY>
+       <LENGTH>62</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>M</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: 相等於 SY-SUBTY/ 表頭旗標 , in RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>60</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>P</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: equates p/SY-SUBTY/flags cabeçalho, em RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>68</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>Q</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates pre SY-SUBTY/prízn.hlavič., v RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>67</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>R</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates для SY-SUBTY/ФлаговЗагл, в RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>64</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+    <item>
+     <LANGUAGE>S</LANGUAGE>
+     <TEXTPOOL>
+      <item>
+       <ID>R</ID>
+       <ENTRY>RSDBRUNT: Equates para SY-SUBTY/indic.cabecera, en RSDBRUNT + RSDBSPVA</ENTRY>
+       <LENGTH>70</LENGTH>
+      </item>
+     </TEXTPOOL>
+    </item>
+   </I18N_TPOOL>
+  </asx:values>
+ </asx:abap>
+</abapGit>

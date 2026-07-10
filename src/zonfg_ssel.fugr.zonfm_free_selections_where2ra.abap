@@ -1,0 +1,46 @@
+FUNCTION ZONFM_FREE_SELECTIONS_WHERE2RA.
+*"--------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(WHERE_CLAUSES) TYPE  RSDS_TWHERE
+*"  EXPORTING
+*"     VALUE(FIELD_RANGES) TYPE  RSDS_TRANGE
+*"  EXCEPTIONS
+*"      EXPRESSION_NOT_SUPPORTED
+*"      INCORRECT_EXPRESSION
+*"--------------------------------------------------------------------
+
+  DATA L_TEXPR TYPE RSDS_TEXPR.
+
+ CALL FUNCTION 'ZONFM_FREE_SELECTIONS_WHERE2EX'
+      EXPORTING
+           WHERE_CLAUSES        = WHERE_CLAUSES
+      IMPORTING
+           EXPRESSIONS          = L_TEXPR
+      EXCEPTIONS
+           INCORRECT_EXPRESSION = 1
+           OTHERS               = 2.
+
+  IF SY-SUBRC NE 0.
+    RAISE INCORRECT_EXPRESSION.
+  ENDIF.
+
+  CALL FUNCTION 'ZONFM_FREE_SELECTIONS_EX2RANGE'
+       EXPORTING
+            EXPRESSIONS              = L_TEXPR
+       IMPORTING
+            FIELD_RANGES             = FIELD_RANGES
+       EXCEPTIONS
+            EXPRESSION_NOT_SUPPORTED = 1
+            INCORRECT_EXPRESSION     = 2
+            OTHERS                   = 3.
+
+  CASE SY-SUBRC.
+    WHEN 0.
+    WHEN 1.
+      RAISE EXPRESSION_NOT_SUPPORTED.
+    WHEN OTHERS.
+      RAISE INCORRECT_EXPRESSION.
+  ENDCASE.
+
+ENDFUNCTION.

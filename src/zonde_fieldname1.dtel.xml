@@ -1,0 +1,345 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_DTEL" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <DD04V>
+    <ROLLNAME>ZONDE_FIELDNAME1</ROLLNAME>
+    <DDLANGUAGE>E</DDLANGUAGE>
+    <DOMNAME>FDNAME</DOMNAME>
+    <MEMORYID>DFD</MEMORYID>
+    <HEADLEN>30</HEADLEN>
+    <SCRLEN1>10</SCRLEN1>
+    <SCRLEN2>20</SCRLEN2>
+    <SCRLEN3>40</SCRLEN3>
+    <DDTEXT>Feldname Part1</DDTEXT>
+    <REPTEXT>Feldname Part1</REPTEXT>
+    <SCRTEXT_S>FeldP1</SCRTEXT_S>
+    <SCRTEXT_M>FeldnPart1</SCRTEXT_M>
+    <SCRTEXT_L>Feldname Part1</SCRTEXT_L>
+    <APPLCLASS>SDIC</APPLCLASS>
+    <AUTHCLASS>01</AUTHCLASS>
+    <DTELMASTER>D</DTELMASTER>
+    <REFKIND>D</REFKIND>
+   </DD04V>
+   <I18N_LANGS>
+    <LANGU>1</LANGU>
+    <LANGU>2</LANGU>
+    <LANGU>3</LANGU>
+    <LANGU>4</LANGU>
+    <LANGU>5</LANGU>
+    <LANGU>6</LANGU>
+    <LANGU>7</LANGU>
+    <LANGU>8</LANGU>
+    <LANGU>9</LANGU>
+    <LANGU>A</LANGU>
+    <LANGU>B</LANGU>
+    <LANGU>C</LANGU>
+    <LANGU>D</LANGU>
+    <LANGU>F</LANGU>
+    <LANGU>G</LANGU>
+    <LANGU>H</LANGU>
+    <LANGU>I</LANGU>
+    <LANGU>J</LANGU>
+    <LANGU>K</LANGU>
+    <LANGU>L</LANGU>
+    <LANGU>M</LANGU>
+    <LANGU>N</LANGU>
+    <LANGU>O</LANGU>
+    <LANGU>P</LANGU>
+    <LANGU>Q</LANGU>
+    <LANGU>R</LANGU>
+    <LANGU>S</LANGU>
+    <LANGU>T</LANGU>
+    <LANGU>U</LANGU>
+    <LANGU>V</LANGU>
+    <LANGU>W</LANGU>
+    <LANGU>X</LANGU>
+    <LANGU>Y</LANGU>
+    <LANGU>c</LANGU>
+    <LANGU>d</LANGU>
+   </I18N_LANGS>
+   <DD04_TEXTS>
+    <item>
+     <DDLANGUAGE>1</DDLANGUAGE>
+     <DDTEXT>字段名称</DDTEXT>
+     <REPTEXT>字段名称</REPTEXT>
+     <SCRTEXT_S>字段</SCRTEXT_S>
+     <SCRTEXT_M>字段名称</SCRTEXT_M>
+     <SCRTEXT_L>字段名称</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>2</DDLANGUAGE>
+     <DDTEXT>ชื่อฟิลด์</DDTEXT>
+     <REPTEXT>ชื่อฟิลด์</REPTEXT>
+     <SCRTEXT_S>ฟิลด์</SCRTEXT_S>
+     <SCRTEXT_M>ชื่อฟิลด์</SCRTEXT_M>
+     <SCRTEXT_L>ชื่อฟิลด์</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>3</DDLANGUAGE>
+     <DDTEXT>필드 이름</DDTEXT>
+     <REPTEXT>필드 이름</REPTEXT>
+     <SCRTEXT_S>필드</SCRTEXT_S>
+     <SCRTEXT_M>필드 이름</SCRTEXT_M>
+     <SCRTEXT_L>필드 이름</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>4</DDLANGUAGE>
+     <DDTEXT>Nume câmp</DDTEXT>
+     <REPTEXT>Nume câmp</REPTEXT>
+     <SCRTEXT_S>Câmp</SCRTEXT_S>
+     <SCRTEXT_M>Nume câmp</SCRTEXT_M>
+     <SCRTEXT_L>Nume câmp</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>5</DDLANGUAGE>
+     <DDTEXT>Ime polja</DDTEXT>
+     <REPTEXT>Ime polja</REPTEXT>
+     <SCRTEXT_S>Polje</SCRTEXT_S>
+     <SCRTEXT_M>Ime polja</SCRTEXT_M>
+     <SCRTEXT_L>Ime polja</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>6</DDLANGUAGE>
+     <DDTEXT>Naziv polja</DDTEXT>
+     <REPTEXT>Naz.polja</REPTEXT>
+     <SCRTEXT_S>Polje</SCRTEXT_S>
+     <SCRTEXT_M>Naziv polja</SCRTEXT_M>
+     <SCRTEXT_L>Naziv polja</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>7</DDLANGUAGE>
+     <DDTEXT>Nama Medan</DDTEXT>
+     <REPTEXT>Nama Medan</REPTEXT>
+     <SCRTEXT_S>Medan</SCRTEXT_S>
+     <SCRTEXT_M>Nama Medan</SCRTEXT_M>
+     <SCRTEXT_L>Nama Medan</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>8</DDLANGUAGE>
+     <DDTEXT>Ім&apos;я поля</DDTEXT>
+     <REPTEXT>Ім&apos;я поля</REPTEXT>
+     <SCRTEXT_S>Поле</SCRTEXT_S>
+     <SCRTEXT_M>Ім&apos;я поля</SCRTEXT_M>
+     <SCRTEXT_L>Ім&apos;я поля</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>9</DDLANGUAGE>
+     <DDTEXT>Välja nimi</DDTEXT>
+     <REPTEXT>Välja nimi</REPTEXT>
+     <SCRTEXT_S>Väli</SCRTEXT_S>
+     <SCRTEXT_M>Välja nimi</SCRTEXT_M>
+     <SCRTEXT_L>Välja nimi</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>A</DDLANGUAGE>
+     <DDTEXT>اسم الحقل</DDTEXT>
+     <REPTEXT>اسم الحقل</REPTEXT>
+     <SCRTEXT_S>الحقل</SCRTEXT_S>
+     <SCRTEXT_M>اسم الحقل</SCRTEXT_M>
+     <SCRTEXT_L>اسم الحقل</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>B</DDLANGUAGE>
+     <DDTEXT>שם שדה</DDTEXT>
+     <REPTEXT>שם שדה</REPTEXT>
+     <SCRTEXT_S>שדה</SCRTEXT_S>
+     <SCRTEXT_M>שם שדה</SCRTEXT_M>
+     <SCRTEXT_L>שם שדה</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>C</DDLANGUAGE>
+     <DDTEXT>Název pole</DDTEXT>
+     <REPTEXT>Název pole</REPTEXT>
+     <SCRTEXT_S>Pole</SCRTEXT_S>
+     <SCRTEXT_M>Název pole</SCRTEXT_M>
+     <SCRTEXT_L>Název pole</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>D</DDLANGUAGE>
+     <DDTEXT>Feldname Part1</DDTEXT>
+     <REPTEXT>Feldname Part1</REPTEXT>
+     <SCRTEXT_S>FeldP1</SCRTEXT_S>
+     <SCRTEXT_M>FeldnPart1</SCRTEXT_M>
+     <SCRTEXT_L>Feldname Part1</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>F</DDLANGUAGE>
+     <DDTEXT>Nom de zone</DDTEXT>
+     <REPTEXT>Nom zone</REPTEXT>
+     <SCRTEXT_S>Zone</SCRTEXT_S>
+     <SCRTEXT_M>Nom de zone</SCRTEXT_M>
+     <SCRTEXT_L>Nom de zone</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>G</DDLANGUAGE>
+     <DDTEXT>Όνομα Πεδίου</DDTEXT>
+     <REPTEXT>Όν.Πεδίου</REPTEXT>
+     <SCRTEXT_S>Πεδίο</SCRTEXT_S>
+     <SCRTEXT_M>Όνομα Πεδίου</SCRTEXT_M>
+     <SCRTEXT_L>Όνομα Πεδίου</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>H</DDLANGUAGE>
+     <DDTEXT>Mezőnév</DDTEXT>
+     <REPTEXT>Mezőnév</REPTEXT>
+     <SCRTEXT_S>Mező</SCRTEXT_S>
+     <SCRTEXT_M>Mezőnév</SCRTEXT_M>
+     <SCRTEXT_L>Mezőnév</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>I</DDLANGUAGE>
+     <DDTEXT>Nome campo</DDTEXT>
+     <REPTEXT>Nome campo</REPTEXT>
+     <SCRTEXT_S>Campo</SCRTEXT_S>
+     <SCRTEXT_M>Nome campo</SCRTEXT_M>
+     <SCRTEXT_L>Nome campo</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>J</DDLANGUAGE>
+     <DDTEXT>項目名</DDTEXT>
+     <REPTEXT>項目名</REPTEXT>
+     <SCRTEXT_S>項目名</SCRTEXT_S>
+     <SCRTEXT_M>項目名</SCRTEXT_M>
+     <SCRTEXT_L>項目名</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>K</DDLANGUAGE>
+     <DDTEXT>Feltnavn</DDTEXT>
+     <REPTEXT>Feltnavn</REPTEXT>
+     <SCRTEXT_S>Felt</SCRTEXT_S>
+     <SCRTEXT_M>Feltnavn</SCRTEXT_M>
+     <SCRTEXT_L>Feltnavn</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>L</DDLANGUAGE>
+     <DDTEXT>Nazwa pola</DDTEXT>
+     <REPTEXT>Nazwa pola</REPTEXT>
+     <SCRTEXT_S>Pole</SCRTEXT_S>
+     <SCRTEXT_M>Nazwa pola</SCRTEXT_M>
+     <SCRTEXT_L>Nazwa pola</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>M</DDLANGUAGE>
+     <DDTEXT>欄位名稱</DDTEXT>
+     <REPTEXT>欄位名稱</REPTEXT>
+     <SCRTEXT_S>欄位</SCRTEXT_S>
+     <SCRTEXT_M>欄位名稱</SCRTEXT_M>
+     <SCRTEXT_L>欄位名稱</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>N</DDLANGUAGE>
+     <DDTEXT>Veldnaam</DDTEXT>
+     <REPTEXT>Veldnaam</REPTEXT>
+     <SCRTEXT_S>Veld</SCRTEXT_S>
+     <SCRTEXT_M>Veldnaam</SCRTEXT_M>
+     <SCRTEXT_L>Veldnaam</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>O</DDLANGUAGE>
+     <DDTEXT>Feltnavn</DDTEXT>
+     <REPTEXT>Feltnavn</REPTEXT>
+     <SCRTEXT_S>Felt</SCRTEXT_S>
+     <SCRTEXT_M>Feltnavn</SCRTEXT_M>
+     <SCRTEXT_L>Feltnavn</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>P</DDLANGUAGE>
+     <DDTEXT>Nome do campo</DDTEXT>
+     <REPTEXT>Nome campo</REPTEXT>
+     <SCRTEXT_S>Campo</SCRTEXT_S>
+     <SCRTEXT_M>Nome do campo</SCRTEXT_M>
+     <SCRTEXT_L>Nome do campo</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Q</DDLANGUAGE>
+     <DDTEXT>Názov poľa</DDTEXT>
+     <REPTEXT>Názov poľa</REPTEXT>
+     <SCRTEXT_S>Pole</SCRTEXT_S>
+     <SCRTEXT_M>Názov poľa</SCRTEXT_M>
+     <SCRTEXT_L>Názov poľa</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>R</DDLANGUAGE>
+     <DDTEXT>Имя поля</DDTEXT>
+     <REPTEXT>Имя поля</REPTEXT>
+     <SCRTEXT_S>Поле</SCRTEXT_S>
+     <SCRTEXT_M>Имя поля</SCRTEXT_M>
+     <SCRTEXT_L>Имя поля</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>S</DDLANGUAGE>
+     <DDTEXT>Nombre de campo</DDTEXT>
+     <REPTEXT>Nom.campo</REPTEXT>
+     <SCRTEXT_S>Campo</SCRTEXT_S>
+     <SCRTEXT_M>Nombre de campo</SCRTEXT_M>
+     <SCRTEXT_L>Nombre de campo</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>T</DDLANGUAGE>
+     <DDTEXT>Alan adı</DDTEXT>
+     <REPTEXT>Alan adı</REPTEXT>
+     <SCRTEXT_S>Alan</SCRTEXT_S>
+     <SCRTEXT_M>Alan adı</SCRTEXT_M>
+     <SCRTEXT_L>Alan adı</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>U</DDLANGUAGE>
+     <DDTEXT>Kentän nimi</DDTEXT>
+     <REPTEXT>Kenttänimi</REPTEXT>
+     <SCRTEXT_S>Kenttä</SCRTEXT_S>
+     <SCRTEXT_M>Kentän nimi</SCRTEXT_M>
+     <SCRTEXT_L>Kentän nimi</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>V</DDLANGUAGE>
+     <DDTEXT>Fältnamn</DDTEXT>
+     <REPTEXT>Fältnamn</REPTEXT>
+     <SCRTEXT_S>Fält</SCRTEXT_S>
+     <SCRTEXT_M>Fältnamn</SCRTEXT_M>
+     <SCRTEXT_L>Fältnamn</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>W</DDLANGUAGE>
+     <DDTEXT>Име на поле</DDTEXT>
+     <REPTEXT>Име поле</REPTEXT>
+     <SCRTEXT_S>Поле</SCRTEXT_S>
+     <SCRTEXT_M>Име на поле</SCRTEXT_M>
+     <SCRTEXT_L>Име на поле</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>X</DDLANGUAGE>
+     <DDTEXT>Lauko pavadinimas</DDTEXT>
+     <REPTEXT>Lauko pav.</REPTEXT>
+     <SCRTEXT_S>Laukas</SCRTEXT_S>
+     <SCRTEXT_M>Lauko pav.</SCRTEXT_M>
+     <SCRTEXT_L>Lauko pavadinimas</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>Y</DDLANGUAGE>
+     <DDTEXT>Lauka nosaukums</DDTEXT>
+     <REPTEXT>Lauka nos.</REPTEXT>
+     <SCRTEXT_S>Lauks</SCRTEXT_S>
+     <SCRTEXT_M>Lauka nosaukums</SCRTEXT_M>
+     <SCRTEXT_L>Lauka nosaukums</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>c</DDLANGUAGE>
+     <DDTEXT>Nom del camp</DDTEXT>
+     <REPTEXT>Nom camp</REPTEXT>
+     <SCRTEXT_S>Camp</SCRTEXT_S>
+     <SCRTEXT_M>Nom del camp</SCRTEXT_M>
+     <SCRTEXT_L>Nom del camp</SCRTEXT_L>
+    </item>
+    <item>
+     <DDLANGUAGE>d</DDLANGUAGE>
+     <DDTEXT>Naziv polja</DDTEXT>
+     <REPTEXT>NazivPolja</REPTEXT>
+     <SCRTEXT_S>Polje</SCRTEXT_S>
+     <SCRTEXT_M>Naziv polja</SCRTEXT_M>
+     <SCRTEXT_L>Naziv polja</SCRTEXT_L>
+    </item>
+   </DD04_TEXTS>
+  </asx:values>
+ </asx:abap>
+</abapGit>

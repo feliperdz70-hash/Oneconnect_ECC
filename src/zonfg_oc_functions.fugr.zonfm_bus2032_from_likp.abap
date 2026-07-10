@@ -1,0 +1,70 @@
+FUNCTION ZONFM_BUS2032_FROM_LIKP.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  IMPORTING
+*"     VALUE(EVENT) LIKE  SWETYPECOU-EVENT OPTIONAL
+*"     VALUE(RECTYPE) LIKE  SWETYPECOU-RECTYPE OPTIONAL
+*"     VALUE(OBJTYPE) LIKE  SWETYPECOU-OBJTYPE OPTIONAL
+*"     VALUE(OBJKEY) LIKE  SWEINSTCOU-OBJKEY OPTIONAL
+*"     VALUE(FROMDEL) TYPE  BOOLEAN OPTIONAL
+*"     VALUE(DOCUMENTS) TYPE  ZONTT_VBELNR OPTIONAL
+*"  TABLES
+*"      EVENT_CONTAINER STRUCTURE  SWCONT OPTIONAL
+*"----------------------------------------------------------------------
+
+  DATA: LT_VBFA  TYPE TABLE OF VBFA,
+        LS_VBFA  TYPE VBFA,
+        V_OBJKEY TYPE SWEINSTCOU-OBJKEY,
+        LS_DOC   type ZONsT_VBELNR.
+
+  IF FROMDEL IS INITIAL.
+    " Buscar Sales Orders relacionados a la entrega
+    SELECT *
+      INTO TABLE LT_VBFA
+      FROM VBFA
+      WHERE VBELN  = OBJKEY
+        AND VBTYP_V = 'C'    " Sales Order
+        AND VBTYP_N = 'J'.   " Outbound Delivery
+
+    IF SY-SUBRC <> 0.
+      RAISE OBJECT_NOT_FOUND.
+    ELSE.
+      SORT  LT_VBFA BY VBELV.
+      DELETE ADJACENT DUPLICATES FROM LT_VBFA COMPARING VBELV.
+    ENDIF.
+    LOOP AT LT_VBFA INTO LS_VBFA.
+      CLEAR V_OBJKEY.
+      IF LS_VBFA-VBELV IS INITIAL.
+        CONTINUE.
+      ELSE.
+        MOVE LS_VBFA-VBELV TO V_OBJKEY.
+      ENDIF.
+
+      CALL FUNCTION 'SWE_EVENT_CREATE'
+        EXPORTING
+          OBJTYPE = 'BUS2032'
+          OBJKEY  = V_OBJKEY
+          EVENT   = 'CHANGED'
+        EXCEPTIONS
+          OTHERS  = 1.
+    ENDLOOP.
+  ELSE.
+    WAIT UP TO 10 SECONDS.
+    LOOP AT DOCUMENTS INTO LS_DOC.
+      CLEAR V_OBJKEY.
+      IF LS_DOC-LOW IS INITIAL.
+        CONTINUE.
+      ELSE.
+        MOVE LS_doc-low TO V_OBJKEY.
+      ENDIF.
+
+      CALL FUNCTION 'SWE_EVENT_CREATE'
+        EXPORTING
+          OBJTYPE = 'BUS2032'
+          OBJKEY  = V_OBJKEY
+          EVENT   = 'CHANGED'
+        EXCEPTIONS
+          OTHERS  = 1.
+    ENDLOOP.
+  ENDIF.
+ENDFUNCTION.

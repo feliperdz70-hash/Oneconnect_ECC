@@ -1,0 +1,6 @@
+PROCESS BEFORE OUTPUT.
+  MODULE status_0285.
+  MODULE modify_screen_285.
+
+PROCESS AFTER INPUT.
+  MODULE user_command_0285.

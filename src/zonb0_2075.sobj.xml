@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_SOBJ" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <SWOTDV>
+    <SWOTDV>
+     <OBJTYPE>ZONB0_2075</OBJTYPE>
+     <VERB>CREATED_Z</VERB>
+     <VERBTYPE>E</VERBTYPE>
+     <CREA_REL>740</CREA_REL>
+     <EDITORDER>0001</EDITORDER>
+     <EDITELEM>CREATED_Z</EDITELEM>
+     <REFTYPE>D</REFTYPE>
+    </SWOTDV>
+   </SWOTDV>
+   <SWOTTV>
+    <SWOTTV>
+     <OBJTYPE>ZONB0_2075</OBJTYPE>
+     <LANGUAGE>E</LANGUAGE>
+     <VERB>CREATED_Z</VERB>
+     <DESCRIPT>Created_Z</DESCRIPT>
+     <SHORTTEXT>CREATED_Z</SHORTTEXT>
+    </SWOTTV>
+   </SWOTTV>
+   <TOJTB>
+    <TOJTB>
+     <NAME>ZONB0_2075</NAME>
+     <ACTIVE>X</ACTIVE>
+     <ACTIVELANG>E</ACTIVELANG>
+     <PARENT>BUS2075</PARENT>
+     <PROGNAME>ZONB0_2075</PROGNAME>
+     <EDITELEM>ZONB0_2075</EDITELEM>
+     <EPRIMETHOD>Display</EPRIMETHOD>
+     <APPLIC>I</APPLIC>
+     <CREA_REL>740</CREA_REL>
+     <CHAN_REL>740</CHAN_REL>
+     <VERSION>740</VERSION>
+     <OBJTYPECLS>01</OBJTYPECLS>
+     <KEYLENGTH>12</KEYLENGTH>
+    </TOJTB>
+   </TOJTB>
+   <TOJTT>
+    <TOJTT>
+     <NAME>ZONB0_2075</NAME>
+     <LANGUAGE>E</LANGUAGE>
+     <NTEXT>Internal Order SUB</NTEXT>
+     <STEXT>Internal Order SUB</STEXT>
+    </TOJTT>
+   </TOJTT>
+  </asx:values>
+ </asx:abap>
+</abapGit>

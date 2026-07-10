@@ -1,0 +1,342 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZONCL_FETCH_DATA_V2</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT> One Connect</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <TPOOL>
+    <item>
+     <ID>I</ID>
+     <KEY>001</KEY>
+     <ENTRY>is_relations-description_table</ENTRY>
+     <LENGTH>60</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>002</KEY>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E01</KEY>
+     <ENTRY>destination_not_found</ENTRY>
+     <LENGTH>42</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E02</KEY>
+     <ENTRY>internal_error</ENTRY>
+     <LENGTH>24</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E03</KEY>
+     <ENTRY>argument_not_found</ENTRY>
+     <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E04</KEY>
+     <ENTRY>destination_no_authority</ENTRY>
+     <LENGTH>48</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E05</KEY>
+     <ENTRY>plugin_not_active</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E06</KEY>
+     <ENTRY>http_communication_failure</ENTRY>
+     <LENGTH>52</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E07</KEY>
+     <ENTRY>http_invalid_state</ENTRY>
+     <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E08</KEY>
+     <ENTRY>http_processing_failed</ENTRY>
+     <LENGTH>44</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>E09</KEY>
+     <ENTRY>Log was saved on</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+   </TPOOL>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>GO_TDESCR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Runtime Type Services</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GT_DDIC</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table type for DDIC objects</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_BOTHNAMES</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X=True, -=False, Space=Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_CHANGE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_ERROR</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_ERROR_NO_DATA</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_EVENTID_ACTIVE</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+    <SEOCOMPOTX>
+     <CMPNAME>GV_FIELDNAME</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>ADD_OBJECT_ENTRY</CMPNAME>
+     <SCONAME>IV_OBJECT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Type in Object Directory</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>ADD_OBJECT_ENTRY</CMPNAME>
+     <SCONAME>IV_OBJECT_NAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Name in Object List</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>ADD_OBJECT_ENTRY</CMPNAME>
+     <SCONAME>IV_PGMID</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Program ID in Requests and Tasks</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CONVERTION_EXIT</CMPNAME>
+     <SCONAME>IV_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_JSON_DDIC_BODY</CMPNAME>
+     <SCONAME>IS_COLUMNS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Column Definition for One Connect.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_JSON_DDIC_STRUCTURE</CMPNAME>
+     <SCONAME>IV_HEADER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X=True, -=False, Space=Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_JSON_DDIC_STRUCTURE</CMPNAME>
+     <SCONAME>IV_TAGMETADATA</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>CREATE_JSON_DDIC_TYPE_TABLE</CMPNAME>
+     <SCONAME>IV_HEADER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X=True, -=False, Space=Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DDICOBJECT_FROM_CDS</CMPNAME>
+     <SCONAME>IV_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_DDICOBJECT_FROM_CDS</CMPNAME>
+     <SCONAME>RV_DDIC_OBJECT</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Name of the ABAP Dictionary object</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_FIELDSKEY_CDS</CMPNAME>
+     <SCONAME>IV_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_OBJECTS</CMPNAME>
+     <SCONAME>ET_DDIC</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table type for DDIC objects</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_OBJECTS</CMPNAME>
+     <SCONAME>ET_OBJECTS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table type for E071</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_RELATION</CMPNAME>
+     <SCONAME>IV_BOTHNAMES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X=True, -=False, Space=Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_RELATION</CMPNAME>
+     <SCONAME>IV_FIELDNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_RELATION</CMPNAME>
+     <SCONAME>IV_TAGDATA</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_RELATION</CMPNAME>
+     <SCONAME>IV_TAGMETADATA</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>IS_CDS_ENTITY</CMPNAME>
+     <SCONAME>IV_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REPLACE_DATA_METADATA</CMPNAME>
+     <SCONAME>IV_ALIAS_FLDNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Field Alias</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REPLACE_DATA_METADATA</CMPNAME>
+     <SCONAME>IV_ALIAS_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Alias</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REPLACE_DATA_METADATA</CMPNAME>
+     <SCONAME>IV_TABNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>REPLACE_DATA_METADATA</CMPNAME>
+     <SCONAME>IV_TECHNICAL</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Field Name</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_ANY_TABLE</CMPNAME>
+     <SCONAME>IV_ALIASTAB</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Alias</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_ANY_TABLE</CMPNAME>
+     <SCONAME>IV_BOTHNAMES</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X=True, -=False, Space=Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_ANY_TABLE</CMPNAME>
+     <SCONAME>IV_DEST</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Logical Destination (Specified in Function Call)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_ANY_TABLE</CMPNAME>
+     <SCONAME>IV_FIELDNAME</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Boolean Variable (X = True, - = False, Space = Unknown)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_CODE</CMPNAME>
+     <SCONAME>IV_DEST</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Logical Destination (Specified in Function Call)</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_CODE</CMPNAME>
+     <SCONAME>IV_ENTITY</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Entity</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SEND_JSON_CODE</CMPNAME>
+     <SCONAME>IV_ENT_DATA</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Object Customizing for One Connect.</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_FIELDS_IN_TABLE</CMPNAME>
+     <SCONAME>ET_FIELDS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Table Type for Line Item</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_LOG</CMPNAME>
+     <SCONAME>I_PROCESS</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Application Log: External ID</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_LOG</CMPNAME>
+     <SCONAME>I_TEXT1</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Message Variable</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_LOG</CMPNAME>
+     <SCONAME>I_TEXT2</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Message Variable</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_LOG</CMPNAME>
+     <SCONAME>I_TEXT3</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Message Variable</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_PROCESS_LOG</CMPNAME>
+     <SCONAME>I_TEXT4</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Message variable 04</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>SET_TRKORR</CMPNAME>
+     <SCONAME>IV_TKORR</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Request/Task</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

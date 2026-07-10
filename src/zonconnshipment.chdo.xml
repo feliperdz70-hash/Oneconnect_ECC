@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CHDO" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <CHDO>
+    <REPORTS_GENERATED>
+     <TCDRPS>
+      <OBJECT>ZONCONNSHIPMENT</OBJECT>
+      <REPORTNAME>ZONCONNSHIPMENT</REPORTNAME>
+      <TEXTCASE>X</TEXTCASE>
+      <ARBGEB>CD</ARBGEB>
+      <FEHLERNR>600</FEHLERNR>
+      <FGRP>ZONFG_ONE_CONNECT_SHIPMENT</FGRP>
+      <PREFIX>Z</PREFIX>
+      <UPDATE_FLG>2</UPDATE_FLG>
+     </TCDRPS>
+    </REPORTS_GENERATED>
+    <OBJECTS>
+     <TCDOBS>
+      <OBJECT>ZONCONNSHIPMENT</OBJECT>
+      <TABNAME>VTTK</TABNAME>
+      <DOCUD_NOIF>X</DOCUD_NOIF>
+     </TCDOBS>
+    </OBJECTS>
+    <OBJECTS_TEXT>
+     <TCDOBTS>
+      <SPRAS>E</SPRAS>
+      <OBJECT>ZONCONNSHIPMENT</OBJECT>
+      <OBTEXT>Oneconnect Shipment Change Document</OBTEXT>
+     </TCDOBTS>
+    </OBJECTS_TEXT>
+   </CHDO>
+  </asx:values>
+ </asx:abap>
+</abapGit>

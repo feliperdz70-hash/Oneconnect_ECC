@@ -1,0 +1,59 @@
+* Selektionsoptionen
+* Bits sitzen, falls Option verboten ist.
+CONSTANTS: OPTION_BT TYPE SYDB0_XOPTIONS VALUE '8000',
+           OPTION_CP TYPE SYDB0_XOPTIONS VALUE '4000',
+           OPTION_EQ TYPE SYDB0_XOPTIONS VALUE '2000',
+           OPTION_GE TYPE SYDB0_XOPTIONS VALUE '1000',
+           OPTION_GT TYPE SYDB0_XOPTIONS VALUE '0800',
+           OPTION_LE TYPE SYDB0_XOPTIONS VALUE '0400',
+           OPTION_LT TYPE SYDB0_XOPTIONS VALUE '0200',
+           OPTION_NB TYPE SYDB0_XOPTIONS VALUE '0100',
+           OPTION_NE TYPE SYDB0_XOPTIONS VALUE '0080',
+           OPTION_NP TYPE SYDB0_XOPTIONS VALUE '0040'.
+* Kobinationen, insbesondere: nichts erlaubt
+CONSTANTS: OPTION_NONE  TYPE SYDB0_XOPTIONS VALUE 'FFC0',
+           OPTION_BT_NB TYPE SYDB0_XOPTIONS VALUE '8100',
+           OPTION_CP_NP TYPE SYDB0_XOPTIONS VALUE '4040',
+*          Nur Intervalle
+           OPTION_JUST_INT TYPE SYDB0_XOPTIONS VALUE '7EC0',
+*          Nur Muster
+           OPTION_JUST_PATT TYPE SYDB0_XOPTIONS VALUE 'BF80',
+*          Nur Intervalle oder Muster
+           OPTION_JUST_INT_OR_PATT TYPE SYDB0_XOPTIONS VALUE '3E80'.
+
+* Nummern der Bits
+CONSTANTS: OPTION_BT_NUM TYPE I VALUE 1,
+           OPTION_CP_NUM TYPE I VALUE 2,
+           OPTION_EQ_NUM TYPE I VALUE 3,
+           OPTION_GE_NUM TYPE I VALUE 4,
+           OPTION_GT_NUM TYPE I VALUE 5,
+           OPTION_LE_NUM TYPE I VALUE 6,
+           OPTION_LT_NUM TYPE I VALUE 7,
+           OPTION_NB_NUM TYPE I VALUE 8,
+           OPTION_NE_NUM TYPE I VALUE 9,
+           OPTION_NP_NUM TYPE I VALUE 10.
+* Zuordnung Option zu Flag
+DEFINE OX.
+  CASE &1.
+    WHEN 'BT'.
+      &2 = OPTION_BT.
+    WHEN 'CP'.
+      &2 = OPTION_CP.
+    WHEN 'EQ'.
+      &2 = OPTION_EQ.
+    WHEN 'GE'.
+      &2 = OPTION_GE.
+    WHEN 'GT'.
+      &2 = OPTION_GT.
+    WHEN 'LE'.
+      &2 = OPTION_LE.
+    WHEN 'LT'.
+      &2 = OPTION_LT.
+    WHEN 'NB'.
+      &2 = OPTION_NB.
+    WHEN 'NE'.
+      &2 = OPTION_NE.
+    WHEN 'NP'.
+      &2 = OPTION_NP.
+  ENDCASE.
+END-OF-DEFINITION.

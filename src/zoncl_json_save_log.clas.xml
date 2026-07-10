@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<abapGit version="v1.0.0" serializer="LCL_OBJECT_CLAS" serializer_version="v1.0.0">
+ <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
+  <asx:values>
+   <VSEOCLASS>
+    <CLSNAME>ZONCL_JSON_SAVE_LOG</CLSNAME>
+    <LANGU>E</LANGU>
+    <DESCRIPT>Save json in log SAP</DESCRIPT>
+    <STATE>1</STATE>
+    <CLSCCINCL>X</CLSCCINCL>
+    <FIXPT>X</FIXPT>
+    <UNICODE>X</UNICODE>
+   </VSEOCLASS>
+   <DESCRIPTIONS>
+    <SEOCOMPOTX>
+     <CMPNAME>GET_PARAMETER_ACTIVE_LOG</CMPNAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Get parameter active for save json in log SAP</DESCRIPT>
+    </SEOCOMPOTX>
+   </DESCRIPTIONS>
+   <DESCRIPTIONS_SUB>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_PARAMETER_ACTIVE_LOG</CMPNAME>
+     <SCONAME>ES_PARAMETER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>Parameter Customizing for One Connect</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_PARAMETER_ACTIVE_LOG</CMPNAME>
+     <SCONAME>IV_NAME_PARAMETER</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: Name of Variant Variable</DESCRIPT>
+    </SEOSUBCOTX>
+    <SEOSUBCOTX>
+     <CMPNAME>GET_PARAMETER_ACTIVE_LOG</CMPNAME>
+     <SCONAME>IV_TYPE</SCONAME>
+     <LANGU>E</LANGU>
+     <DESCRIPT>ABAP: Type of selection</DESCRIPT>
+    </SEOSUBCOTX>
+   </DESCRIPTIONS_SUB>
+  </asx:values>
+ </asx:abap>
+</abapGit>

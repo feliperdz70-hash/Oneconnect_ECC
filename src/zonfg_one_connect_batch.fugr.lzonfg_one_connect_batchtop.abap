@@ -1,0 +1,5 @@
+FUNCTION-POOL ZONFG_ONE_CONNECT_BATCH.      "MESSAGE-ID ..
+
+TYPE-POOLS: rsds.
+
+* INCLUDE LZONFG_ONE_CONNECT_BATCHD...       " Local class definition

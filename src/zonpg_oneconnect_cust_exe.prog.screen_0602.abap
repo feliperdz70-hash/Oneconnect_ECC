@@ -1,0 +1,9 @@
+
+PROCESS BEFORE OUTPUT.
+  MODULE status_0602.
+
+PROCESS AFTER INPUT.
+  MODULE user_command_0602.
+
+PROCESS ON VALUE-REQUEST.
+  FIELD  gv_file MODULE open_file_download.

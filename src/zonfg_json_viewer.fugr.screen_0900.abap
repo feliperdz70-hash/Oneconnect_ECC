@@ -1,0 +1,5 @@
+PROCESS BEFORE OUTPUT.
+  MODULE pbo_json.
+
+PROCESS AFTER INPUT.
+  MODULE pai_json.
