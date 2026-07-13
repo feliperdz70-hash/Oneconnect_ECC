@@ -8987,26 +8987,48 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
       lv_len = ls_dyn_fcat-intlen.
       lv_dec = ls_dyn_fcat-decimals.
 
-      CASE ls_dyn_fcat-inttype.
-        WHEN cl_abap_typedescr=>typekind_char.
-          lo_elem = cl_abap_elemdescr=>get_c( p_length = lv_len ).
-        WHEN cl_abap_typedescr=>typekind_num.
-          lo_elem = cl_abap_elemdescr=>get_n( p_length = lv_len ).
-        WHEN cl_abap_typedescr=>typekind_packed.
-          lo_elem = cl_abap_elemdescr=>get_p( p_length = lv_len p_decimals = lv_dec ).
-        WHEN cl_abap_typedescr=>typekind_date.
-          lo_elem = cl_abap_elemdescr=>get_d( ).
-        WHEN cl_abap_typedescr=>typekind_time.
-          lo_elem = cl_abap_elemdescr=>get_t( ).
-        WHEN cl_abap_typedescr=>typekind_hex.
-          lo_elem = cl_abap_elemdescr=>get_x( p_length = lv_len ).
-        WHEN cl_abap_typedescr=>typekind_string.
+      TRY.
+          CASE ls_dyn_fcat-inttype.
+            WHEN cl_abap_typedescr=>typekind_char.
+              IF lv_len <= 0.
+                lv_len = 1.
+              ENDIF.
+              lo_elem = cl_abap_elemdescr=>get_c( p_length = lv_len ).
+            WHEN cl_abap_typedescr=>typekind_num.
+              IF lv_len <= 0.
+                lv_len = 1.
+              ENDIF.
+              lo_elem = cl_abap_elemdescr=>get_n( p_length = lv_len ).
+            WHEN cl_abap_typedescr=>typekind_packed.
+              IF lv_len <= 0.
+                lv_len = 1.
+              ENDIF.
+              IF lv_dec < 0.
+                lv_dec = 0.
+              ENDIF.
+              IF lv_dec > ( lv_len * 2 - 1 ).
+                lv_dec = lv_len * 2 - 1.
+              ENDIF.
+              lo_elem = cl_abap_elemdescr=>get_p( p_length = lv_len p_decimals = lv_dec ).
+            WHEN cl_abap_typedescr=>typekind_date.
+              lo_elem = cl_abap_elemdescr=>get_d( ).
+            WHEN cl_abap_typedescr=>typekind_time.
+              lo_elem = cl_abap_elemdescr=>get_t( ).
+            WHEN cl_abap_typedescr=>typekind_hex.
+              IF lv_len <= 0.
+                lv_len = 1.
+              ENDIF.
+              lo_elem = cl_abap_elemdescr=>get_x( p_length = lv_len ).
+            WHEN cl_abap_typedescr=>typekind_string.
+              lo_elem = cl_abap_elemdescr=>get_string( ).
+            WHEN cl_abap_typedescr=>typekind_float.
+              lo_elem = cl_abap_elemdescr=>get_f( ).
+            WHEN OTHERS. " typekind_int, int1, int2, int8 and anything unmapped
+              lo_elem = cl_abap_elemdescr=>get_i( ).
+          ENDCASE.
+        CATCH cx_root.
           lo_elem = cl_abap_elemdescr=>get_string( ).
-        WHEN cl_abap_typedescr=>typekind_float.
-          lo_elem = cl_abap_elemdescr=>get_f( ).
-        WHEN OTHERS. " typekind_int, int1, int2, int8 and anything unmapped
-          lo_elem = cl_abap_elemdescr=>get_i( ).
-      ENDCASE.
+      ENDTRY.
 
       CLEAR ls_component.
       ls_component-name = ls_dyn_fcat-fieldname.
