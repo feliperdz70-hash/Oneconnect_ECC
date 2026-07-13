@@ -8845,7 +8845,9 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
           lo_struct        TYPE REF TO cl_abap_structdescr,
           lo_table         TYPE REF TO cl_abap_tabledescr,
           lt_components    TYPE cl_abap_structdescr=>component_table,
-          ls_component     TYPE abap_componentdescr.
+          ls_component     TYPE abap_componentdescr,
+          lv_len           TYPE i,
+          lv_dec           TYPE i.
 
 
     FIELD-SYMBOLS: <fs_fcat>          LIKE LINE OF it_fcat, "TYPE any,
@@ -8982,19 +8984,22 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
     CLEAR lt_components.
 
     LOOP AT lt_dyn_fcat INTO ls_dyn_fcat.
+      lv_len = ls_dyn_fcat-intlen.
+      lv_dec = ls_dyn_fcat-decimals.
+
       CASE ls_dyn_fcat-inttype.
         WHEN cl_abap_typedescr=>typekind_char.
-          lo_elem = cl_abap_elemdescr=>get_c( p_length = ls_dyn_fcat-intlen ).
+          lo_elem = cl_abap_elemdescr=>get_c( p_length = lv_len ).
         WHEN cl_abap_typedescr=>typekind_num.
-          lo_elem = cl_abap_elemdescr=>get_n( p_length = ls_dyn_fcat-intlen ).
+          lo_elem = cl_abap_elemdescr=>get_n( p_length = lv_len ).
         WHEN cl_abap_typedescr=>typekind_packed.
-          lo_elem = cl_abap_elemdescr=>get_p( p_length = ls_dyn_fcat-intlen p_decimals = ls_dyn_fcat-decimals ).
+          lo_elem = cl_abap_elemdescr=>get_p( p_length = lv_len p_decimals = lv_dec ).
         WHEN cl_abap_typedescr=>typekind_date.
           lo_elem = cl_abap_elemdescr=>get_d( ).
         WHEN cl_abap_typedescr=>typekind_time.
           lo_elem = cl_abap_elemdescr=>get_t( ).
         WHEN cl_abap_typedescr=>typekind_hex.
-          lo_elem = cl_abap_elemdescr=>get_x( p_length = ls_dyn_fcat-intlen ).
+          lo_elem = cl_abap_elemdescr=>get_x( p_length = lv_len ).
         WHEN cl_abap_typedescr=>typekind_string.
           lo_elem = cl_abap_elemdescr=>get_string( ).
         WHEN cl_abap_typedescr=>typekind_float.
