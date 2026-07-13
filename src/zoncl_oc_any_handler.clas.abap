@@ -9004,13 +9004,7 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
           lo_elem = cl_abap_elemdescr=>get_string( ).
         WHEN cl_abap_typedescr=>typekind_float.
           lo_elem = cl_abap_elemdescr=>get_f( ).
-        WHEN cl_abap_typedescr=>typekind_int1.
-          lo_elem = cl_abap_elemdescr=>get_int1( ).
-        WHEN cl_abap_typedescr=>typekind_int2.
-          lo_elem = cl_abap_elemdescr=>get_int2( ).
-        WHEN cl_abap_typedescr=>typekind_int8.
-          lo_elem = cl_abap_elemdescr=>get_int8( ).
-        WHEN OTHERS. " typekind_int and anything unmapped
+        WHEN OTHERS. " typekind_int, int1, int2, int8 and anything unmapped
           lo_elem = cl_abap_elemdescr=>get_i( ).
       ENDCASE.
 
