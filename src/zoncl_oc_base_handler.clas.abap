@@ -10963,7 +10963,14 @@ ENDMETHOD.
           lt_dyn_table     TYPE REF TO data,
           lv_field         TYPE string,
           lv_tabname       TYPE ddobjname,
-          lv_created       TYPE boolean.
+          lv_created       TYPE boolean,
+          lo_elem          TYPE REF TO cl_abap_datadescr,
+          lo_struct        TYPE REF TO cl_abap_structdescr,
+          lo_table         TYPE REF TO cl_abap_tabledescr,
+          lt_components    TYPE cl_abap_structdescr=>component_table,
+          ls_component     TYPE abap_componentdescr,
+          lv_len           TYPE i,
+          lv_dec           TYPE i.
 
     FIELD-SYMBOLS: <fs_relations>     TYPE zonta_relations,
                    <fs_columns>       TYPE zonta_oc_col_all,
@@ -11305,23 +11312,81 @@ ENDMETHOD.
 
       IF lv_created = abap_false.
 
-        CALL METHOD cl_alv_table_create=>create_dynamic_table
-          EXPORTING
-            i_style_table             = abap_false "'X'
-            it_fieldcatalog           = lt_dyn_fcat
-          IMPORTING
-            ep_table                  = lt_dyn_table
-          EXCEPTIONS
-            generate_subpool_dir_full = 1
-            OTHERS                    = 2.
-        ASSIGN lt_dyn_table->* TO <fs_dyn_table>.
-        rt_table = lt_dyn_table.
+* Build the row type via RTTI instead of CL_ALV_TABLE_CREATE, which
+* generates and compiles a subpool per call and exhausts the session's
+* generated-subpool directory (GENERATE_SUBPOOL_DIR_FULL) after ~30-35 calls.
+        CLEAR lt_components.
 
-        IF iv_add_tabname = abap_true.
-          gr_cached_type_w ?= cl_abap_tabledescr=>describe_by_data_ref( lt_dyn_table ).
-        ELSEIF iv_add_tabname = abap_false.
-          gr_cached_type_wo ?= cl_abap_tabledescr=>describe_by_data_ref( lt_dyn_table ).
-        ENDIF.
+        LOOP AT lt_dyn_fcat INTO ls_dyn_fcat.
+          lv_len = ls_dyn_fcat-intlen.
+          lv_dec = ls_dyn_fcat-decimals.
+
+          TRY.
+              CASE ls_dyn_fcat-inttype.
+                WHEN cl_abap_typedescr=>typekind_char.
+                  IF lv_len <= 0.
+                    lv_len = 1.
+                  ENDIF.
+                  lo_elem = cl_abap_elemdescr=>get_c( p_length = lv_len ).
+                WHEN cl_abap_typedescr=>typekind_num.
+                  IF lv_len <= 0.
+                    lv_len = 1.
+                  ENDIF.
+                  lo_elem = cl_abap_elemdescr=>get_n( p_length = lv_len ).
+                WHEN cl_abap_typedescr=>typekind_packed.
+                  IF lv_len <= 0.
+                    lv_len = 1.
+                  ENDIF.
+                  IF lv_dec < 0.
+                    lv_dec = 0.
+                  ENDIF.
+                  IF lv_dec > ( lv_len * 2 - 1 ).
+                    lv_dec = lv_len * 2 - 1.
+                  ENDIF.
+                  lo_elem = cl_abap_elemdescr=>get_p( p_length = lv_len p_decimals = lv_dec ).
+                WHEN cl_abap_typedescr=>typekind_date.
+                  lo_elem = cl_abap_elemdescr=>get_d( ).
+                WHEN cl_abap_typedescr=>typekind_time.
+                  lo_elem = cl_abap_elemdescr=>get_t( ).
+                WHEN cl_abap_typedescr=>typekind_hex.
+                  IF lv_len <= 0.
+                    lv_len = 1.
+                  ENDIF.
+                  lo_elem = cl_abap_elemdescr=>get_x( p_length = lv_len ).
+                WHEN cl_abap_typedescr=>typekind_string.
+                  lo_elem = cl_abap_elemdescr=>get_string( ).
+                WHEN cl_abap_typedescr=>typekind_float.
+                  lo_elem = cl_abap_elemdescr=>get_f( ).
+                WHEN OTHERS. " typekind_int, int1, int2, int8 and anything unmapped
+                  lo_elem = cl_abap_elemdescr=>get_i( ).
+              ENDCASE.
+            CATCH cx_root.
+              lo_elem = cl_abap_elemdescr=>get_string( ).
+          ENDTRY.
+
+          CLEAR ls_component.
+          ls_component-name = ls_dyn_fcat-fieldname.
+          ls_component-type = lo_elem.
+          APPEND ls_component TO lt_components.
+        ENDLOOP.
+
+        TRY.
+            lo_struct = cl_abap_structdescr=>create( lt_components ).
+            lo_table  = cl_abap_tabledescr=>create( p_line_type  = lo_struct
+                                                     p_table_kind = cl_abap_tabledescr=>tablekind_std ).
+
+            CREATE DATA lt_dyn_table TYPE HANDLE lo_table.
+            ASSIGN lt_dyn_table->* TO <fs_dyn_table>.
+            rt_table = lt_dyn_table.
+
+            IF iv_add_tabname = abap_true.
+              gr_cached_type_w = lo_table.
+            ELSEIF iv_add_tabname = abap_false.
+              gr_cached_type_wo = lo_table.
+            ENDIF.
+          CATCH cx_root.
+            CLEAR rt_table.
+        ENDTRY.
 
       ENDIF.
 
