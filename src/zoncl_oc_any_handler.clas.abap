@@ -8840,7 +8840,12 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
           fname            TYPE string,
           lv_field         TYPE string,
           lv_tabname       TYPE  ddobjname,
-          lt_dyn_table     TYPE REF TO data.
+          lt_dyn_table     TYPE REF TO data,
+          lo_elem          TYPE REF TO cl_abap_datadescr,
+          lo_struct        TYPE REF TO cl_abap_structdescr,
+          lo_table         TYPE REF TO cl_abap_tabledescr,
+          lt_components    TYPE cl_abap_structdescr=>component_table,
+          ls_component     TYPE abap_componentdescr.
 
 
     FIELD-SYMBOLS: <fs_fcat>          LIKE LINE OF it_fcat, "TYPE any,
@@ -8971,18 +8976,56 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
     DELETE ADJACENT DUPLICATES FROM lt_dyn_fcat COMPARING fieldname.
     SORT lt_dyn_fcat BY tabname col_pos.
 
-    CALL METHOD cl_alv_table_create=>create_dynamic_table
-      EXPORTING
-        i_style_table             = abap_false "'X'
-        it_fieldcatalog           = lt_dyn_fcat
-      IMPORTING
-        ep_table                  = lt_dyn_table
-      EXCEPTIONS
-        generate_subpool_dir_full = 1
-        OTHERS                    = 2.
+* Build the row type via RTTI instead of CL_ALV_TABLE_CREATE, which
+* generates and compiles a subpool per call and exhausts the session's
+* generated-subpool directory (GENERATE_SUBPOOL_DIR_FULL) after ~30-35 calls.
+    CLEAR lt_components.
 
-    ASSIGN lt_dyn_table->* TO <fs_dyn_table>.
-    rt_table = lt_dyn_table.
+    LOOP AT lt_dyn_fcat INTO ls_dyn_fcat.
+      CASE ls_dyn_fcat-inttype.
+        WHEN cl_abap_typedescr=>typekind_char.
+          lo_elem = cl_abap_elemdescr=>get_c( p_length = ls_dyn_fcat-intlen ).
+        WHEN cl_abap_typedescr=>typekind_num.
+          lo_elem = cl_abap_elemdescr=>get_n( p_length = ls_dyn_fcat-intlen ).
+        WHEN cl_abap_typedescr=>typekind_packed.
+          lo_elem = cl_abap_elemdescr=>get_p( p_length = ls_dyn_fcat-intlen p_decimals = ls_dyn_fcat-decimals ).
+        WHEN cl_abap_typedescr=>typekind_date.
+          lo_elem = cl_abap_elemdescr=>get_d( ).
+        WHEN cl_abap_typedescr=>typekind_time.
+          lo_elem = cl_abap_elemdescr=>get_t( ).
+        WHEN cl_abap_typedescr=>typekind_hex.
+          lo_elem = cl_abap_elemdescr=>get_x( p_length = ls_dyn_fcat-intlen ).
+        WHEN cl_abap_typedescr=>typekind_string.
+          lo_elem = cl_abap_elemdescr=>get_string( ).
+        WHEN cl_abap_typedescr=>typekind_float.
+          lo_elem = cl_abap_elemdescr=>get_f( ).
+        WHEN cl_abap_typedescr=>typekind_int1.
+          lo_elem = cl_abap_elemdescr=>get_int1( ).
+        WHEN cl_abap_typedescr=>typekind_int2.
+          lo_elem = cl_abap_elemdescr=>get_int2( ).
+        WHEN cl_abap_typedescr=>typekind_int8.
+          lo_elem = cl_abap_elemdescr=>get_int8( ).
+        WHEN OTHERS. " typekind_int and anything unmapped
+          lo_elem = cl_abap_elemdescr=>get_i( ).
+      ENDCASE.
+
+      CLEAR ls_component.
+      ls_component-name = ls_dyn_fcat-fieldname.
+      ls_component-type = lo_elem.
+      APPEND ls_component TO lt_components.
+    ENDLOOP.
+
+    TRY.
+        lo_struct = cl_abap_structdescr=>create( lt_components ).
+        lo_table  = cl_abap_tabledescr=>create( p_line_type  = lo_struct
+                                                 p_table_kind = cl_abap_tabledescr=>tablekind_std ).
+
+        CREATE DATA lt_dyn_table TYPE HANDLE lo_table.
+        ASSIGN lt_dyn_table->* TO <fs_dyn_table>.
+        rt_table = lt_dyn_table.
+      CATCH cx_root.
+        CLEAR rt_table.
+    ENDTRY.
 
   ENDMETHOD.
 
