@@ -7230,6 +7230,12 @@ CLASS ZONCL_OC_ANY_HANDLER IMPLEMENTATION.
    me->debug_procedure( ).
 
     lv_error_stop  = abap_false.
+
+    " Reset JSON accumulators so the method is self-contained and does not
+    " depend on the caller doing FREE go_handler between calls. Prevents both
+    " unbounded memory growth (SYSTEM_NO_ROLL) and re-sending stale payloads.
+    CLEAR: gt_json[], gv_jsonid, gv_json.
+
     gv_update    = iv_update.
     gv_delete    = iv_delete.
     gv_anytable  = iv_tabname.
