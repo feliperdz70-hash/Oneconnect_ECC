@@ -54,7 +54,7 @@ function ZONFM_RSAQ_DJ_DEFINE_ALIASTAB.
   dbpa[] = dbpa_input[].
   dbwr[] = dbwr_input[].
   dbar[] = dbar_input[].
-  dbft[] = dbpa_input[].
+  dbft[] = dbft_input[].
   sgtext[] = sgtext_input[].
   exdbfi[] = exdbfi_input[].
   ttab[]   = ttab_input[].

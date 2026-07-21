@@ -408,6 +408,9 @@ FORM check_for_table_addition_0300 .
 * prüfen, ob Tabelle in DB existiert
     PERFORM check_for_database_table(saplaqjd) USING g_dyn_0300-tname.
 *  PERFORM check_for_database_table(saplzonfg_aqjd) USING g_dyn_0300-tname. "ONEC
+  ELSE.
+*   Tabelle existiert nicht im Dictionary -> Fehlermeldung statt stiller Rueckkehr
+    MESSAGE e133(zon_cl_oc) WITH g_dyn_0300-tname.
   ENDIF."CECHAVARRIA 03/06/2025
 ENDFORM.                    " check_for_table_addition_0300
 *&---------------------------------------------------------------------*

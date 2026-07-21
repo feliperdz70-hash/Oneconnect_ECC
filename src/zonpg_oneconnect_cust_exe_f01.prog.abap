@@ -8592,7 +8592,7 @@ FORM handle_search.
 * MESSAGE ID SY-MSGID TYPE SY-MSGTY NUMBER SY-MSGNO
 *   WITH SY-MSGV1 SY-MSGV2 SY-MSGV3 SY-MSGV4.
   ELSEIF lv_node_key  IS INITIAL.
-    MESSAGE 'Select the table for which you want to find the desired field.' TYPE 'I'.
+    MESSAGE i130(zon_cl_oc).
     RETURN.
   ENDIF.
 
@@ -8615,7 +8615,7 @@ FORM handle_search.
   ENDLOOP.
 
   IF lv_found_key IS INITIAL.
-    MESSAGE 'Field not found in tree' TYPE 'I'.
+    MESSAGE i131(zon_cl_oc).
     RETURN.
   ENDIF.
 
@@ -9819,7 +9819,7 @@ FORM clone_entity.
     AND business_proc = gv_cloned_entity.
 
   IF sy-subrc = 0.
-    MESSAGE 'Target entity already exists' TYPE 'E'.
+    MESSAGE e124(zon_cl_oc).
   ELSE.
 
     PERFORM get_next_range USING c_rentity CHANGING lv_id.
@@ -9843,7 +9843,7 @@ FORM clone_entity.
 
     COMMIT WORK.
 
-    MESSAGE 'Entity copied successfully' TYPE 'S'.
+    MESSAGE s132(zon_cl_oc).
 
     ls_obj_oc = zonta_obj_oc.
     CLEAR zonta_obj_oc.

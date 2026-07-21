@@ -785,6 +785,30 @@
      <ARBGB>ZON_CL_OC</ARBGB>
      <MSGNR>129</MSGNR>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>130</MSGNR>
+     <TEXT>Select the table for which you want to find the desired field.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>131</MSGNR>
+     <TEXT>Field not found in tree.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>132</MSGNR>
+     <TEXT>Entity copied successfully.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>133</MSGNR>
+     <TEXT>Table &amp;1 does not exist in the dictionary.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>

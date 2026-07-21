@@ -97,7 +97,7 @@ data: l_ret type i.
   endif.
 * Copy global storage back to parameters.
 *  tables...
-    clogsg_input[] = clogsg_input[].   "<
+    clogsg_input[] = clogsg[].         "< corrected: return working table (was self-assignment)
     dbsa_input[] = dbsa[].
     dbob_input[] = dbob[].
     dbos_input[] = dbos[].

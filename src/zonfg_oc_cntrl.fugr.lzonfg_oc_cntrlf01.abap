@@ -333,7 +333,7 @@ FORM dynp_exit_0100  USING p_ok_code.
   CASE p_ok_code.
     WHEN aqqis_c_ok_cancel.
 *      raise cancelled.
-      MESSAGE e017(zon_cl_oc) WITH 'Cancelled' .
+      SET SCREEN 0. LEAVE SCREEN.
     WHEN OTHERS.
   ENDCASE.
 
@@ -401,7 +401,7 @@ FORM dynp_exit_0300  USING    p_ok_code.
     WHEN aqqis_c_ok_cancel.
       CLEAR: g_dyn_0300-tname.
 *      RAISE cancelled.
-      MESSAGE e017(zon_cl_oc) WITH 'Cancelled' .
+      SET SCREEN 0. LEAVE SCREEN.
     WHEN OTHERS.
   ENDCASE.
 
@@ -518,7 +518,7 @@ FORM dynp_exit_0400  USING    p_ok_code.
     WHEN aqqis_c_ok_cancel.
       CLEAR: g_dyn_0300-tname.
 *      RAISE cancelled.
-      MESSAGE e017(zon_cl_oc) WITH 'Cancelled' .
+      SET SCREEN 0. LEAVE SCREEN.
     WHEN OTHERS.
   ENDCASE.
 
@@ -591,7 +591,7 @@ FORM dynp_exit_0500  USING    p_ok_code.
   CASE p_ok_code.
     WHEN aqqis_c_ok_cancel.
 *      RAISE cancelled.
-      MESSAGE e017(zon_cl_oc) WITH 'Cancelled' .
+      SET SCREEN 0. LEAVE SCREEN.
     WHEN OTHERS.
   ENDCASE.
 
