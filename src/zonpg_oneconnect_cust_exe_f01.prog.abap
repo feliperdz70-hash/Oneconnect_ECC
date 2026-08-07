@@ -4303,6 +4303,8 @@ FORM load_columns .
                                      AND alias_tabname = ls_columns-alias_tabname.
     ENDLOOP.
 
+    PERFORM check_technical_names TABLES lt_columns_save[].
+
     MODIFY zonta_oc_col_all FROM TABLE lt_columns_save.
     IF sy-subrc = 0.
       COMMIT WORK.
