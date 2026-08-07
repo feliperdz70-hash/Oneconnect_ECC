@@ -7993,6 +7993,8 @@ FORM check_technical_names TABLES p_save STRUCTURE zonta_oc_col_all.
   FIELD-SYMBOLS: <fs_save> LIKE LINE OF p_save,
                  <fs_conv> LIKE LINE OF gt_converted.
 
+  REFRESH: gt_converted, gt_convertedt.
+
   LOOP AT p_save ASSIGNING <fs_save>.
     CLEAR lv_y.
     IF strlen( <fs_save>-fldname ) > 27.
@@ -8075,6 +8077,7 @@ FORM check_length  USING p_alias CHANGING p_conv STRUCTURE zonta_oc_conv.
     ENDIF.
   ENDIF.
   ELSE.
+    SORT gt_convertedt BY tabname alias_fldname1 lenght DESCENDING.
     READ TABLE gt_convertedt INTO ls_convertedt WITH KEY tabname = p_conv-tabname
                                                          alias_fldname1 = p_conv-alias_fldname1 BINARY SEARCH.
     IF sy-subrc = 0 AND ls_convertedt-alias_fldname1 = p_conv-alias_fldname1.
