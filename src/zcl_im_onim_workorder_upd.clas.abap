@@ -110,9 +110,15 @@ CLASS ZCL_IM_ONIM_WORKORDER_UPD IMPLEMENTATION.
 
 *     Sólo órdenes de producción. Esta BAdI también se llama para
 *     órdenes de mantenimiento, de proceso, etc.
+*     El IF va anidado a propósito: si el ASSIGN falla el field-symbol
+*     queda sin asignar, y leerlo en la misma condición dependería del
+*     orden de evaluación (un GETWA_NOT_ASSIGNED aquí cancelaría la
+*     actualización de la orden y la dejaría en SM13).
       ASSIGN COMPONENT 'AUTYP' OF STRUCTURE <ls_header> TO <lv_value>.
-      IF sy-subrc = 0 AND <lv_value> <> c_autyp_prodord.
-        CONTINUE.
+      IF sy-subrc = 0.
+        IF <lv_value> <> c_autyp_prodord.
+          CONTINUE.
+        ENDIF.
       ENDIF.
 
       APPEND lv_aufnr TO lt_aufnr.
