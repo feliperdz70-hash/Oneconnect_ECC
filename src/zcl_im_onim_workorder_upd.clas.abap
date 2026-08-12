@@ -11,11 +11,10 @@ protected section.
 private section.
 
 * Tipo de objeto BOR y evento que se publican para la orden de producción.
-* ATENCIÓN: en el BOR estándar BUS2012 es el PEDIDO DE COMPRA; la orden de
-* producción es BUS2005. Si se decide publicar sobre BUS2005 o sobre un
-* subtipo delegado propio (como ZBUS2075 para la orden interna), sólo hay
-* que cambiar estas constantes: la lógica no depende de ellas.
-  constants C_OBJTYPE type SWETYPECOU-OBJTYPE value 'BUS2012' .
+* BUS2005 = orden de producción (clave AUFNR). Si se trabaja con un subtipo
+* delegado propio (como ZBUS2075 para la orden interna) o con otro evento,
+* sólo hay que cambiar estas constantes: la lógica no depende de ellas.
+  constants C_OBJTYPE type SWETYPECOU-OBJTYPE value 'BUS2005' .
   constants C_EVENT type SWETYPECOU-EVENT value 'CHANGED' .
 * Clase de orden (AUFK-AUTYP): 10 = orden de producción (CO01 / CO02)
   constants C_AUTYP_PRODORD type AUFTYP value '10' .
