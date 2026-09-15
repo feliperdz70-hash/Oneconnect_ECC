@@ -1032,46 +1032,66 @@ Para que funcione a través del proxy tienen que atravesarlo, en los dos sentido
 
 ## 11. Paso a paso — Postman
 
-### 11.1 Crear el Environment
+### 11.1 El entorno y sus variables
 
-Ninguna URL, clave o credencial debe escribirse dentro de una petición. Se parametriza todo en un *Environment*, de modo que la misma colección sirva para DEV, QAS y PRD cambiando únicamente el entorno activo.
+Ninguna URL, clave o credencial debe escribirse dentro de una petición. Todo se parametriza en un *Environment*, de modo que la misma colección sirva para DEV, QAS y PRD cambiando únicamente el entorno activo.
 
-1. Postman → `Environments` → `Create Environment`.
-2. Nombre: `PoC-S4H-API-DEV`.
-3. Variables:
+El entorno **se entrega ya construido** en `docs/postman/ET-001-PoC.postman_environment.json` y se importa junto con la colección (§11.2). Contiene doce variables:
 
-| Variable | Tipo | Valor |
-|---|---|---|
-| `apim_host` | default | `https://<org>.prod.apimanagement.<region>.hana.ondemand.com` |
-| `base_path` | default | `/poc/customer/v1` |
-| `entity_set` | default | `Customer` |
-| `sap_client` | default | `100` |
-| `api_key` | **secret** | La *Application Key* de §10.6 |
-| `csrf_token` | default | *(vacía — la rellena un script)* |
-| `test_customer` | default | `0000001000` |
+| Variable | Tipo | Contenido | Hay que cumplimentarla |
+|---|---|---|---|
+| `apim_host` | default | Host del API Proxy | **Sí** |
+| `base_path` | default | `/poc/customer/v1` | Solo si se cambió en §10.4 |
+| `entity_set` | default | `Customer` | No |
+| `api_key` | **secret** | La *Application Key* de §10.6 | **Sí** |
+| `csrf_token` | default | Lo rellena el script de R3 | No |
+| `test_customer` | default | `0000001000` | No |
+| `test_customer_2` | default | `0000001001` | No |
+| `backend_url` | default | URL del servicio en S/4HANA | **Sí** |
+| `sap_client` | default | Mandante del backend | **Sí** |
+| `sap_user` | default | `POC_API_USER` | No |
+| `sap_password` | **secret** | Contraseña definida en §7.2 | **Sí** |
+| `csrf_token_backend` | default | Lo rellena el script de F2.2 | No |
 
-4. Activar el entorno en el selector superior derecho.
+Tras importarlo, activarlo en el selector superior derecho de Postman.
 
-> La URL exacta del host figura en el API Portal, en la pantalla de detalle del API Proxy, bajo **`API Proxy URL`**.
+> La URL exacta de `apim_host` figura en el API Portal, en la pantalla de detalle del API Proxy, bajo **`API Proxy URL`**. La de `backend_url` la muestra ADT en el editor del Service Binding (§6.8).
 >
-> La variable `api_key` debe declararse de tipo **`secret`**: Postman la enmascara en pantalla y la excluye de las exportaciones de la colección.
+> `api_key` y `sap_password` se declaran de tipo **`secret`**: Postman las enmascara en pantalla y las excluye de las exportaciones. **Se entregan vacías y no deben commitearse nunca.**
 
-### 11.2 Crear la Collection
+### 11.2 Importar la colección
 
-1. `Collections` → `Create Collection` → nombre `PoC - S4H Customer API`.
-2. Pestaña `Authorization` de la colección → Type: `No Auth`. La autenticación de API Management viaja por cabecera.
-3. Pestaña `Headers` (a nivel de colección, heredada por todas las peticiones):
+La colección y su entorno se entregan como ficheros listos para importar, en el directorio `docs/postman/` del repositorio. **No hay que construirlos a mano.**
 
-| Key | Value |
+| Fichero | Contenido |
 |---|---|
-| `APIKey` | `{{api_key}}` |
-| `Accept` | `application/json` |
+| `ET-001-PoC-S4H-Customer-API.postman_collection.json` | 7 carpetas, 19 peticiones, scripts de aserción |
+| `ET-001-PoC.postman_environment.json` | Las 12 variables del entorno, sin valores sensibles |
 
-4. En `Settings` de la colección, verificar que **`Automatically follow redirects`** está activo y que las cookies **no** están deshabilitadas.
+1. Postman → `File` → `Import` → `Files` → seleccionar **los dos ficheros**.
+2. Activar el entorno `ET-001 - PoC S4H (DEV)` en el selector superior derecho.
+3. Cumplimentar las variables que se entregan vacías: `api_key`, `sap_password`, y ajustar `apim_host` y `backend_url` al landscape.
 
-> Definir las cabeceras **en la colección** y no en cada petición: al rotar la clave o cambiar de entorno, se modifica en un único sitio.
->
-> **Postman gestiona las cookies automáticamente** en su *Cookie Jar*, por dominio. Eso hace que el flujo CSRF funcione sin configuración adicional, siempre que todas las peticiones apunten al mismo host. Si se ejecuta la colección con Newman en CI, hay que verificar que la persistencia de cookies está habilitada.
+#### Autenticación de la colección
+
+La cabecera `APIKey` **no se define petición a petición**: se inyecta desde la autorización a nivel de colección.
+
+| Campo | Valor |
+|---|---|
+| Type | `API Key` |
+| Key | `APIKey` |
+| Value | `{{api_key}}` |
+| Add to | `Header` |
+
+Las peticiones heredan esta configuración, con dos excepciones deliberadas: `N1`, que la anula para comprobar que el proxy rechaza las llamadas sin clave, y la carpeta `06`, que usa autenticación básica porque ataca al backend directamente.
+
+> **Postman no dispone de cabeceras a nivel de colección.** La autorización de tipo `API Key` es el mecanismo correcto para inyectar una cabecera en todas las peticiones desde un único punto: al rotar la clave se cambia una variable, no diecinueve peticiones.
+
+#### Gestión de cookies
+
+En `Settings` de la colección, verificar que **`Automatically follow redirects`** está activo y que las cookies **no** están deshabilitadas.
+
+Postman gestiona las cookies automáticamente en su *Cookie Jar*, por dominio. Eso hace que el flujo CSRF funcione sin configuración adicional, siempre que todas las peticiones apunten al mismo host. Para la ejecución en CI, ver §11.9.
 
 ### 11.3 El flujo CSRF
 
@@ -1090,17 +1110,31 @@ El mecanismo protege frente a peticiones forjadas desde un navegador: el token s
 
 **El token está ligado a la cookie de sesión.** Enviar uno sin la otra falla igual que no enviar nada. Un token caduca con su sesión: si una colección larga empieza a devolver 403 a mitad de ejecución, hay que volver a pedirlo.
 
-### 11.4 Peticiones de la colección
+### 11.4 Estructura y peticiones de la colección
 
-#### R1 — Documento de servicio
+La colección se organiza en siete carpetas. Las cinco primeras recorren el ciclo completo contra el API publicado; la sexta comprueba que los controles de seguridad funcionan; la séptima ataca al backend directamente para cerrar la validación F2.
+
+| Carpeta | Peticiones | Propósito |
+|---|---|---|
+| `00 — Verificación del servicio` | R1, R2 | El proxy enruta y el contrato es el esperado |
+| `01 — Sesión (token CSRF)` | R3 | Obtiene el token que necesitan todas las escrituras |
+| `02 — Altas` | R4, R5 | Da de alta dos registros |
+| `03 — Consultas` | R6 a R9 | Lectura por clave y opciones de consulta OData |
+| `04 — Modificación y baja` | R10 a R13 | Modifica, borra, verifica y limpia |
+| `05 — Pruebas negativas` | N1, N2 | Verifica que sin API Key y sin token CSRF se rechaza |
+| `06 — Backend directo (F2)` | F2.1 a F2.4 | Validación contra S/4HANA sin pasar por BTP |
+
+#### Carpeta 00 — Verificación del servicio
+
+**R1 — Documento de servicio**
 
 ```http
 GET {{apim_host}}{{base_path}}/
 ```
 
-Devuelve el catálogo de entity sets publicados. Es la prueba mínima de que el proxy enruta correctamente.
+Devuelve el catálogo de entity sets. Es la prueba mínima de que el proxy enruta correctamente.
 
-#### R2 — Metadatos (contrato de la API)
+**R2 — Metadatos (`$metadata`)**
 
 ```http
 GET {{apim_host}}{{base_path}}/$metadata
@@ -1108,30 +1142,22 @@ GET {{apim_host}}{{base_path}}/$metadata
 
 Devuelve el EDMX: el **contrato formal** de la interfaz, equivalente al WSDL de un servicio SOAP de PI/PO. Es el artefacto que se entrega al equipo consumidor, y se genera solo — no se mantiene a mano.
 
-Verificar que la entidad `Customer` declara las capacidades de inserción, modificación y borrado. Si solo aparece como consultable, la behavior definition no llegó al binding (§6.8).
+La petición incluye una aserción que comprueba que la entidad **no** está marcada como no insertable. Si lo estuviera, la behavior definition no habría llegado al binding (§6.8).
 
-#### R3 — Obtener el token CSRF
+#### Carpeta 01 — Sesión
+
+**R3 — Obtener token CSRF**
 
 ```http
 GET {{apim_host}}{{base_path}}/
 X-CSRF-Token: Fetch
 ```
 
-En la pestaña `Scripts` → `Post-response`:
+Su script almacena el token en la variable `csrf_token`; la cookie de sesión la conserva Postman en su *Cookie Jar*. **Debe ejecutarse antes de cualquier escritura.** Si no se recibe token, el script deja un aviso en consola apuntando a §10.5d, que es la causa habitual.
 
-```javascript
-const token = pm.response.headers.get("X-CSRF-Token");
-pm.test("Se ha recibido token CSRF", function () {
-    pm.expect(token).to.be.a('string').and.not.empty;
-});
-if (token) {
-    pm.environment.set("csrf_token", token);
-}
-```
+#### Carpeta 02 — Altas
 
-**Esta petición debe ejecutarse antes de cualquier escritura.**
-
-#### R4 — Alta de un registro
+**R4 — Alta del primer registro**
 
 ```http
 POST {{apim_host}}{{base_path}}/{{entity_set}}
@@ -1158,44 +1184,43 @@ Respuesta esperada: **201 Created**.
 }
 ```
 
-#### R5 — Alta de un segundo registro
+**R5 — Alta del segundo registro**
 
-Mismo formato, con otra clave. Sirve para comprobar que la tabla acumula registros y que las consultas de R7 en adelante devuelven más de una fila.
+Mismo formato, con `{{test_customer_2}}` y datos de Guadalajara. Sirve para que las consultas de la carpeta 03 devuelvan más de una fila.
 
-```json
-{
-  "Customer": "0000001001",
-  "CityName": "Guadalajara",
-  "Region": "JAL",
-  "Country": "MX"
-}
-```
+#### Carpeta 03 — Consultas
 
-#### R6 — Lectura por clave
+**R6 — Lectura por clave**
 
 ```http
 GET {{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer}}')
 ```
 
-#### R7 — Consulta con paginación
+**R7 — Paginación**
 
 ```http
 GET {{apim_host}}{{base_path}}/{{entity_set}}?$top=10
 ```
 
-#### R8 — Filtrado por país
+**R8 — Filtrado por país**
 
 ```http
 GET {{apim_host}}{{base_path}}/{{entity_set}}?$filter=Country eq 'MX'&$top=20
 ```
 
-#### R9 — Proyección, ordenación y conteo
+Su aserción recorre todos los registros devueltos y comprueba que el filtro se aplicó realmente en servidor.
+
+**R9 — Proyección, ordenación y conteo**
 
 ```http
 GET {{apim_host}}{{base_path}}/{{entity_set}}?$select=Customer,CityName&$orderby=CityName asc&$count=true
 ```
 
-#### R10 — Modificación
+Comprueba dos cosas: que llega `@odata.count`, y que el registro devuelto **no** contiene `Country` — es decir, que `$select` recortó la proyección en lugar de devolverlo todo.
+
+#### Carpeta 04 — Modificación y baja
+
+**R10 — Modificación**
 
 ```http
 PATCH {{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer}}')
@@ -1205,44 +1230,87 @@ Content-Type: application/json
 { "CityName": "Monterrey Centro" }
 ```
 
-Respuesta esperada: **200** o **204 No Content**, según configuración.
+Respuesta esperada: **200** o **204 No Content**, según configuración. `PATCH` envía solo los campos que cambian; `PUT`, que exige el registro completo, no es el verbo natural en OData V4 para esta operación.
 
-`PATCH` envía solo los campos que cambian. `PUT`, que exige el registro completo, no es el verbo natural en OData V4 para esta operación.
-
-#### R11 — Baja
+**R11 — Baja del segundo registro**
 
 ```http
-DELETE {{apim_host}}{{base_path}}/{{entity_set}}('0000001001')
+DELETE {{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer_2}}')
 X-CSRF-Token: {{csrf_token}}
 ```
 
 Respuesta esperada: **204 No Content**.
 
-#### R12 — Verificación de la baja
+**R12 — Verificación de la baja**
 
 ```http
-GET {{apim_host}}{{base_path}}/{{entity_set}}('0000001001')
+GET {{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer_2}}')
 ```
 
 Respuesta esperada: **404 Not Found**. Es el resultado correcto: confirma que el borrado se materializó.
+
+**R13 — Limpieza**
+
+```http
+DELETE {{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer}}')
+X-CSRF-Token: {{csrf_token}}
+```
+
+Borra el registro que queda vivo tras R10, dejando la tabla como estaba. Es lo que hace la colección reejecutable sin errores de clave duplicada.
+
+#### Carpeta 05 — Pruebas negativas
+
+Estas dos peticiones **deben fallar**. Si alguna devuelve éxito, hay un control de seguridad que no está operativo.
+
+**N1 — Consulta sin API Key**
+
+Idéntica a R7, pero con la autorización anulada a nivel de petición (`No Auth`), de modo que no se envía la cabecera `APIKey`.
+
+Resultado esperado: **401** o **403**. Un 200 significa que la policy `Verify API Key` no está activa, o que no se volvió a desplegar el proxy tras configurarla (§10.5).
+
+Cubre el criterio **CA-16**.
+
+**N2 — Alta sin token CSRF**
+
+Un `POST` con cuerpo válido pero sin la cabecera `X-CSRF-Token`.
+
+Resultado esperado: **403**, con la palabra `CSRF` en el mensaje. Si el alta se completa, la protección CSRF está deshabilitada en el backend: **es un hallazgo de seguridad, no una comodidad**.
+
+Cubre el criterio **CA-17**.
+
+#### Carpeta 06 — Backend directo
+
+Las cuatro peticiones de la validación F2 (§7.5), apuntando a `{{backend_url}}` con **autenticación básica** y el usuario técnico. **Solo funcionan desde dentro de la red corporativa.**
+
+| Petición | Operación |
+|---|---|
+| `F2.1` | Metadatos contra el backend |
+| `F2.2` | Token CSRF del backend, almacenado en `csrf_token_backend` |
+| `F2.3` | Alta contra el backend — debe devolver **201** |
+| `F2.4` | Limpieza del registro creado |
+
+El token del backend se guarda en una variable **distinta** de la del proxy: son sesiones diferentes y confundirlas provoca un 403 difícil de diagnosticar.
 
 > **R6 a R9 no requieren ni una línea de ABAP adicional.** En PI/PO, cada una de estas variantes de consulta habría exigido un proxy o un mapeo nuevo. Y R4, R10 y R11 tampoco: RAP `managed` genera el alta, la modificación y la baja sin implementar nada. Esta es la ganancia concreta del patrón, y conviene demostrarla explícitamente en la presentación de la PoC.
 
 ### 11.5 Orden de ejecución
 
-La colección tiene dependencias reales entre peticiones y debe ejecutarse en orden:
+La colección tiene dependencias reales entre peticiones y debe ejecutarse **en el orden de las carpetas**:
 
-| Orden | Petición | Depende de |
+| Orden | Carpeta | Depende de |
 |---|---|---|
-| 1 | R1, R2 | — |
-| 2 | R3 (token) | — |
-| 3 | R4, R5 (altas) | R3 |
-| 4 | R6 a R9 (consultas) | R4, R5 |
-| 5 | R10 (modificación) | R3, R4 |
-| 6 | R11 (baja) | R3, R5 |
-| 7 | R12 (verificación) | R11 |
+| 1 | `00` — Verificación | — |
+| 2 | `01` — Token CSRF | — |
+| 3 | `02` — Altas | `01` |
+| 4 | `03` — Consultas | `02` |
+| 5 | `04` — Modificación y baja | `01`, `02` |
+| 6 | `05` — Pruebas negativas | — |
 
-En el `Collection Runner` basta con respetar el orden de la colección. Para reejecutarla desde cero, borrar antes los registros creados: de lo contrario R4 falla por clave duplicada.
+En el `Collection Runner` basta con respetar el orden de la colección, que ya es el correcto.
+
+La carpeta `06` es independiente y corresponde a una fase anterior del despliegue: se ejecuta durante la validación F2, cuando BTP aún no está configurado.
+
+> **La colección es idempotente.** R13 borra el registro que sobrevive a R10, de modo que al terminar la tabla vuelve a su estado inicial. Se puede reejecutar cuantas veces haga falta sin limpiar a mano ni tropezar con claves duplicadas. Si una ejecución se interrumpe a mitad, basta con lanzar R11 y R13 antes de volver a empezar.
 
 ### 11.6 Validación F4 — Prueba de aceptación
 
@@ -1252,7 +1320,9 @@ Confirmación independiente en el backend: `Data Preview` sobre `ZCDS_CUSTOMER` 
 
 ### 11.7 Scripts de prueba automatizada
 
-En la pestaña `Scripts` → `Post-response`.
+**Los scripts ya vienen incorporados en la colección entregada.** Se documentan aquí para quien necesite adaptarlos, ampliarlos o reconstruir la colección a mano.
+
+Van en la pestaña `Scripts` → `Post-response` de cada petición y se ejecutan al recibir la respuesta.
 
 Para las altas (R4, R5):
 
@@ -1303,7 +1373,15 @@ pm.test("El registro ya no existe", function () {
 });
 ```
 
-Con la colección así instrumentada puede ejecutarse desde el **Collection Runner**, y más adelante desde **Newman** dentro de un pipeline de CI/CD — que es como deberían validarse las interfaces migradas de forma continua.
+Además de los scripts por petición, la colección lleva una **aserción global** que se ejecuta tras cada respuesta:
+
+```javascript
+pm.test("Sin error de servidor (5xx)", function () {
+    pm.expect(pm.response.code).to.be.below(500);
+});
+```
+
+Con la colección así instrumentada puede ejecutarse desde el **Collection Runner** y desde **Newman** en un pipeline de CI/CD (§11.9).
 
 ### 11.8 Consideraciones de OData V4
 
@@ -1343,6 +1421,35 @@ Relevante al migrar consumidores que ya hubieran integrado servicios OData V2 v�
 | `PATCH` | 200 / 204 | 404, 403 CSRF |
 | `DELETE` | **204** | 404, 403 CSRF |
 
+### 11.9 Ejecución automatizada con Newman
+
+Newman es el ejecutor de línea de comandos de Postman. Permite llevar la colección a un pipeline de CI/CD, que es como deberían validarse las interfaces migradas de forma continua una vez retirado PI/PO.
+
+```bash
+npm install -g newman newman-reporter-htmlextra
+
+newman run docs/postman/ET-001-PoC-S4H-Customer-API.postman_collection.json \
+  --environment docs/postman/ET-001-PoC.postman_environment.json \
+  --folder "00 — Verificación del servicio" \
+  --folder "01 — Sesión (token CSRF)" \
+  --folder "02 — Altas" \
+  --folder "03 — Consultas" \
+  --folder "04 — Modificación y baja" \
+  --folder "05 — Pruebas negativas" \
+  --env-var "api_key=$API_KEY" \
+  --reporters cli,htmlextra \
+  --reporter-htmlextra-export informe-et001.html
+```
+
+| Aspecto | Detalle |
+|---|---|
+| Secretos | Nunca en el fichero de entorno versionado. Inyectarlos con `--env-var` desde las variables protegidas del pipeline |
+| Cookies | Newman mantiene el *Cookie Jar* dentro de una misma ejecución, lo que permite el flujo CSRF. No lo conserva entre ejecuciones |
+| Carpeta `06` | Excluida a propósito: ataca al backend y solo funciona desde la red corporativa |
+| Código de salida | Newman devuelve distinto de cero si falla alguna aserción, lo que hace fallar el pipeline |
+| Reejecución | La carpeta `04` borra lo que crea, de modo que la colección es idempotente |
+
+> Que la colección limpie sus propios registros no es un detalle cosmético: es lo que permite programarla como **prueba de humo recurrente** contra el entorno de desarrollo, sin que cada ejecución deje basura ni falle por clave duplicada. Una interfaz migrada que no se prueba de forma automática vuelve a ser una caja negra, que es justo lo que se quería dejar atrás con PI/PO.
 ---
 
 ## 12. Seguridad: brecha entre la PoC y productivo
@@ -1835,14 +1942,15 @@ Objeto sin código fuente. Se crea por asistente en ADT con `Binding Type = ODat
 | 14 | `PoC_Customer_v1` | API Proxy | API Portal | §10.4 |
 | 15 | `PoC_Migracion_Interfaces` | Product | API Portal | §10.6 |
 | 16 | `Postman PoC` | Application | Developer Portal | §10.6 |
-| 17 | `PoC - S4H Customer API` | Collection | Postman | §11.2 |
+| 17 | `ET-001-PoC-S4H-Customer-API.postman_collection.json` | Collection Postman v2.1 | Postman | §11.2, Anexo E |
+| 18 | `ET-001-PoC.postman_environment.json` | Environment Postman | Postman | §11.1, Anexo E |
 
 Objetos adicionales para el endurecimiento productivo, no incluidos en la PoC:
 
 | # | Objeto | Tipo | Herramienta | Sección |
 |---|---|---|---|---|
-| 18 | `ZPOC_CUST` | Objeto de autorización | SU21 | §12.2 |
-| 19 | `ZCDS_CUSTOMER` | Access Control (DCL) | ADT | §12.2 |
+| 19 | `ZPOC_CUST` | Objeto de autorización | SU21 | §12.2 |
+| 20 | `ZCDS_CUSTOMER` | Access Control (DCL) | ADT | §12.2 |
 
 ### Anexo C — URLs de referencia
 
@@ -1883,6 +1991,73 @@ Objetos adicionales para el endurecimiento productivo, no incluidos en la PoC:
 | **VDM** | *Virtual Data Model*. Modelo de datos virtual de SAP basado en vistas CDS |
 | **XSUAA** | *Extended Services UAA*. Servicio de autorización y autenticación de BTP |
 
+### Anexo E — Ficheros de Postman
+
+Ubicación en el repositorio: **`docs/postman/`**
+
+| Fichero | Formato | Contenido |
+|---|---|---|
+| `ET-001-PoC-S4H-Customer-API.postman_collection.json` | Postman Collection v2.1.0 | 7 carpetas, 19 peticiones |
+| `ET-001-PoC.postman_environment.json` | Postman Environment | 12 variables |
+
+#### Variables del entorno
+
+| Variable | Tipo | Valor de ejemplo | Hay que cumplimentarla |
+|---|---|---|---|
+| `apim_host` | default | `https://ORG.prod.apimanagement.eu10.hana.ondemand.com` | Sí |
+| `base_path` | default | `/poc/customer/v1` | Solo si se cambió en §10.4 |
+| `entity_set` | default | `Customer` | No |
+| `api_key` | **secret** | *(vacía)* | **Sí** |
+| `csrf_token` | default | *(vacía — la rellena R3)* | No |
+| `test_customer` | default | `0000001000` | No |
+| `test_customer_2` | default | `0000001001` | No |
+| `backend_url` | default | `https://HOST:44300/sap/opu/odata4/sap/zapi_customer_o4/srvd_a2x/sap/zapi_customer/0001` | Sí |
+| `sap_client` | default | `100` | Sí |
+| `sap_user` | default | `POC_API_USER` | No |
+| `sap_password` | **secret** | *(vacía)* | **Sí** |
+| `csrf_token_backend` | default | *(vacía — la rellena F2.2)* | No |
+
+#### Autorización a nivel de colección
+
+```json
+"auth": {
+  "type": "apikey",
+  "apikey": [
+    { "key": "key",   "value": "APIKey",      "type": "string" },
+    { "key": "value", "value": "{{api_key}}", "type": "string" },
+    { "key": "in",    "value": "header",      "type": "string" }
+  ]
+}
+```
+
+#### Script de captura del token CSRF (petición R3)
+
+```javascript
+var token = pm.response.headers.get("X-CSRF-Token");
+
+pm.test("Se ha recibido token CSRF", function () {
+    pm.expect(token).to.be.a("string").and.not.empty;
+});
+
+if (token) {
+    pm.environment.set("csrf_token", token);
+    console.log("Token CSRF almacenado en la variable csrf_token");
+} else {
+    console.warn("Sin token: revisar la propagación de cabeceras en API Management (§10.5d)");
+}
+```
+
+#### Aserción global de la colección
+
+Se ejecuta tras cada petición, en el script de pruebas a nivel de colección:
+
+```javascript
+pm.test("Sin error de servidor (5xx)", function () {
+    pm.expect(pm.response.code).to.be.below(500);
+});
+```
+
+> **Las dos variables marcadas como `secret` se entregan vacías.** `api_key` y `sap_password` se cumplimentan en local y **nunca se commitean**. Postman excluye las variables de tipo `secret` al exportar, pero conviene verificarlo antes de compartir un fichero de entorno por correo o por chat.
 ---
 
 **Fin del documento ET-001 v2.0**
