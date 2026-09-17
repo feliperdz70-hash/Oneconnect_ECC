@@ -831,7 +831,7 @@
      <SPRSL>E</SPRSL>
      <ARBGB>ZON_CL_OC</ARBGB>
      <MSGNR>137</MSGNR>
-     <TEXT>&amp;1 entry(ies) were deleted from table ZONTA_OC_EXLOG.</TEXT>
+     <TEXT>Deleted: &amp;1 EXLOG, &amp;2 FETCH_R, &amp;3 FETCHRP, &amp;4 orphan items.</TEXT>
     </T100>
     <T100>
      <SPRSL>E</SPRSL>

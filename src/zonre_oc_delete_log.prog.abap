@@ -8,8 +8,10 @@
 *&---------------------------------------------------------------------*
 *& Deletes the application logs written by One Connect (transaction     *
 *& SLG1, tables BALHDR / BALDAT) with the standard API BAL_DB_SEARCH    *
-*& and BAL_DB_DELETE, and optionally the execution logs stored in the   *
-*& table ZONTA_OC_EXLOG.                                                *
+*& and BAL_DB_DELETE, and optionally the One Connect log tables:        *
+*&   - ZONTA_OC_EXLOG   execution logs                                  *
+*&   - ZONTA_OC_FETCH_R sent json header  (reprocess ZONT_REPRO)        *
+*&   - ZONTA_OC_FETCHRP sent json items                                 *
 *&                                                                      *
 *& The logs are deleted in packages with an intermediate COMMIT WORK,   *
 *& so the report can be scheduled as a periodic housekeeping job.       *
@@ -36,6 +38,15 @@ TYPES: BEGIN OF ty_result,
          status     TYPE char40,
        END OF ty_result.
 
+TYPES: BEGIN OF ty_uuid,
+         uuid_rec TYPE zonta_oc_fetch_r-uuid_rec,
+       END OF ty_uuid.
+
+TYPES: BEGIN OF ty_item,
+         uuid_rec  TYPE zonta_oc_fetchrp-uuid_rec,
+         uuid_rpos TYPE zonta_oc_fetchrp-uuid_rpos,
+       END OF ty_item.
+
 DATA: gt_header  TYPE balhdr_t,
       gt_delete  TYPE balhdr_t,
       gt_date    TYPE bal_r_date,
@@ -46,11 +57,16 @@ DATA: gt_header  TYPE balhdr_t,
       gv_deleted TYPE i,
       gv_skipped TYPE i,
       gv_error   TYPE i,
-      gv_exlog   TYPE i.
+      gv_exlog   TYPE i,
+      gv_fetch   TYPE i,
+      gv_fetcp   TYPE i,
+      gv_orph    TYPE i.
 
 CONSTANTS: c_i      TYPE char1  VALUE 'I',
            c_eq     TYPE char2  VALUE 'EQ',
            c_le     TYPE char2  VALUE 'LE',
+           c_e      TYPE char1  VALUE 'E',
+           c_r      TYPE char1  VALUE 'R',
            c_green  TYPE icon_d VALUE '@08@',
            c_yellow TYPE icon_d VALUE '@09@',
            c_red    TYPE icon_d VALUE '@0A@'.
@@ -74,11 +90,17 @@ SELECTION-SCREEN END OF BLOCK b2.
 SELECTION-SCREEN BEGIN OF BLOCK b3 WITH FRAME TITLE TEXT-t03.
   PARAMETERS: p_expi AS CHECKBOX DEFAULT 'X',
               p_prot AS CHECKBOX,
-              p_exlo AS CHECKBOX,
               p_test AS CHECKBOX DEFAULT 'X',
               p_pack TYPE i DEFAULT 500,
               p_list AS CHECKBOX DEFAULT 'X'.
 SELECTION-SCREEN END OF BLOCK b3.
+
+SELECTION-SCREEN BEGIN OF BLOCK b4 WITH FRAME TITLE TEXT-t04.
+  PARAMETERS: p_exlo AS CHECKBOX,
+              p_fetc AS CHECKBOX,
+              p_pend AS CHECKBOX,
+              p_orph AS CHECKBOX.
+SELECTION-SCREEN END OF BLOCK b4.
 
 *&---------------------------------------------------------------------*
 *& Events
@@ -106,6 +128,14 @@ START-OF-SELECTION.
 
   IF p_exlo = abap_true.
     PERFORM delete_exec_logs.
+  ENDIF.
+
+  IF p_fetc = abap_true.
+    PERFORM delete_fetch_logs.
+  ENDIF.
+
+  IF p_orph = abap_true.
+    PERFORM delete_orphan_items.
   ENDIF.
 
 END-OF-SELECTION.
@@ -495,6 +525,156 @@ FORM delete_exec_logs.
 ENDFORM.
 
 *&---------------------------------------------------------------------*
+*&      Form  DELETE_FETCH_LOGS
+*&---------------------------------------------------------------------*
+*       Deletes the log of the sent json (ZONTA_OC_FETCH_R and its
+*       items in ZONTA_OC_FETCHRP). The items are deleted before their
+*       header, so no orphan record is left behind.
+*----------------------------------------------------------------------*
+FORM delete_fetch_logs.
+
+  DATA: lt_head   TYPE STANDARD TABLE OF ty_uuid,
+        ls_head   TYPE ty_uuid,
+        lt_item   TYPE STANDARD TABLE OF ty_item,
+        lt_domain TYPE RANGE OF zonta_oc_fetch_r-domainv,
+        ls_domain LIKE LINE OF lt_domain,
+        lt_status TYPE RANGE OF zonta_oc_fetch_r-status_header,
+        ls_status LIKE LINE OF lt_status,
+        lv_cursor TYPE cursor.
+
+  LOOP AT s_subo.
+    CLEAR ls_domain.
+    ls_domain-sign   = s_subo-sign.
+    ls_domain-option = s_subo-option.
+    ls_domain-low    = s_subo-low.
+    ls_domain-high   = s_subo-high.
+    APPEND ls_domain TO lt_domain.
+  ENDLOOP.
+
+  IF p_pend = abap_false.
+*   Entries still waiting for a reprocessing are excluded
+    ls_status-sign   = 'E'.
+    ls_status-option = c_eq.
+    ls_status-low    = c_e.
+    APPEND ls_status TO lt_status.
+    ls_status-low    = c_r.
+    APPEND ls_status TO lt_status.
+  ENDIF.
+
+* A cursor is used because in the test run nothing is deleted and the
+* selection could not be repeated package by package
+  OPEN CURSOR WITH HOLD lv_cursor FOR
+    SELECT uuid_rec
+      FROM zonta_oc_fetch_r
+      WHERE zdate         IN gt_date
+        AND domainv       IN lt_domain
+        AND status_header IN lt_status.
+
+  DO.
+
+    FETCH NEXT CURSOR lv_cursor INTO TABLE lt_head PACKAGE SIZE p_pack.
+    IF sy-subrc <> 0.
+      CLOSE CURSOR lv_cursor.
+      EXIT.
+    ENDIF.
+
+    IF gv_test = abap_true.
+
+      gv_fetch = gv_fetch + lines( lt_head ).
+
+*     Both key fields are read, FOR ALL ENTRIES would remove the
+*     duplicated rows of a single header
+      SELECT uuid_rec uuid_rpos
+        INTO TABLE lt_item
+        FROM zonta_oc_fetchrp
+        FOR ALL ENTRIES IN lt_head
+        WHERE uuid_rec = lt_head-uuid_rec.
+
+      gv_fetcp = gv_fetcp + lines( lt_item ).
+
+    ELSE.
+
+      LOOP AT lt_head INTO ls_head.
+
+        DELETE FROM zonta_oc_fetchrp WHERE uuid_rec = ls_head-uuid_rec.
+        gv_fetcp = gv_fetcp + sy-dbcnt.
+
+        DELETE FROM zonta_oc_fetch_r WHERE uuid_rec = ls_head-uuid_rec.
+        gv_fetch = gv_fetch + sy-dbcnt.
+
+      ENDLOOP.
+
+      COMMIT WORK AND WAIT.
+
+    ENDIF.
+
+  ENDDO.
+
+ENDFORM.
+
+*&---------------------------------------------------------------------*
+*&      Form  DELETE_ORPHAN_ITEMS
+*&---------------------------------------------------------------------*
+*       Deletes the items of ZONTA_OC_FETCHRP whose header does not
+*       exist any more in ZONTA_OC_FETCH_R. They have no date of their
+*       own, so the date selection does not apply to them.
+*----------------------------------------------------------------------*
+FORM delete_orphan_items.
+
+  DATA: lt_uuid  TYPE STANDARD TABLE OF ty_uuid,
+        lt_exist TYPE STANDARD TABLE OF ty_uuid,
+        ls_uuid  TYPE ty_uuid,
+        lv_count TYPE i.
+
+  SELECT DISTINCT uuid_rec
+    INTO TABLE lt_uuid
+    FROM zonta_oc_fetchrp.
+
+  IF lt_uuid IS INITIAL.
+    RETURN.
+  ENDIF.
+
+  SELECT uuid_rec
+    INTO TABLE lt_exist
+    FROM zonta_oc_fetch_r
+    FOR ALL ENTRIES IN lt_uuid
+    WHERE uuid_rec = lt_uuid-uuid_rec.
+
+  SORT lt_exist BY uuid_rec.
+
+  LOOP AT lt_uuid INTO ls_uuid.
+
+    READ TABLE lt_exist TRANSPORTING NO FIELDS
+         WITH KEY uuid_rec = ls_uuid-uuid_rec BINARY SEARCH.
+    IF sy-subrc = 0.
+      CONTINUE.
+    ENDIF.
+
+    IF gv_test = abap_true.
+      SELECT COUNT(*) FROM zonta_oc_fetchrp
+        WHERE uuid_rec = ls_uuid-uuid_rec.
+      gv_orph = gv_orph + sy-dbcnt.
+      CONTINUE.
+    ENDIF.
+
+    DELETE FROM zonta_oc_fetchrp WHERE uuid_rec = ls_uuid-uuid_rec.
+    gv_orph  = gv_orph + sy-dbcnt.
+    lv_count = lv_count + 1.
+
+    IF lv_count >= p_pack.
+      COMMIT WORK AND WAIT.
+      CLEAR lv_count.
+    ENDIF.
+
+  ENDLOOP.
+
+  IF gv_test = abap_false AND lv_count > 0.
+    COMMIT WORK AND WAIT.
+  ENDIF.
+
+ENDFORM.
+
+*&---------------------------------------------------------------------*
 *&      Form  DISPLAY_RESULT
 *&---------------------------------------------------------------------*
 *       Result of the deletion
@@ -503,13 +683,15 @@ FORM display_result.
 
   DATA: lv_lines TYPE i.
 
-  IF gt_result IS INITIAL AND gv_exlog = 0.
+  IF gt_result IS INITIAL AND gv_exlog = 0 AND gv_fetch = 0
+     AND gv_fetcp = 0 AND gv_orph = 0.
     MESSAGE i134(zon_cl_oc).
     RETURN.
   ENDIF.
 
-  IF p_exlo = abap_true AND sy-batch IS INITIAL.
-    MESSAGE i137(zon_cl_oc) WITH gv_exlog.
+  IF sy-batch IS INITIAL
+     AND ( p_exlo = abap_true OR p_fetc = abap_true OR p_orph = abap_true ).
+    MESSAGE i137(zon_cl_oc) WITH gv_exlog gv_fetch gv_fetcp gv_orph.
   ENDIF.
 
   IF gv_test = abap_true.
@@ -596,6 +778,15 @@ FORM write_summary.
 
   IF p_exlo = abap_true.
     WRITE: / TEXT-s14, gv_exlog.
+  ENDIF.
+
+  IF p_fetc = abap_true.
+    WRITE: / TEXT-s18, gv_fetch.
+    WRITE: / TEXT-s19, gv_fetcp.
+  ENDIF.
+
+  IF p_orph = abap_true.
+    WRITE: / TEXT-s20, gv_orph.
   ENDIF.
 
   IF gv_test = abap_true.

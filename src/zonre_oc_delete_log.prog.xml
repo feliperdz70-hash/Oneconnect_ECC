@@ -96,6 +96,24 @@
     </item>
     <item>
      <ID>I</ID>
+     <KEY>S18</KEY>
+     <ENTRY>Sent json headers deleted:</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>S19</KEY>
+     <ENTRY>Sent json items deleted:</ENTRY>
+     <LENGTH>28</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
+     <KEY>S20</KEY>
+     <ENTRY>Orphan json items deleted:</ENTRY>
+     <LENGTH>30</LENGTH>
+    </item>
+    <item>
+     <ID>I</ID>
      <KEY>T01</KEY>
      <ENTRY>Application log (SLG1)</ENTRY>
      <LENGTH>24</LENGTH>
@@ -113,6 +131,12 @@
      <LENGTH>19</LENGTH>
     </item>
     <item>
+     <ID>I</ID>
+     <KEY>T04</KEY>
+     <ENTRY>One Connect log tables</ENTRY>
+     <LENGTH>25</LENGTH>
+    </item>
+    <item>
      <ID>R</ID>
      <ENTRY>One Connect Log Deletion</ENTRY>
      <LENGTH>24</LENGTH>
@@ -126,13 +150,19 @@
     <item>
      <ID>S</ID>
      <KEY>P_EXLO</KEY>
-     <ENTRY>Also delete ZONTA_OC_EXLOG</ENTRY>
-     <LENGTH>34</LENGTH>
+     <ENTRY>Delete ZONTA_OC_EXLOG</ENTRY>
+     <LENGTH>29</LENGTH>
     </item>
     <item>
      <ID>S</ID>
      <KEY>P_EXPI</KEY>
      <ENTRY>Only logs past expiry date</ENTRY>
+     <LENGTH>34</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_FETC</KEY>
+     <ENTRY>Delete ZONTA_OC_FETCH_R/RP</ENTRY>
      <LENGTH>34</LENGTH>
     </item>
     <item>
@@ -149,9 +179,21 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_ORPH</KEY>
+     <ENTRY>Incl. orphan json items</ENTRY>
+     <LENGTH>31</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_PACK</KEY>
      <ENTRY>Package size for commit</ENTRY>
      <LENGTH>31</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_PEND</KEY>
+     <ENTRY>Incl. pending reprocessing</ENTRY>
+     <LENGTH>34</LENGTH>
     </item>
     <item>
      <ID>S</ID>
@@ -286,6 +328,24 @@
       </item>
       <item>
        <ID>I</ID>
+       <KEY>S18</KEY>
+       <ENTRY>Cabeceras de json borradas:</ENTRY>
+       <LENGTH>27</LENGTH>
+      </item>
+      <item>
+       <ID>I</ID>
+       <KEY>S19</KEY>
+       <ENTRY>Posiciones de json borradas:</ENTRY>
+       <LENGTH>28</LENGTH>
+      </item>
+      <item>
+       <ID>I</ID>
+       <KEY>S20</KEY>
+       <ENTRY>Posiciones huérfanas borradas:</ENTRY>
+       <LENGTH>30</LENGTH>
+      </item>
+      <item>
+       <ID>I</ID>
        <KEY>T01</KEY>
        <ENTRY>Log de aplicación (SLG1)</ENTRY>
        <LENGTH>24</LENGTH>
@@ -303,6 +363,12 @@
        <LENGTH>19</LENGTH>
       </item>
       <item>
+       <ID>I</ID>
+       <KEY>T04</KEY>
+       <ENTRY>Tablas de log One Connect</ENTRY>
+       <LENGTH>25</LENGTH>
+      </item>
+      <item>
        <ID>R</ID>
        <ENTRY>Borrado de Logs One Connect</ENTRY>
        <LENGTH>27</LENGTH>
@@ -316,14 +382,20 @@
       <item>
        <ID>S</ID>
        <KEY>P_EXLO</KEY>
-       <ENTRY>Borrar también ZONTA_OC_EXLOG</ENTRY>
-       <LENGTH>37</LENGTH>
+       <ENTRY>Borrar ZONTA_OC_EXLOG</ENTRY>
+       <LENGTH>29</LENGTH>
       </item>
       <item>
        <ID>S</ID>
        <KEY>P_EXPI</KEY>
        <ENTRY>Sólo logs con caducidad vencida</ENTRY>
        <LENGTH>39</LENGTH>
+      </item>
+      <item>
+       <ID>S</ID>
+       <KEY>P_FETC</KEY>
+       <ENTRY>Borrar ZONTA_OC_FETCH_R/RP</ENTRY>
+       <LENGTH>34</LENGTH>
       </item>
       <item>
        <ID>S</ID>
@@ -339,9 +411,21 @@
       </item>
       <item>
        <ID>S</ID>
+       <KEY>P_ORPH</KEY>
+       <ENTRY>Incl. posiciones huérfanas</ENTRY>
+       <LENGTH>34</LENGTH>
+      </item>
+      <item>
+       <ID>S</ID>
        <KEY>P_PACK</KEY>
        <ENTRY>Tamaño de paquete (commit)</ENTRY>
        <LENGTH>34</LENGTH>
+      </item>
+      <item>
+       <ID>S</ID>
+       <KEY>P_PEND</KEY>
+       <ENTRY>Incl. pendientes de reproceso</ENTRY>
+       <LENGTH>37</LENGTH>
       </item>
       <item>
        <ID>S</ID>
