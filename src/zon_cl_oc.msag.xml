@@ -785,6 +785,60 @@
      <ARBGB>ZON_CL_OC</ARBGB>
      <MSGNR>129</MSGNR>
     </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>130</MSGNR>
+     <TEXT>Fill either the date range or the age in days, not both.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>131</MSGNR>
+     <TEXT>The age in days must not be negative.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>132</MSGNR>
+     <TEXT>The package size must be greater than zero.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>133</MSGNR>
+     <TEXT>You are not authorized to delete logs for object &amp;1.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>134</MSGNR>
+     <TEXT>No logs were found for the given selection.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>135</MSGNR>
+     <TEXT>&amp;1 log(s) were deleted from the application log.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>136</MSGNR>
+     <TEXT>Test run: &amp;1 log(s) would be deleted.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>137</MSGNR>
+     <TEXT>&amp;1 entry(ies) were deleted from table ZONTA_OC_EXLOG.</TEXT>
+    </T100>
+    <T100>
+     <SPRSL>E</SPRSL>
+     <ARBGB>ZON_CL_OC</ARBGB>
+     <MSGNR>138</MSGNR>
+     <TEXT>Deletion cancelled, the report continues as a test run.</TEXT>
+    </T100>
    </T100>
   </asx:values>
  </asx:abap>
