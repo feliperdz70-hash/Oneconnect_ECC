@@ -229,20 +229,56 @@ Los seis objetos ABAP de la PoC se crean en este orden. **El orden importa**: ca
 
 ### 6.2 Crear el paquete
 
-1. Clic derecho sobre `$TMP` o sobre el nodo de la estructura de paquetes → `New` → `ABAP Package`.
+1. `File` → `New` → `Other` → `ABAP` → `ABAP Package`.
 2. Cumplimentar:
 
-| Campo | Valor |
-|---|---|
-| Name | `ZPOC_API_MIG` |
-| Description | `PoC migración interfaces PI/PO a APIs` |
-| Package Type | `Development` |
-| Software Component | `HOME` |
-| Transport Layer | El del sistema (habitualmente `ZDEV`) |
+| Campo | Valor | Nota |
+|---|---|---|
+| Name | `ZPOC_API_MIG` | |
+| Description | `PoC migración interfaces PI/PO a APIs` | |
+| **Package Type** | **`Development`** | **Crítico.** Ver el aviso siguiente |
+| **ABAP Language Version** | `ABAP for Cloud Development` | Recomendado. Ver §6.2.1 |
+| Superpackage | *(vacío)* | Ver el aviso siguiente |
+| Software Component | `HOME` | |
+| Transport Layer | El del sistema (habitualmente `ZDEV`) | |
 
 3. Asignar una **orden de transporte de workbench** nueva. Anotar su número: será el vehículo de todos los objetos de la PoC.
 
 > El paquete es nuevo e independiente del paquete `ZONECONNECT` existente. Los desarrollos de la PoC no deben mezclarse con el código ECC heredado del repositorio.
+
+#### Error frecuente: `Structure packages cannot contain development objects`
+
+Si al crear la vista CDS del paso §6.4 el asistente muestra este error y bloquea el botón `Finish`, **el problema no es la CDS sino el paquete de destino**. En SAP solo un tipo de paquete admite objetos:
+
+| Tipo de paquete | Puede contener |
+|---|---|
+| **Development** | Objetos: CDS, tablas, clases, programas |
+| **Main** | Solo subpaquetes |
+| **Structure** | Solo paquetes principales |
+
+Comprobación: clic derecho sobre el paquete → `Properties` (`Alt+Enter`) → recuadro *Package Properties*. Verificar dos campos:
+
+| Campo | Valor que bloquea | Valor correcto |
+|---|---|---|
+| `Package Type` | `Structure` o `Main` | `Development` |
+| `Adding further objects not possible` | Marcado | Sin marcar |
+
+**El tipo de paquete no se puede cambiar después de crearlo**: ADT muestra el desplegable deshabilitado. La solución es crear un paquete nuevo de tipo `Development`, no intentar reparar el existente.
+
+> **Dejar el superpaquete vacío.** Asignar el paquete de desarrollo a un paquete de estructura reproduce el mismo error: la jerarquía admite estructura → principal → desarrollo, nunca estructura → desarrollo directamente. Si la política del landscape exige colgarlo de una estructura existente, hay que crear antes un paquete de tipo `Main` intermedio.
+
+#### 6.2.1 Versión de lenguaje ABAP y clean core
+
+El campo `Default ABAP Language Version` del paquete determina si la PoC cumple clean core de forma verificable o solo por disciplina:
+
+| Valor | Consecuencia |
+|---|---|
+| `Standard ABAP` | Extensibilidad clásica (*tier 3*). El compilador no impide usar objetos no liberados |
+| **`ABAP for Cloud Development`** | Developer extensibility (*tier 1*). El compilador **rechaza** cualquier objeto sin contrato de liberación C1 |
+
+Con `ABAP for Cloud Development`, el cumplimiento deja de depender de que el desarrollador se acuerde y pasa a ser un control técnico. Además resuelve por sí solo una duda de esta PoC: si la tabla de §6.3 activa con los elementos de datos estándar `kunnr`, `ort01`, `regio` y `land1`, es que están liberados; si no, hay que sustituirlos por elementos propios.
+
+> **Fijarlo al crear el paquete.** Cambiar la versión de lenguaje más tarde obliga a recompilar y corregir todo lo ya construido. Si se prefiere no arriesgar el avance de la PoC, puede crearse como `Standard ABAP` y migrarse después, asumiendo que hasta entonces el desarrollo queda en extensibilidad clásica.
 
 ### 6.3 Tabla de persistencia `ZTCUSTOMER`
 
