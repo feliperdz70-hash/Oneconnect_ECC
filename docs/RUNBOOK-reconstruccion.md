@@ -581,7 +581,20 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/po
 
 > **El campo `URL` del proxy lleva solo la ruta**, sin host: el host lo aporta el API Provider.
 
-- [ ] **G4-bis. Desplegar el proxy.** Recién creado queda en **`Not Deployed`** y la URL pública **no existe**. Menú `...` de la fila → `Deploy`.
+- [ ] **G4-bis. Desplegar el proxy.** Recién creado queda en **`Not Deployed`**. Abrir el proxy por su nombre (la acción vive en la pantalla de detalle, no en el menú `...` de la lista) y pulsar **`Deploy`**.
+
+> ### Trampa 17 — `ApplicationNotFound`
+>
+> Un proxy creado pero **no desplegado** devuelve esto, y conviene saber leerlo porque dice exactamente lo que pasa:
+>
+> ```json
+> {"fault":{"faultstring":"Unable to identify proxy for host: default and url: /poc/customer/v1/$metadata",
+>  "detail":{"errorcode":"messaging.adaptors.http.flow.ApplicationNotFound"}}}
+> ```
+>
+> Significa: *la petición llegó al gateway correcto, pero ningún proxy desplegado atiende esa ruta*. Es **buena señal**, no mala: prueba que el host público resuelve, que el TLS funciona y que API Management está vivo. Solo falta el despliegue, o el `API Base Path` no coincide con el que se está llamando.
+>
+> **No confundirlo con el error de Postman** *"Could not get any response"*, que es su mensaje comodín para cualquier fallo de conexión y no distingue entre DNS, TLS, proxy corporativo y host inexistente. **Ante ese mensaje, probar siempre la URL en el navegador primero:** devuelve el error real en una línea, como este `ApplicationNotFound`, en lugar de cuatro hipótesis genéricas.
 - [ ] **G5.** Policies: `Key Value Map Operations` + `Basic Authentication` en el target, `Verify API Key` en el proxy, restricción de verbos, y **propagación del token CSRF y la cookie**.
 - [ ] **G6.** Product `PoC_Migracion_Interfaces` → publicar → Application en el Developer Hub → **copiar la API key**.
 
