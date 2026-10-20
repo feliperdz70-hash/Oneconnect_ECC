@@ -165,7 +165,7 @@ define root view entity ZCX_CUSTOMER
 
 ### B5. Behavior definition `ZCX_CUSTOMER`
 
-- [ ] Clic derecho sobre la CDS → `New Behavior Definition` → Implementation Type **`Managed`**
+- [x] Clic derecho sobre la CDS → `New Behavior Definition` → Implementation Type **`Managed`** — **activa**.
 
 ```abap
 managed implementation in class zbp_cx_customer unique;
@@ -200,7 +200,7 @@ authorization master ( global )
 
 ### B6. Clase `ZBP_CX_CUSTOMER`
 
-- [ ] Cursor sobre `zbp_cx_customer` en la primera línea → `Ctrl+1` → `Create behavior implementation class`
+- [x] Cursor sobre `zbp_cx_customer` en la primera línea → `Ctrl+1` → `Create behavior implementation class` — **activa**.
 
 > **Trampa 8 — `Ctrl+1` no hace nada.** El quick fix solo aparece sobre un error ya marcado. Hay que **guardar (`Ctrl+S`) e intentar activar (`Ctrl+F3`) primero**; si `Problems` muestra `0 items`, no hay nada que corregir y por eso no ofrece opciones.
 >
@@ -243,8 +243,10 @@ CLASS lhc_customer IMPLEMENTATION.
 ENDCLASS.
 ```
 
-- [ ] `Ctrl+F3` sobre la clase.
-- [ ] Volver a la behavior definition y `Ctrl+F3`. **Ahora sí debe activar.**
+- [x] `Ctrl+F3` sobre la clase.
+- [x] Volver a la behavior definition y `Ctrl+F3`. **Activada** — *"Active object ZCX_CUSTOMER generated"*.
+
+> Que la BDEF active es prueba indirecta de que la clase también lo está: con `authorization master ( global )`, el activador comprueba que `get_global_authorizations` existe y está implementado.
 
 ### B7. Service definition `ZAPI_CUSTOMER`
 
