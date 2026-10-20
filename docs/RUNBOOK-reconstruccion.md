@@ -546,14 +546,42 @@ Esperado: **200** o **204 No Content**.
 
 | Campo | Valor |
 |---|---|
-| Name | `S4H_POC_PROVIDER` |
+| Name | `S4H_POC_PROVIDER` — ✅ creado |
 | Type | `On-Premise` |
 | **Use Cloud Connector** | ✅ |
 | Host / Port | `s4h-poc.virtual` / `50000` |
 | Use SSL | **Desmarcado** — el backend va por HTTP |
 
+> **El host del provider es el VIRTUAL del Cloud Connector, no la IP del servidor.** API Management habla con `s4h-poc.virtual:50000` y el Cloud Connector traduce a `34.228.25.48:50000`. Poner la IP real no funciona: no hay ruta directa de BTP al servidor.
+
+### Host público de API Management — confirmado 2026-10-20
+
+```
+https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com
+```
+
+La URL que consumirá Postman en el bloque H es ese host más el `API Base Path`:
+
+```
+https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/poc/customer/v1
+```
+
 - [ ] **G3.** Key Value Map `poc_backend_creds`, **cifrado**, con `username` y `password`.
-- [ ] **G4.** API Proxy `PoC_Customer_v1`, base path `/poc/customer/v1`, sobre el provider.
+- [x] **G4.** API Proxy `PoC_Customer_v1`, base path `/poc/customer/v1`, sobre el provider. Creado como `PoC_Customer_v1_1_0_0` — API Management le añade la versión al nombre interno, no afecta a la URL.
+
+| Campo | Valor usado |
+|---|---|
+| Select | `API Provider` |
+| API Provider | `S4H_POC_PROVIDER` |
+| URL | `/sap/opu/odata4/sap/zapi_customer_o4/srvd_a2x/sap/zapi_customer/0001` |
+| API Base Path | `/poc/customer/v1` |
+| **Service Type** | **`REST`** |
+
+> **Trampa 16 — `Service Type: ODATA` no sirve aquí.** Ese tipo hace que API Management intente descubrir el catálogo de servicios, pensado para OData **V2**. Con un servicio **V4 A2X** como este, el descubrimiento falla. Con `REST` el proxy pasa las peticiones tal cual, que es lo que se quiere en un escenario de migración de interfaces.
+
+> **El campo `URL` del proxy lleva solo la ruta**, sin host: el host lo aporta el API Provider.
+
+- [ ] **G4-bis. Desplegar el proxy.** Recién creado queda en **`Not Deployed`** y la URL pública **no existe**. Menú `...` de la fila → `Deploy`.
 - [ ] **G5.** Policies: `Key Value Map Operations` + `Basic Authentication` en el target, `Verify API Key` en el proxy, restricción de verbos, y **propagación del token CSRF y la cookie**.
 - [ ] **G6.** Product `PoC_Migracion_Interfaces` → publicar → Application en el Developer Hub → **copiar la API key**.
 
