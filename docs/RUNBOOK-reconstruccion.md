@@ -638,8 +638,50 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5
 
 ## Bloque H — Validación F4: Postman vía BTP
 
+**URL base, confirmada en funcionamiento el 2026-10-20:**
+
+```
+https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5a2c3d7trial/100/poc/customer/v1
+```
+
+> ### Hito — cadena completa demostrada
+>
+> La primera respuesta que llegó desde Postman a través de BTP fue un **406** emitido por el propio S/4HANA:
+>
+> ```json
+> "ComponentId": "BC-ESI-ESF-GW", "ServiceRepository": "SRVD_A2X",
+> "ServiceId": "ZAPI_CUSTOMER", "ServiceVersion": "0001"
+> ```
+>
+> Un error de negociación de contenido emitido por el Gateway prueba dos cosas de una vez: que la petición atravesó **Postman → API Management → Cloud Connector → S/4HANA** hasta el servicio, y que la **autenticación funcionó** — de lo contrario habría devuelto 401 antes de mirar las cabeceras.
+
+> ### Trampa 20 — `$metadata` solo existe en XML
+>
+> Pedir `$metadata` con `Accept: application/json` devuelve **406 Not Acceptable** con el código `/IWCOR/CX_OD_NOT_ACCEPTABLE`. En OData V4 el documento de metadatos es EDMX, es decir XML.
+>
+> - Para `$metadata` → **`Accept: application/xml`**
+> - Para los datos (`/Customer`) → **`Accept: application/json`**
+>
+> Es un error del cliente, no del servicio: verlo significa que la cadena entera ya funciona.
+
+> ### Trampa 21 — Postman en portátil corporativo
+>
+> *"Could not get any response"* mientras el **navegador sí llega** a la misma URL apunta a Postman, no a la red. En un equipo con inspección TLS corporativa, el navegador confía en la CA de la empresa porque está en el almacén de Windows, pero Postman usa el suyo propio y rechaza la conexión.
+>
+> Ajustes (`Ctrl` + `,`, **no** el engranaje de la lista de entornos, que abre *Manage Environments*):
+>
+> | Pestaña | Ajuste | Valor |
+> |---|---|---|
+> | `General` | `SSL certificate verification` | OFF |
+> | `General` | `Request timeout in ms` | `0` |
+> | `Proxy` | `Use the system proxy` | ON |
+>
+> **Trampa 21-bis — el método pegado en la URL.** Copiar una línea del tipo `GET  https://...` mete el texto `GET` dentro del campo de la URL. Postman intenta conectar a `GET%20%20https://...` y devuelve el mismo *"Could not get any response"*, que no distingue entre una URL mal formada, un fallo de DNS y un cortafuegos.
+
+
+
 - [ ] **H1.** Importar `docs/postman/ET-001-PoC-S4H-Customer-API.postman_collection.json` y su entorno.
-- [ ] **H2.** Rellenar `apim_host`, `api_key`, `backend_url`, `sap_client`, `sap_user`, `sap_password`.
+- [ ] **H2.** Rellenar `api_key` y `sap_password`. El resto de variables ya vienen con los valores reales.
 - [ ] **H3.** Ejecutar las carpetas `00` a `05` en orden.
 - [ ] **H4.** Confirmar el registro en `SE16N`.
 
