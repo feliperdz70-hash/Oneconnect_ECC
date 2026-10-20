@@ -12,9 +12,9 @@ Sistema destino: **SAP S/4HANA 2023**. Nada del patrón cambia respecto a 2025.
 
 | Activo | Estado |
 |---|---|
-| Cloud Connector instalado (Temurin 21 + sapcc 2.19.1) | ✅ En el portátil |
-| Subcuenta `POC-CAL` registrada | ✅ `US East (VA) - Azure` → `cf.us21` |
-| Subcuenta `trial` registrada | ✅ `US East (VA) - AWS` → `cf.us10` |
+| Cloud Connector instalado (Temurin 21 + sapcc 2.19.1) | ✅ Reinstalado el 2026-10-20 |
+| Subcuenta `POC-CAL` registrada | ❌ No se rehace: API Management vive en el trial y POC-CAL sigue sin entitlement |
+| Subcuenta `trial` registrada | ⚠️ **Rehacer**: la máquina se reseó el 2026-10-20 |
 | Trial: Integration Suite suscrito | ✅ Plan `trial` |
 | Trial: API Management activo | ✅ `API Modelling` + `Developer Hub` en `Active` |
 | Trial: role collections asignados | ✅ `APIPortal.Administrator`, `APIManagement.SelfService.Administrator`, `AuthGroup.API.Admin` |
@@ -28,6 +28,33 @@ Sistema destino: **SAP S/4HANA 2023**. Nada del patrón cambia respecto a 2025.
 | Entitlement de Integration Suite en `POC-CAL` | Ayax Morales |
 
 La PoC avanza por el **trial** mientras tanto. Replicar en `POC-CAL` después es mecánico.
+
+### Datos de la subcuenta trial
+
+| Dato | Valor |
+|---|---|
+| Subdominio | `e5a2c3d7trial` |
+| Subaccount ID | `1a7df9be-9f92-425c-ba24-31c438682272` |
+| Proveedor / Región | AWS — `US East (VA)` |
+| API Endpoint CF | `https://api.cf.us10-001.hana.ondemand.com` |
+| Cockpit | `https://account.hanatrial.ondemand.com` |
+| Creada | 11 de septiembre de 2026 |
+
+> El `-001` del endpoint es la instancia de Cloud Foundry dentro de la región, no una región distinta: en el Cloud Connector la opción sigue siendo `US East (VA) - AWS`.
+
+### Reinstalación del puesto de trabajo — 2026-10-20
+
+La máquina se reseó y se perdió todo el lado del portátil. Nada de SAP se perdió.
+
+| Paso | Nota |
+|---|---|
+| Temurin **21.0.12.1** | La carpeta real es `jdk-21.0.12.101-hotspot`, con `.101`, aunque `java -version` diga `.1` |
+| `JAVA_HOME` | `setx /M` falla sin consola elevada. La vía fiable es `sysdm.cpl` → Variables de entorno → Variables del sistema |
+| `sapcc-2.19.1-windows-x64.msi` | El primer intento dio *"Installation Incomplete"*; al reintentar instaló sin cambiar nada |
+
+> **No instalar Temurin 25.** Es la LTS más reciente de Adoptium pero no está en la matriz de JVMs certificadas del Cloud Connector. El síntoma de una JVM no soportada es que el servicio instala, arranca y se cae a los pocos segundos, lo que manda a buscar el problema a la configuración de red.
+>
+> **Si no hubiera derechos de administrador:** el paquete `sapcc-2.19.1-windows-x64.zip` (Windows Portable) no los necesita, pero no se instala como servicio: hay que lanzar `go.bat` a mano y dejar la ventana abierta.
 
 ### Nombres de objetos
 
