@@ -46,31 +46,37 @@ La PoC avanza por el **trial** mientras tanto. Replicar en `POC-CAL` después es
 
 ## Bloque A — Reconocer el servidor nuevo
 
-- [ ] **A1.** SAP GUI → menú `Sistema` → `Status`. Anotar release y SP.
-- [ ] **A2.** Transacción **`SMICM`** → `Pasar a` → `Servicios`. **Anotar los puertos HTTP y HTTPS reales.**
-- [ ] **A3.** Anotar host o IP, mandante y usuario de desarrollo.
-- [ ] **A4.** Si está en Azure: **abrir el puerto en el Network Security Group**.
+- [x] **A1.** SAP GUI → menú `Sistema` → `Status`. Release **S/4HANA 2023** (ABAP Platform 7.58).
+- [x] **A2.** Transacción **`SMICM`** → `Pasar a` → `Servicios`. HTTP **50000**, HTTPS **44300**.
+- [x] **A3.** Host **34.228.25.48**, mandante **100**, usuario **BPINST**.
+- [ ] **A4.** El host está en **AWS** (rango `34.x` = EC2). Abrir el puerto de entrada en el **Security Group** de la instancia, no en un NSG de Azure.
 - [ ] **A5.** Probar desde el navegador, con el protocolo explícito:
 
 ```
-http://<host>:<puerto_http>/sap/bc/ping?sap-client=<mandante>
+http://34.228.25.48:50000/sap/bc/ping?sap-client=100
 ```
 
 > **Trampa 1 — el puerto.** No se asume. En el appliance anterior el HTTP era `50000` y el HTTPS `44300`, que no es el patrón habitual (`80NN` / `443NN`). Sale de `SMICM`, no de la intuición.
 >
-> **Trampa 2 — el NSG de Azure.** El ICM puede estar escuchando y aun así no llegar desde fuera. Costó media mañana la primera vez.
+> **Trampa 2 — el cortafuegos del cloud.** El ICM puede estar escuchando y aun así no llegar desde fuera. Costó media mañana la primera vez, con un NSG de Azure. Este servidor está en **AWS**, así que el equivalente es el **Security Group** de la instancia EC2: regla de entrada para TCP 50000 (y 44300 si se usa HTTPS) desde la IP pública del puesto de trabajo.
 >
 > **Trampa 3 — el protocolo.** Escribir la URL sin `http://` hace que Chrome asuma HTTP contra un puerto TLS, y devuelve *"se ha restablecido la conexión"*, que parece un problema de red y no lo es.
 
-**Datos a rellenar antes de seguir:**
+**Datos del servidor — confirmados 2026-10-20:**
 
 | Dato | Valor |
 |---|---|
-| Host / IP | |
-| Puerto HTTP | |
-| Puerto HTTPS | |
-| Mandante | |
-| Usuario de desarrollo | |
+| Host / IP | `34.228.25.48` (AWS EC2, us-east-1) |
+| Puerto HTTP | `50000` |
+| Puerto HTTPS | `44300` |
+| Mandante | `100` |
+| Usuario de desarrollo | `BPINST` |
+| Release | S/4HANA 2023 — ABAP Platform 7.58 |
+| URL base OData V4 | `http://34.228.25.48:50000/sap/opu/odata4/` |
+
+> **Trampa 3-bis — `BPINST` no es el usuario de desarrollo habitual.** En los appliances de SAP CAL, `BPINST` es el usuario de proceso de negocio y `DEVELOPER` el de desarrollo. Antes de empezar el Bloque B hay que confirmar que `BPINST` tiene **`S_DEVELOP`** y una **clave de desarrollador** registrada; si al crear el primer objeto en ADT pide clave de acceso de desarrollador o rechaza la creación, cambiar a `DEVELOPER`.
+>
+> **Trampa 3-ter — la IP pública de EC2 cambia al reiniciar** salvo que tenga una Elastic IP. Si mañana deja de responder, lo primero que hay que revisar es si la IP sigue siendo `34.228.25.48`, antes de tocar nada más: el mapeo del Cloud Connector (Bloque E) y el Destination (Bloque F) la llevan escrita.
 
 ---
 
@@ -295,8 +301,8 @@ Sea `BASE` la Service URL del paso B10.
 - [ ] **D2.** Metadatos
 
 ```http
-GET {BASE}/$metadata?sap-client=<mandante>
-Authorization: Basic <usuario:contraseña>
+GET {BASE}/$metadata?sap-client=100
+Authorization: Basic <BPINST:contraseña en base64 — en Postman, pestaña Authorization → Basic Auth>
 ```
 
 Esperado: **200** + EDMX con la entidad `Customer` y los cinco campos.
@@ -304,8 +310,8 @@ Esperado: **200** + EDMX con la entidad `Customer` y los cinco campos.
 - [ ] **D3.** Token CSRF
 
 ```http
-GET {BASE}/?sap-client=<mandante>
-Authorization: Basic <usuario:contraseña>
+GET {BASE}/?sap-client=100
+Authorization: Basic <BPINST:contraseña en base64 — en Postman, pestaña Authorization → Basic Auth>
 X-CSRF-Token: Fetch
 ```
 
@@ -314,8 +320,8 @@ De la respuesta, pestaña **`Headers`**, copiar **`X-CSRF-Token`**.
 - [ ] **D4.** Alta
 
 ```http
-POST {BASE}/Customer?sap-client=<mandante>
-Authorization: Basic <usuario:contraseña>
+POST {BASE}/Customer?sap-client=100
+Authorization: Basic <BPINST:contraseña en base64 — en Postman, pestaña Authorization → Basic Auth>
 X-CSRF-Token: <token de D3>
 Content-Type: application/json
 
@@ -333,14 +339,14 @@ Esperado: **201 Created**.
 - [ ] **D5.** Consulta
 
 ```http
-GET {BASE}/Customer?sap-client=<mandante>
+GET {BASE}/Customer?sap-client=100
 ```
 
 - [ ] **D6.** **Actualización — el paso que quedó pendiente**
 
 ```http
-PATCH {BASE}/Customer('0000001000')?sap-client=<mandante>
-Authorization: Basic <usuario:contraseña>
+PATCH {BASE}/Customer('0000001000')?sap-client=100
+Authorization: Basic <BPINST:contraseña en base64 — en Postman, pestaña Authorization → Basic Auth>
 X-CSRF-Token: <token de D3>
 Content-Type: application/json
 
@@ -348,6 +354,10 @@ Content-Type: application/json
 ```
 
 Esperado: **200** o **204 No Content**.
+
+> **Trampa 9-bis — el `If-Match`.** Si el PATCH devuelve **428 Precondition Required** o **412 Precondition Failed**, añadir la cabecera **`If-Match: *`**. Pasa cuando Gateway considera que la entidad tiene control optimista de concurrencia. El BDEF de este PoC no declara ningún campo `etag`, así que no debería hacer falta, pero es el primer intento ante esos dos códigos.
+>
+> **Trampa 9-ter — PATCH, no PUT.** OData V4 de RAP acepta `PATCH` (actualización parcial) y rechaza `PUT`. Enviar solo los campos que cambian; mandar la entidad entera con `PUT` devuelve error de método no soportado.
 
 - [ ] **D7.** Verificar en SAP: **`SE16N`** sobre `ZCXTA_CUSTOMERS`. El campo `poliza` debe mostrar el valor nuevo.
 
@@ -371,12 +381,14 @@ Esperado: **200** o **204 No Content**.
 | Pantalla | Campo | Valor |
 |---|---|---|
 | 1 | Back-End Type | `ABAP System` |
-| 2 | Protocol | `HTTP` + `Use TLS` solo si se va por HTTPS |
-| 3 | Internal Host / Port | *(host y puerto del bloque A)* |
-| 4 | Virtual Host / Port | `s4h-poc.virtual` / *(mismo puerto)* |
+| 2 | Protocol | `HTTP` — **sin** marcar `Use TLS` |
+| 3 | Internal Host / Port | `34.228.25.48` / `50000` |
+| 4 | Virtual Host / Port | `s4h-poc.virtual` / `50000` |
 | 5 | Principal Type | `None` |
-| 6 | System ID | *(SID del sistema nuevo)* |
+| 6 | System ID | *(SID del sistema nuevo, de `Sistema → Status`)* |
 | 7 | Host in Request Header | `Use Virtual Host` |
+
+> Se va por HTTP/50000 deliberadamente, igual que en el servidor anterior: evita por completo la trampa 13 (certificado autofirmado del appliance). El tramo Cloud Connector → BTP sigue cifrado por el túnel; el tramo sin cifrar es solo Cloud Connector → S/4HANA. Queda anotado como **desviación consciente del PoC**: en productivo este salto va por HTTPS con certificado de una CA reconocida.
 
 - [ ] **E3.** Con la fila seleccionada, panel **`Resources`** → `+`
 
@@ -403,11 +415,12 @@ Esperado: **200** o **204 No Content**.
 
 | Campo | Valor |
 |---|---|
-| URL | `http://s4h-poc.virtual:<puerto>` |
+| URL | `http://s4h-poc.virtual:50000` |
 | Proxy Type | **`OnPremise`** |
 | Authentication | `BasicAuthentication` |
-| User / Password | *(usuario del bloque A)* |
-| `sap-client` | *(mandante)* |
+| User | `BPINST` |
+| Password | *(la del usuario)* |
+| `sap-client` | `100` |
 
 - [ ] **F2.** **`Check Connection`** → *"Se puede acceder al back end desde el conector de la nube"*.
 

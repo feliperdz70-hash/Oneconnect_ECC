@@ -186,7 +186,7 @@
             "description": "Alta del primer registro. Respuesta esperada 201 Created.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Customer\": \"{{test_customer}}\",\n  \"CityName\": \"Monterrey\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\"\n}",
+              "raw": "{\n  \"Customer\": \"{{test_customer}}\",\n  \"CityName\": \"Monterrey\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\",\n  \"PolicyNumber\": \"{{test_policy}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -241,7 +241,7 @@
             "description": "Segundo registro, para que las consultas devuelvan más de una fila.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Customer\": \"{{test_customer_2}}\",\n  \"CityName\": \"Guadalajara\",\n  \"Region\": \"JAL\",\n  \"Country\": \"MX\"\n}",
+              "raw": "{\n  \"Customer\": \"{{test_customer_2}}\",\n  \"CityName\": \"Guadalajara\",\n  \"Region\": \"JAL\",\n  \"Country\": \"MX\",\n  \"PolicyNumber\": \"POL0000002\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -427,7 +427,7 @@
       "name": "04 — Modificación y baja",
       "item": [
         {
-          "name": "R10 - Modificación (PATCH)",
+          "name": "R10 - Modificación de la póliza (PATCH)",
           "request": {
             "method": "PATCH",
             "header": [
@@ -445,10 +445,10 @@
               }
             ],
             "url": "{{apim_host}}{{base_path}}/{{entity_set}}('{{test_customer}}')",
-            "description": "PATCH envía solo los campos que cambian. PUT exigiría el registro completo.",
+            "description": "Actualización parcial de un solo campo. Es la operación que cierra el caso de uso del PoC: el alta la hace el sistema origen y la póliza la actualiza un proceso posterior. Si devuelve 428 o 412, añadir la cabecera If-Match: * (ver el runbook, bloque D6).",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"CityName\": \"Monterrey Centro\"\n}",
+              "raw": "{\n  \"PolicyNumber\": \"{{test_policy_updated}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -606,7 +606,7 @@
             "description": "Criterio CA-17. Si el alta se completa, la protección CSRF está deshabilitada en el backend: es un hallazgo de seguridad.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Customer\": \"0000009999\",\n  \"CityName\": \"Prueba negativa\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\"\n}",
+              "raw": "{\n  \"Customer\": \"0000009999\",\n  \"CityName\": \"Prueba negativa\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\",\n  \"PolicyNumber\": \"POL0009999\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -753,7 +753,7 @@
             "description": "Cierra la validación F2. No avanzar a la configuración de BTP sin obtener 201.",
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"Customer\": \"0000000001\",\n  \"CityName\": \"Prueba F2\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\"\n}",
+              "raw": "{\n  \"Customer\": \"0000000001\",\n  \"CityName\": \"Prueba F2\",\n  \"Region\": \"NLE\",\n  \"Country\": \"MX\",\n  \"PolicyNumber\": \"POL0000001\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -791,7 +791,66 @@
           ]
         },
         {
-          "name": "F2.4 - Limpieza del registro de F2",
+          "name": "F2.4 - Modificación de la póliza contra el backend (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "X-CSRF-Token",
+                "value": "{{csrf_token_backend}}"
+              }
+            ],
+            "url": "{{backend_url}}/Customer('0000000001')?sap-client={{sap_client}}",
+            "description": "El paso que quedó pendiente en el servidor anterior. Demuestra la actualización transaccional contra el backend, sin BTP de por medio. Verificar después en SE16N sobre ZCXTA_CUSTOMERS que el campo POLIZA vale POL9999999. Si devuelve 428 o 412, añadir If-Match: *.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"PolicyNumber\": \"POL9999999\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "auth": {
+              "type": "basic",
+              "basic": [
+                {
+                  "key": "username",
+                  "value": "{{sap_user}}",
+                  "type": "string"
+                },
+                {
+                  "key": "password",
+                  "value": "{{sap_password}}",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Código de estado 200 o 204\", function () {",
+                  "    pm.expect(pm.response.code).to.be.oneOf([200, 204]);",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "F2.5 - Limpieza del registro de F2",
           "request": {
             "method": "DELETE",
             "header": [
