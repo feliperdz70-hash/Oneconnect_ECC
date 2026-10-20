@@ -645,6 +645,11 @@
               {
                 "key": "Accept",
                 "value": "application/xml"
+              },
+              {
+                "key": "sap-client",
+                "value": "{{sap_client}}",
+                "description": "Refuerzo: el runtime de OData V4 puede ignorar sap-client como parametro de URL (KBA de SAP). La cabecera es el seguro."
               }
             ],
             "url": "{{backend_url}}/$metadata?sap-client={{sap_client}}",
@@ -691,6 +696,11 @@
               {
                 "key": "X-CSRF-Token",
                 "value": "Fetch"
+              },
+              {
+                "key": "sap-client",
+                "value": "{{sap_client}}",
+                "description": "Refuerzo: el runtime de OData V4 puede ignorar sap-client como parametro de URL (KBA de SAP). La cabecera es el seguro."
               }
             ],
             "url": "{{backend_url}}/?sap-client={{sap_client}}",
@@ -747,6 +757,11 @@
               {
                 "key": "X-CSRF-Token",
                 "value": "{{csrf_token_backend}}"
+              },
+              {
+                "key": "sap-client",
+                "value": "{{sap_client}}",
+                "description": "Refuerzo: el runtime de OData V4 puede ignorar sap-client como parametro de URL (KBA de SAP). La cabecera es el seguro."
               }
             ],
             "url": "{{backend_url}}/Customer?sap-client={{sap_client}}",
@@ -806,6 +821,11 @@
               {
                 "key": "X-CSRF-Token",
                 "value": "{{csrf_token_backend}}"
+              },
+              {
+                "key": "sap-client",
+                "value": "{{sap_client}}",
+                "description": "Refuerzo: el runtime de OData V4 puede ignorar sap-client como parametro de URL (KBA de SAP). La cabecera es el seguro."
               }
             ],
             "url": "{{backend_url}}/Customer('0000000001')?sap-client={{sap_client}}",
@@ -855,8 +875,17 @@
             "method": "DELETE",
             "header": [
               {
+                "key": "Accept",
+                "value": "application/json"
+              },
+              {
                 "key": "X-CSRF-Token",
                 "value": "{{csrf_token_backend}}"
+              },
+              {
+                "key": "sap-client",
+                "value": "{{sap_client}}",
+                "description": "Refuerzo: el runtime de OData V4 puede ignorar sap-client como parametro de URL (KBA de SAP). La cabecera es el seguro."
               }
             ],
             "url": "{{backend_url}}/Customer('0000000001')?sap-client={{sap_client}}",

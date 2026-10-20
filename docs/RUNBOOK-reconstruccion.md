@@ -267,10 +267,38 @@ define service ZAPI_CUSTOMER {
 | **Binding Type** | **`OData V4 - Web API`** |
 | Service Definition | `ZAPI_CUSTOMER` |
 
-- [ ] `Ctrl+F3` y botón **`Publish`**.
+- [ ] `Ctrl+F3` para **activar** el binding.
+
+### B8-bis. Publicar el grupo de servicios — `/IWFND/V4_ADMIN`
+
+> **Trampa 14 — activar no es publicar, y el botón `Publish` de ADT no sirve en on-premise.**
+>
+> Son dos cosas distintas: activar registra el grupo de servicios, **publicar** es lo que lo hace alcanzable por HTTP. En S/4HANA on-premise el botón `Publish` del editor de Service Binding normalmente **no funciona** — el propio material de SAP (ejercicio RAP610) dice literalmente *"Publishing the local service endpoint of your service binding in on premise systems does not work from within ADT"* y manda usar la transacción.
+>
+> Síntoma si se omite este paso: **404** en todas las llamadas, con el binding en verde y la URL bien escrita. En `/IWFND/ERROR_LOG` aparece *"Service group '<nombre>' is not published"*.
+
+- [ ] Transacción **`/n/IWFND/V4_ADMIN`** (o `Alt+F8` sobre el binding desde ADT).
+- [ ] Botón **`Publish Service Groups`**.
+
+| Campo | Valor |
+|---|---|
+| System Alias | **`LOCAL`** |
+| Service Group ID | `ZAPI_CUSTOMER_O4` |
+
+- [ ] Botón **`Get Service Groups`**.
+- [ ] Marcar **solo** la fila `ZAPI_CUSTOMER_O4` — no las entradas default de soporte — y pulsar **`Publish Service Groups`**.
+- [ ] Asignar una orden de **Customizing** (no de Workbench). Confirmar y `Enter`.
+- [ ] Volver a ADT, clic derecho sobre el binding → `Refresh`. Debe figurar como **Published** y mostrar la Service URL.
+
+> **Trampa 14-bis — el mandante de Customizing.** Si ADT rechaza el publish con *"Publishing of ZAPI_CUSTOMER_O4 in Customizing Client Not Allowed"*, es que el mandante 100 está marcado como mandante de Customizing en `SCC4` (**nota SAP 3101976**). La solución es la misma: publicar desde `/IWFND/V4_ADMIN`.
+>
+> **Trampa 14-ter — la publicación no viaja en la orden de Workbench** y es específica de sistema y mandante. Cuando esto se replique a QA y productivo, hay que repetir el paso en cada uno.
+>
+> **503 justo después de publicar:** caché de alias desactualizada. Es transitorio, reintentar.
+
 - [ ] **B9.** Desplegar la entidad `Customer` en el árbol del editor. Deben aparecer **Create, Update y Delete**.
 
-> Si solo aparece *Read*, el binding se publicó antes de activar la behavior definition. Volver a pulsar `Publish`.
+> Si solo aparece *Read*, el binding se publicó antes de activar la behavior definition. Repetir la publicación.
 
 - [ ] **B10.** Copiar la **`Service URL`** que muestra el editor.
 
@@ -308,6 +336,8 @@ Authorization: Basic <BPINST:contraseña en base64 — en Postman, pestaña Auth
 
 Esperado: **200** + EDMX con la entidad `Customer` y los cinco campos.
 
+> **Trampa 8-bis — el mandante por parámetro de URL.** Hay una KBA de SAP que dice que el runtime de OData **V4 ignora `sap-client` cuando viene como parámetro de consulta** (NetWeaver 7.5+ y S/4HANA 1610+). En la práctica muchos sistemas on-premise sí lo resuelven, porque lo procesa el logon de ICF antes que Gateway, pero no está garantizado. Como seguro barato, mandar **además** la cabecera `sap-client: 100`. Si el nodo ICF ya apunta al mandante 100 — lo más probable en este appliance — no hace falta nada, pero conviene no jugarse un ciclo.
+
 - [ ] **D3.** Token CSRF
 
 ```http
@@ -317,6 +347,14 @@ X-CSRF-Token: Fetch
 ```
 
 De la respuesta, pestaña **`Headers`**, copiar **`X-CSRF-Token`**.
+
+> **Trampa 9-quater — las cookies, no solo la cabecera.** El token va atado a la sesión. Hay que devolver en la escritura **todas** las cookies que entregó este GET (`SAP_SESSIONID_S4H_100`, `sap-XSRF_S4H_100`, `sap-usercontext`), sin filtrar por nombre — SAP lo indica expresamente, porque el nombre de la cookie XSRF puede cambiar. **Postman lo hace solo** con su cookie jar si las dos peticiones van al mismo host. En cuanto esto se traslade a `curl`, a un iFlow de CPI o a un script, el POST empieza a devolver **403 "CSRF token validation failed"** con un token que parece correcto: ahí es que faltan las cookies.
+>
+> Pedir el token contra la **raíz del servicio**, con el mismo usuario y el mismo mandante que la escritura. Cambiar de usuario o de mandante entre las dos llamadas invalida el token.
+
+> **Trampa 8-ter — `raw → Text` en vez de `raw → JSON`.** En Postman, si el cuerpo se elige como `Text`, se envía `text/plain` y el servicio responde **415 Unsupported Media Type**. Tiene que ser `Body → raw → JSON`.
+>
+> En un `DELETE` no se manda ni `Content-Type` ni cuerpo.
 
 - [ ] **D4.** Alta
 
