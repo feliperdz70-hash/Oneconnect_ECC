@@ -250,7 +250,7 @@ ENDCLASS.
 
 ### B7. Service definition `ZAPI_CUSTOMER`
 
-- [ ] Clic derecho sobre la CDS → `New Service Definition`
+- [x] Clic derecho sobre la CDS → `New Service Definition` — **activa**.
 
 ```abap
 @EndUserText.label: 'PoC - API transaccional de clientes'
@@ -261,7 +261,7 @@ define service ZAPI_CUSTOMER {
 
 ### B8. Service binding `ZAPI_CUSTOMER_O4`
 
-- [ ] Clic derecho sobre la service definition → `New Service Binding`
+- [x] Clic derecho sobre la service definition → `New Service Binding` — **activo y publicado**.
 
 | Campo | Valor |
 |---|---|
@@ -269,7 +269,7 @@ define service ZAPI_CUSTOMER {
 | **Binding Type** | **`OData V4 - Web API`** |
 | Service Definition | `ZAPI_CUSTOMER` |
 
-- [ ] `Ctrl+F3` para **activar** el binding.
+- [x] `Ctrl+F3` para **activar** el binding.
 
 ### B8-bis. Publicar el grupo de servicios — `/IWFND/V4_ADMIN`
 
@@ -298,24 +298,30 @@ define service ZAPI_CUSTOMER {
 >
 > **503 justo después de publicar:** caché de alias desactualizada. Es transitorio, reintentar.
 
-- [ ] **B9.** Desplegar la entidad `Customer` en el árbol del editor. Deben aparecer **Create, Update y Delete**.
+- [x] **B9.** Entity Set `Customer` visible en el editor del binding.
 
 > Si solo aparece *Read*, el binding se publicó antes de activar la behavior definition. Repetir la publicación.
 
-- [ ] **B10.** Copiar la **`Service URL`** que muestra el editor.
+- [x] **B10.** Service URL confirmada.
 
-**URL a rellenar:**
+**URL real — confirmada contra el navegador, devuelve EDMX 4.0:**
 
 ```
-________________________________________________________
+http://34.228.25.48:50000/sap/opu/odata4/sap/zapi_customer_o4/srvd_a2x/sap/zapi_customer/0001/
 ```
+
+> **La trampa 14 NO se produjo en S4H.** El botón `Publish` del editor de Service Binding funcionó directamente y el endpoint pasó a `Published` sin pasar por `/IWFND/V4_ADMIN`. Se deja documentada porque es un modo de fallo real y frecuente en on-premise, pero en este sistema no hizo falta.
+>
+> **El mandante no hace falta en la URL.** El `$metadata` respondió sin `?sap-client=100`, así que el mandante 100 es el predeterminado del nodo ICF. La KBA de la trampa 8-bis no afecta a este sistema; la cabecera `sap-client` se mantiene como seguro, no como requisito.
 
 ---
 
 ## Bloque C — ICF
 
 - [ ] **C1.** Transacción **`SICF`** → *Hierarchy Type* `SERVICE` → `F8` → navegar a `default_host` → `sap` → `opu` → **`odata4`**.
-- [ ] Verificar que está **activo** (negro, no gris). Si no: clic derecho → `Activar servicio`, incluyendo subnodos.
+- [x] Verificar que está **activo** (negro, no gris). Si no: clic derecho → `Activar servicio`, incluyendo subnodos.
+
+> **Resuelto sin entrar en SICF.** Que el `$metadata` devuelva EDMX desde el navegador prueba que el nodo está activo. Esta transacción solo hace falta si la URL devuelve 403.
 
 > Sin este nodo activo, todo devuelve **404** aunque el binding esté publicado.
 
