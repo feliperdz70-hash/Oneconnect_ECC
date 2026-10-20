@@ -445,12 +445,12 @@ Esperado: **200** o **204 No Content**.
 
 ## Bloque E — Cloud Connector
 
-- [ ] **E1.** Abrir `https://localhost:8443`. Verificar que `S4H-PoC-API` y `BTP-Trial-PoC` están en **`Connected`**.
+- [x] **E1.** `BTP-Trial-PoC` en **`Connected`**, certificado de subcuenta `Valid`, túnel contra `cf.us10.hana.ondemand.com`.
 
 > El servicio arranca con Windows, pero tarda. Si está caído, todo lo de abajo falla y parece error de configuración.
 
-- [ ] **E2.** Seleccionar **`BTP-Trial-PoC`** → `Cloud to On-Premises` → `ACCESS CONTROL`.
-- [ ] Borrar el mapeo antiguo que apunta a `20.237.117.22` y crear uno nuevo:
+- [x] **E2.** Seleccionar **`BTP-Trial-PoC`** → `Cloud to On-Premises` → `ACCESS CONTROL`.
+- [x] Mapeo creado: `s4h-poc.virtual:50000` → `34.228.25.48:50000`, **Reachable**.
 
 | Pantalla | Campo | Valor |
 |---|---|---|
@@ -464,18 +464,20 @@ Esperado: **200** o **204 No Content**.
 
 > Se va por HTTP/50000 deliberadamente, igual que en el servidor anterior: evita por completo la trampa 13 (certificado autofirmado del appliance). El tramo Cloud Connector → BTP sigue cifrado por el túnel; el tramo sin cifrar es solo Cloud Connector → S/4HANA. Queda anotado como **desviación consciente del PoC**: en productivo este salto va por HTTPS con certificado de una CA reconocida.
 
-- [ ] **E3.** Con la fila seleccionada, panel **`Resources`** → `+`
+- [x] **E3.** Recurso `/sap/opu/odata4` con política `Path and All Sub-Paths`.
 
 | Campo | Valor |
 |---|---|
 | URL Path | `/sap/opu/odata4` |
 | **Access Policy** | **`Path and All Sub-Paths`** |
 
+> **Trampa 11-bis — el dígito del puerto.** En el primer intento se tecleó `5000` en lugar de `50000`, en el host interno y en el virtual. El síntoma es `Not Reachable`, idéntico al de un cortafuegos cerrado o un certificado rechazado, así que lo primero que hay que mirar ante un `Not Reachable` es si el puerto está bien escrito, antes de sospechar de la red.
+>
 > **Trampa 11 — el recurso.** Es el olvido número uno. Con `Resources (0)` toda petición devuelve **403** aunque el túnel esté verde y el mapeo sea perfecto.
 >
 > **Trampa 12 — la política.** El diálogo propone **`Path Only (Sub-Paths Are Excluded)`**, que bloquea toda la ruta real del servicio. Tiene que ser `Path and All Sub-Paths`.
 
-- [ ] **E4.** Icono de comprobación en `Actions` → **`Reachable`**.
+- [x] **E4.** `Reachable` confirmado el 2026-10-20.
 
 > **Trampa 13 — el certificado.** Si se va por HTTPS y sale `Not Reachable`: exportar el certificado del servidor desde el navegador y subirlo en `Configuration` → pestaña **`ON-PREMISES`** → sección **`Back-End Trust Store`** → `Allowlist` → `+`.
 >
@@ -551,7 +553,7 @@ Esperado: **200** o **204 No Content**.
 | B — Objetos ABAP | ✅ | 2026-10-20 | Los 7 objetos activos. `strict(2)` sin cambios en 7.58 |
 | C — ICF | ✅ | 2026-10-20 | Resuelto sin SICF: el `$metadata` responde |
 | D — F2 Postman directo | ⏳ | | Baseline de aislamiento de fallos, no es el entregable |
-| E — Cloud Connector | ⏳ | | Re-apuntar el mapeo al host nuevo |
+| E — Cloud Connector | ✅ | 2026-10-20 | `Reachable` + `Resources (1)`. Tras reinstalar el puesto |
 | F — Destination | ⏳ | | Subcuenta `trial` |
 | G — API Management | ⏳ | | Bloqueado la última vez en la tarjeta `Manage APIs` |
 | H — F4 Postman vía BTP | ⏳ | | **El entregable. El PoC no está demostrado sin esto.** |
