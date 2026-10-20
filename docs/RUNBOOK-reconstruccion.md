@@ -560,11 +560,19 @@ Esperado: **200** o **204 No Content**.
 https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com
 ```
 
-La URL que consumirá Postman en el bloque H es ese host más el `API Base Path`:
+**URL pública real del proxy — la que consume Postman en el bloque H:**
 
 ```
-https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/poc/customer/v1
+https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5a2c3d7trial/100/poc/customer/v1
 ```
+
+> ### Trampa 18 — el base path publicado no es el que se teclea
+>
+> Se creó el proxy con `API Base Path = /poc/customer/v1` y API Management lo publicó como **`/100/poc/customer/v1`**, anteponiendo además el subdominio del tenant: la ruta real es **`/e5a2c3d7trial/100/poc/customer/v1`**.
+>
+> Es la causa real del `ApplicationNotFound` de la trampa 17: el proxy estaba desplegado, pero se estaba llamando a una ruta que no existía.
+>
+> **Nunca componer la URL a mano.** Se copia del campo **`API Proxy URL`** de la pantalla de detalle del proxy, que es el único sitio donde figura la ruta tal como quedó publicada. El `:443` que muestra se puede omitir.
 
 - [ ] **G3.** Key Value Map `poc_backend_creds`, **cifrado**, con `username` y `password`.
 - [x] **G4.** API Proxy `PoC_Customer_v1`, base path `/poc/customer/v1`, sobre el provider. Creado como `PoC_Customer_v1_1_0_0` — API Management le añade la versión al nombre interno, no afecta a la URL.
