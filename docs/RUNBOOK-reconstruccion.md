@@ -574,6 +574,32 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5
 >
 > **Nunca componer la URL a mano.** Se copia del campo **`API Proxy URL`** de la pantalla de detalle del proxy, que es el único sitio donde figura la ruta tal como quedó publicada. El `:443` que muestra se puede omitir.
 
+> ### Trampa 19 — `Unsupported Encoding "br"`
+>
+> ```json
+> {"fault":{"faultstring":"Unsupported Encoding \"br\"","detail":{"errorcode":"protocol.http.UnsupportedEncoding"}}}
+> ```
+>
+> El gateway de API Management **no soporta Brotli**. Los navegadores modernos envían `Accept-Encoding: gzip, deflate, br, zstd` y la petición se rechaza antes de procesarse. **Es un problema del cliente, no del proxy:** verlo significa que el enrutado ya funciona.
+>
+> **En Postman:** añadir explícitamente el header `Accept-Encoding: gzip, deflate`. Postman también añade `br` por su cuenta, así que hay que sobrescribirlo — conviene desplegar los *hidden headers* y comprobar que no quede.
+>
+> **Arreglo definitivo**, para que también funcione desde el navegador en una demo: una policy `AssignMessage` en el **`ProxyEndpoint` → `PreFlow` → `Request`** que elimine la cabecera.
+>
+> ```xml
+> <AssignMessage async="false" continueOnError="false" enabled="true" name="Normalize-Accept-Encoding">
+>     <DisplayName>Normalize-Accept-Encoding</DisplayName>
+>     <Remove>
+>         <Headers>
+>             <Header name="Accept-Encoding"/>
+>         </Headers>
+>     </Remove>
+>     <AssignTo createNew="false" transport="http" type="request"/>
+> </AssignMessage>
+> ```
+>
+> No es bloqueante para el PoC, cuyo consumidor es Postman. Sí conviene tenerlo antes de enseñárselo al cliente, por si alguien abre la URL en Chrome.
+
 - [ ] **G3.** Key Value Map `poc_backend_creds`, **cifrado**, con `username` y `password`.
 - [x] **G4.** API Proxy `PoC_Customer_v1`, base path `/poc/customer/v1`, sobre el provider. Creado como `PoC_Customer_v1_1_0_0` — API Management le añade la versión al nombre interno, no afecta a la URL.
 
