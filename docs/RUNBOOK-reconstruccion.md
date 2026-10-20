@@ -520,11 +520,13 @@ Esperado: **200** o **204 No Content**.
 
 | Bloque | Estado | Fecha | Notas |
 |---|---|---|---|
-| A — Servidor | | | |
-| B — Objetos ABAP | | | |
-| C — ICF | | | |
-| D — F2 Postman directo | | | |
-| E — Cloud Connector | | | |
-| F — Destination | | | |
-| G — API Management | | | |
-| H — F4 Postman vía BTP | | | |
+| A — Servidor | ✅ | 2026-10-20 | `34.228.25.48:50000`, SID `S4H`, mandante 100, `BPINST`, AWS |
+| B — Objetos ABAP | ✅ | 2026-10-20 | Los 7 objetos activos. `strict(2)` sin cambios en 7.58 |
+| C — ICF | ✅ | 2026-10-20 | Resuelto sin SICF: el `$metadata` responde |
+| D — F2 Postman directo | ⏳ | | Baseline de aislamiento de fallos, no es el entregable |
+| E — Cloud Connector | ⏳ | | Re-apuntar el mapeo al host nuevo |
+| F — Destination | ⏳ | | Subcuenta `trial` |
+| G — API Management | ⏳ | | Bloqueado la última vez en la tarjeta `Manage APIs` |
+| H — F4 Postman vía BTP | ⏳ | | **El entregable. El PoC no está demostrado sin esto.** |
+
+> **El criterio de aceptación es H, no D.** El requisito del cliente es que la prueba se ejecute **a través de BTP**. La validación contra el backend directo (bloque D) es un paso de diagnóstico: sirve para que, si algo falla en los bloques F a H, se sepa que la causa no está en SAP. No sustituye a H bajo ninguna circunstancia.
