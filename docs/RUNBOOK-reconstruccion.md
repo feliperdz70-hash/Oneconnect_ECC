@@ -48,7 +48,7 @@ La PoC avanza por el **trial** mientras tanto. Replicar en `POC-CAL` después es
 
 - [x] **A1.** SAP GUI → menú `Sistema` → `Status`. Release **S/4HANA 2023** (ABAP Platform 7.58).
 - [x] **A2.** Transacción **`SMICM`** → `Pasar a` → `Servicios`. HTTP **50000**, HTTPS **44300**.
-- [x] **A3.** Host **34.228.25.48**, mandante **100**, usuario **BPINST**.
+- [x] **A3.** Host **34.228.25.48**, mandante **100**, usuario **BPINST**, SID **S4H**. `BPINST` tiene autorización de desarrollo: creó tabla y CDS sin pedir clave de desarrollador.
 - [ ] **A4.** El host está en **AWS** (rango `34.x` = EC2). Abrir el puerto de entrada en el **Security Group** de la instancia, no en un NSG de Azure.
 - [ ] **A5.** Probar desde el navegador, con el protocolo explícito:
 
@@ -71,6 +71,7 @@ http://34.228.25.48:50000/sap/bc/ping?sap-client=100
 | Puerto HTTPS | `44300` |
 | Mandante | `100` |
 | Usuario de desarrollo | `BPINST` |
+| **System ID (SID)** | `S4H` |
 | Release | S/4HANA 2023 — ABAP Platform 7.58 |
 | URL base OData V4 | `http://34.228.25.48:50000/sap/opu/odata4/` |
 
@@ -82,11 +83,11 @@ http://34.228.25.48:50000/sap/bc/ping?sap-client=100
 
 ## Bloque B — Objetos ABAP en ADT
 
-- [ ] **B1.** Crear el proyecto ABAP en Eclipse contra el servidor nuevo.
+- [x] **B1.** Proyecto ABAP en Eclipse: `S4H_100_bpinst_en_1`.
 
 ### B2. El paquete
 
-- [ ] Crear paquete de desarrollo.
+- [x] Paquete `ZPOC_API_MIG` creado, tipo `Development`.
 
 | Campo | Valor |
 |---|---|
@@ -108,7 +109,7 @@ http://34.228.25.48:50000/sap/bc/ping?sap-client=100
 
 ### B3. Tabla `ZCXTA_CUSTOMERS`
 
-- [ ] `New` → `Other ABAP Repository Object` → `Dictionary` → `Database Table`
+- [x] `New` → `Other ABAP Repository Object` → `Dictionary` → `Database Table` — **activa**, 6 campos verificados en SE11.
 
 ```abap
 @EndUserText.label : 'PoC - Clientes cargados vía API'
@@ -130,7 +131,7 @@ define table zcxta_customers {
 
 ### B4. CDS `ZCX_CUSTOMER`
 
-- [ ] `New` → `Other ABAP Repository Object` → `Core Data Services` → `Data Definition` → plantilla **`defineRootViewEntity`**
+- [x] `New` → `Other ABAP Repository Object` → `Core Data Services` → `Data Definition` → plantilla **`defineRootViewEntity`** — **activa**.
 
 ```abap
 @EndUserText.label: 'PoC - Clientes cargados vía API'
@@ -385,7 +386,7 @@ Esperado: **200** o **204 No Content**.
 | 3 | Internal Host / Port | `34.228.25.48` / `50000` |
 | 4 | Virtual Host / Port | `s4h-poc.virtual` / `50000` |
 | 5 | Principal Type | `None` |
-| 6 | System ID | *(SID del sistema nuevo, de `Sistema → Status`)* |
+| 6 | System ID | `S4H` |
 | 7 | Host in Request Header | `Use Virtual Host` |
 
 > Se va por HTTP/50000 deliberadamente, igual que en el servidor anterior: evita por completo la trampa 13 (certificado autofirmado del appliance). El tramo Cloud Connector → BTP sigue cifrado por el túnel; el tramo sin cifrar es solo Cloud Connector → S/4HANA. Queda anotado como **desviación consciente del PoC**: en productivo este salto va por HTTPS con certificado de una CA reconocida.
