@@ -508,9 +508,39 @@ Esperado: **200** o **204 No Content**.
 
 ## Bloque G — API Management (trial)
 
-- [ ] **G1.** `Instancias y suscripciones` → `Integration Suite` → `Ir a la aplicación` → tarjeta **`Manage APIs`**.
+- [ ] **G0. Limpiar el usuario fantasma.** Subcuenta `trial` → `Seguridad` → `Usuarios`. Si existe una fila cuyo *User Name* es literalmente **`Proveedor de identidad`**, borrarla: es la etiqueta del campo tecleada dentro del campo del ID. Es la que provoca el *"Failed to save role collection: internal error"*.
 
-> **Aquí nos quedamos la última vez.** Si la tarjeta no responde: comprobar el bloqueador de ventanas emergentes, probar clic derecho → abrir en pestaña nueva, recargar con `Ctrl+Shift+R`, y cerrar sesión y navegador antes de reintentar.
+- [ ] **G1. Dar de alta el runtime de API Management.** Integration Suite → **`Settings`** → **`Runtimes`** → pestaña **`Configure`**:
+
+| Campo | Valor |
+|---|---|
+| **Account Type** | **`Non-Production`** — ⚠️ **no se puede cambiar después** |
+| Virtual Host → Host Alias | Un alias corto, p.ej. `cemex-poc` |
+| Notification Contact | El correo del responsable |
+
+→ **`Activate`** → **`Confirm`**. Después, cerrar sesión y volver a entrar.
+
+> ### Trampa 15 — activar la capacidad no es dar de alta el runtime
+>
+> **Esta es la causa real del bloqueo que nos paró dos veces**, y es la trampa más cara de todo el documento porque no produce ningún error.
+>
+> La tarjeta **`Manage APIs`** no responde al pulsarla: no navega, no parpadea, no avisa. El motivo es que **no hay nada que abrir**. Activar la capacidad en `Manage Capabilities` solo registra la suscripción; el alta del runtime es un paso aparte que crea el virtual host y el API Portal. Sin él no existe destino.
+>
+> **Lectura equivocada que nos despistó:** en el diálogo de capacidades, la capacidad padre se llama **`Manage APIs`**. `API Modelling` es una casilla hija, marcada por defecto, y `Developer Hub` una hermana opcional. Ver esas dos en `Active` **no prueba** que el runtime esté dado de alta — y es exactamente lo que vimos antes de perder dos sesiones buscando el problema en los roles y en el navegador.
+>
+> **El Host Alias no es cosmético:** forma la URL base pública de las APIs (`https://<alias>.apimanagement.hana.ondemand.com`). Es la URL que consumirá Postman en el bloque H, o sea, el entregable del PoC.
+>
+> **Vía alternativa en trial:** si bajo `Settings` no aparece `Runtimes` sino **`APIs`**, seleccionar esa entrada dispara la activación automática con un virtual host por defecto. Al terminar, la opción desaparece del menú y **la sesión se cierra sola**: hay que volver a entrar. Ese logout va **después** del alta, no en lugar de ella.
+>
+> **Lo que NO era, pese a lo que parecía:**
+> - **No era el bloqueador de ventanas emergentes.** Se descartó al reproducir el mismo comportamiento en Edge y en Chrome.
+> - **No era el triángulo amarillo de las role collections.** No existe documentación de SAP que diga que ese icono signifique asignación inefectiva; el único rastro apunta a que BTP marca *autorizaciones críticas*, con las asignaciones intactas.
+> - **No era el aprovisionamiento de la capacidad.** `Manage Capabilities` mostraba `Active` desde semanas antes.
+> - **Un token sin scopes no produce "no pasa nada"**, produce un 403 o un *"You are not authorized"*. Una tarjeta que no navega en absoluto significa que no hay URL destino.
+
+- [ ] **G1-bis.** Comprobar la role collection **`Integration_Provisioner`** en la **subcuenta** (no en la cuenta global): la documentación la lista como prerrequisito de la suscripción y no estaba asignada.
+
+> **Trampa 15-bis — cuenta global y subcuenta tienen listas de usuarios y de role collections distintas, y se ven idénticas.** Las role collections de API Management viven en la **subcuenta**. Se comprueba en el breadcrumb: `Trial Home / e5a2c3d7trial / trial` — si falta el tercer segmento, se está en la cuenta global y se está mirando la lista equivocada.
 
 - [ ] **G2.** `Configure` → `APIs` → pestaña `API Providers` → `Create`
 
@@ -519,8 +549,8 @@ Esperado: **200** o **204 No Content**.
 | Name | `S4H_POC_PROVIDER` |
 | Type | `On-Premise` |
 | **Use Cloud Connector** | ✅ |
-| Host / Port | `s4h-poc.virtual` / *(puerto)* |
-| Use SSL | Según protocolo |
+| Host / Port | `s4h-poc.virtual` / `50000` |
+| Use SSL | **Desmarcado** — el backend va por HTTP |
 
 - [ ] **G3.** Key Value Map `poc_backend_creds`, **cifrado**, con `username` y `password`.
 - [ ] **G4.** API Proxy `PoC_Customer_v1`, base path `/poc/customer/v1`, sobre el provider.
@@ -559,7 +589,7 @@ Esperado: **200** o **204 No Content**.
 | D — F2 Postman directo | ⏳ | | Baseline de aislamiento de fallos, no es el entregable |
 | E — Cloud Connector | ✅ | 2026-10-20 | `Reachable` + `Resources (1)`. Tras reinstalar el puesto |
 | F — Destination | ✅ | 2026-10-20 | `S4H_POC_CUSTOMER` → *Backend is reachable* |
-| G — API Management | ⏳ | | Bloqueado la última vez en la tarjeta `Manage APIs` |
+| G — API Management | ⏳ | | Causa del bloqueo identificada: falta el alta del runtime (trampa 15) |
 | H — F4 Postman vía BTP | ⏳ | | **El entregable. El PoC no está demostrado sin esto.** |
 
 > **El criterio de aceptación es H, no D.** El requisito del cliente es que la prueba se ejecute **a través de BTP**. La validación contra el backend directo (bloque D) es un paso de diagnóstico: sirve para que, si algo falla en los bloques F a H, se sepa que la causa no está en SAP. No sustituye a H bajo ninguna circunstancia.
