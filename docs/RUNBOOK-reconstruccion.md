@@ -487,7 +487,7 @@ Esperado: **200** o **204 No Content**.
 
 ## Bloque F — Destination
 
-- [ ] **F1.** BTP Cockpit → subcuenta **`trial`** → `Conectividad` → `Destinations` → editar `S4H_POC_CUSTOMER`.
+- [x] **F1.** Destination `S4H_POC_CUSTOMER` creado de cero en la subcuenta `trial`.
 
 | Campo | Valor |
 |---|---|
@@ -498,7 +498,11 @@ Esperado: **200** o **204 No Content**.
 | Password | *(la del usuario)* |
 | `sap-client` | `100` |
 
-- [ ] **F2.** **`Check Connection`** → *"Se puede acceder al back end desde el conector de la nube"*.
+- [x] **F2.** **`Check Connection`** → *"Backend is reachable from the Cloud Connector"* — 2026-10-20.
+
+> **El Destination no es un requisito de API Management.** El API Provider del bloque G habla con el Cloud Connector por su cuenta, sin pasar por aquí. Este paso se mantiene porque es el **punto de control**: demuestra en dos minutos que la cadena BTP → Cloud Connector → S/4HANA funciona desde el lado de la nube. Si el bloque G falla después, el túnel queda descartado como causa.
+
+> **Un `401` también es un buen resultado** en esta comprobación: significa que la petición llegó al ICM y pidió credenciales. Lo que se prueba aquí es conectividad, no autenticación. Solo un timeout o un 403 serían fallos reales.
 
 ---
 
@@ -554,7 +558,7 @@ Esperado: **200** o **204 No Content**.
 | C — ICF | ✅ | 2026-10-20 | Resuelto sin SICF: el `$metadata` responde |
 | D — F2 Postman directo | ⏳ | | Baseline de aislamiento de fallos, no es el entregable |
 | E — Cloud Connector | ✅ | 2026-10-20 | `Reachable` + `Resources (1)`. Tras reinstalar el puesto |
-| F — Destination | ⏳ | | Subcuenta `trial` |
+| F — Destination | ✅ | 2026-10-20 | `S4H_POC_CUSTOMER` → *Backend is reachable* |
 | G — API Management | ⏳ | | Bloqueado la última vez en la tarjeta `Manage APIs` |
 | H — F4 Postman vía BTP | ⏳ | | **El entregable. El PoC no está demostrado sin esto.** |
 
