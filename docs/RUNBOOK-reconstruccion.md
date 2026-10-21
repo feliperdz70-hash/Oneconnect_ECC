@@ -680,6 +680,28 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5
 
 
 
+> ### Trampa 22 — cambiar de red tumba el túnel, y el error apunta a BTP
+>
+> Al llevar el portátil a otra red, API Management responde:
+>
+> ```json
+> 503 Service Unavailable
+> "There is no SAP Cloud Connector (SCC) connected to your subaccount matching the requested tunnel"
+> ```
+>
+> Parece un problema de BTP y no lo es: el servicio del Cloud Connector sigue arrancado y su consola responde, pero **el túnel se cayó al cambiar de red y no se reconecta solo**. En el `Subaccount Dashboard` el icono de estado aparece como **cadena rota**.
+>
+> **Reconectar:** menú izquierdo → la subcuenta → botón **`Connect`** (donde antes decía `Disconnect`). O el primer icono de la columna `Actions` de la fila.
+>
+> **Dos obstáculos independientes, los dos de red, que pueden darse a la vez:**
+>
+> | | Problema | Síntoma |
+> |---|---|---|
+> | A | El túnel no sale por el proxy corporativo | No conecta. Se arregla en `Configuration` → `HTTPS Proxy`, la pantalla que el asistente dejó vacía |
+> | B | El cortafuegos del cloud no deja entrar a la IP nueva | El mapeo pasa a `Not Reachable`. Hay que añadir la IP pública al Security Group de AWS |
+>
+> **Consecuencia para una demostración:** la cadena hay que probarla **desde la red donde se vaya a presentar**, no solo desde donde se configuró. Ambos obstáculos aparecen al llegar a la sala, no antes.
+
 - [ ] **H1.** Importar `docs/postman/ET-001-PoC-S4H-Customer-API.postman_collection.json` y su entorno.
 - [ ] **H2.** Rellenar `api_key` y `sap_password`. El resto de variables ya vienen con los valores reales.
 - [ ] **H3.** Ejecutar las carpetas `00` a `05` en orden.
