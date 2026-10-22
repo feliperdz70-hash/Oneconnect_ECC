@@ -22,6 +22,35 @@ Pero la forma en que se planteó al principio —*"CDS Z que lea `KNA1`, campo Z
 
 ---
 
+## 1.1 Alcance acordado — 2026-10-22
+
+Decisiones tomadas con el cliente antes de empezar. Fijan qué se construye y, sobre todo, **qué no**.
+
+| Punto | Decisión |
+|---|---|
+| Nombre del campo | `policy_number` — es el identificador que se teclea. **El nombre real se lee del `$metadata`** (trampa 31) |
+| Tipo | Texto libre |
+| **Validación del campo propio** | **Ninguna.** Es un dato de origen externo: no existe catálogo de valores válidos contra el que comprobarlo |
+| Validaciones del resto | Solo las que ya trae la API estándar |
+| Código ABAP | **Cero.** Ni en ADT ni en la app `Custom Logic` |
+| API de mantenimiento | `API_BUSINESS_PARTNER` — la API OData V2 estándar de Business Partner |
+
+**Consecuencia:** al no validar la póliza, el escenario se queda íntegramente en `Custom Fields` + `Enable Usage`. No hace falta la app `Custom Logic` (`F6957`) ni ningún BAdI key user, que habrían metido ABAP —aunque restringido— en un PoC cuyo argumento central es que no hay ninguno.
+
+### Qué valida el estándar sin programar nada
+
+Es entregable del PoC aunque no lo construyamos nosotros, y conviene enseñarlo explícitamente:
+
+| Caso | Respuesta de la API estándar |
+|---|---|
+| Cliente / BP inexistente | **404** sobre la clave de la URL |
+| Código de país inexistente | Error del estándar, contra la tabla de check `T005` |
+| Código de región inexistente para ese país | Error del estándar, contra `T005S` |
+| Campo *read-only* enviado en el `PATCH` | Error **aunque el valor no cambie** — nota 3569467, trampa 34 |
+| `policy_number` | Se graba tal cual. Sin validación, por diseño |
+
+> **Pendiente de resolver en el sistema, y condiciona el diseño:** dónde se mantienen `Country` y `Region`. En S/4HANA la dirección cuelga del Business Partner, no del cliente (trampa 36), así que es probable que en `A_Customer` sean **read-only** y que el mantenimiento real vaya por `A_BusinessPartnerAddress`. Si es así, "actualizar póliza + región + país" son **dos `PATCH` contra entidades distintas**, no uno. Se confirma leyendo `sap:updatable` en el `$metadata`.
+
 ## 2. Por qué la idea inicial no funciona
 
 Tres motivos independientes. Cualquiera de ellos basta.
