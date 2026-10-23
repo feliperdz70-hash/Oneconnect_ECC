@@ -193,6 +193,34 @@ Para **crear** un campo propio hace falta la app Fiori, y por tanto un launchpad
 
 El rol necesario lleva el catálogo de herramientas key user. Las fuentes se contradicen sobre el identificador exacto (`SAP_CORE_BC_EXT`, `SAP_BASIS_BC_EXT`, `SAP_UI_FLEX_KEY_USER`): **hay que mirarlo en el sistema**, no citarlo de memoria.
 
+> ### Trampa 37 — la búsqueda del launchpad NO sirve para saber si tienes una app
+>
+> La lupa de la cabecera del launchpad (intent `#Action-search`) consulta el índice de **Enterprise Search**, que en los appliances no suele estar configurado. Devuelve `Results (0)` para cualquier término, **aunque el usuario tenga la app perfectamente asignada**. No prueba absolutamente nada, y es el primer sitio donde todo el mundo mira.
+>
+> La pantalla correcta es el **App Finder**: avatar de usuario → `App Finder`, o directamente el intent **`#Shell-appfinder`**. Y dentro de él, la pestaña **`Catalog`** — no `SAP Menu`, que lista transacciones del menú clásico y devuelve señuelos como `Define Custom Functions`, `Define Custom Hints` o `Define Custom Message Texts`, que no tienen ninguna relación con la extensibilidad key user.
+>
+> **Cómo se lee el resultado de `Catalog`:**
+>
+> | Lo que ves | Qué significa |
+> |---|---|
+> | Catálogos en el panel izquierdo, pero sin `Custom Fields` | Falta el catálogo de Extensibility en el rol |
+> | Panel izquierdo solo con `All`, y `No apps to display` | **El usuario no tiene NINGÚN catálogo Fiori asignado** |
+
+#### Resultado verificado en S4H — 2026-10-23
+
+🔴 **El prerrequisito 6.3 FALLA con `BPINST`.**
+
+| Comprobación | Resultado |
+|---|---|
+| El launchpad abre | ✅ Sí — luego Fiori está desplegado y los nodos ICF de UI2 están activos |
+| `BPINST` entra | ✅ Sí — **la trampa 25 no se produjo**: el usuario no está bloqueado para Fiori |
+| Home del launchpad | ❌ Vacía, sin tiles |
+| App Finder → `Catalog` | ❌ `No apps to display`, con el panel de catálogos vacío |
+
+**Diagnóstico:** no es que falte el catálogo de extensibilidad — es que `BPINST` **no tiene ningún catálogo Fiori**. Es coherente con lo que es: el usuario de procesos de negocio del appliance, no un key user. Se resuelve asignando el rol en `PFCG` / `SU01`; no hace falta tocar el contenido Fiori, que ya está desplegado.
+
+> **Acceso por red interna.** En esta sesión se llegó al sistema por `https://10.222.55.7` (sin puerto, 443) desde la red de Cemex, no por `http://34.228.25.48:50000`. Pendiente de confirmar con `Sistema → Status` que se trata del mismo S/4HANA. **Importa:** el Cloud Connector apunta a `34.228.25.48`, así que un campo creado en otra máquina no lo vería nunca la API expuesta por BTP.
+
 ### 6.4 🔴 El usuario `BPINST` puede estar bloqueado
 
 > ### Trampa 25 — los usuarios demo del appliance vienen bloqueados
@@ -435,7 +463,7 @@ Honestidad sobre los límites de esta especificación. Hay que comprobarlo en el
 |---|---|
 | El nombre y código exactos del business context para cliente/BP en **on-premise 2023** | Los códigos documentados son de Cloud. **Abrir `SCFD_REGISTRY`** |
 | Que los contextos de BP/Cliente estén **liberados para key user** en ese release | No se encontró una página que lo confirme para 2023 on-premise |
-| El identificador exacto del catálogo/rol de extensibilidad | Las fuentes se contradicen |
+| El identificador exacto del catálogo/rol de extensibilidad | **Sigue sin confirmar.** Existe la familia `SAP_CORE_BC_EXT` con subcatálogos `_CBO`, `_CCE` y `_TST` (este último SAP dice expresamente que no se asigne fuera de un tenant de test), pero **toda la documentación localizable es de Cloud**. Un ejemplo de SAP para on-premise usa `SAP_BASIS_BC_EXT` + grupo `SAP_BASIS_BCG_EXT`. Se resuelve con la **F4 de `PFCG`** sobre el catálogo, filtrando por `*EXT*` |
 | El nombre completo del campo generado | Depende del sufijo del contexto. **Se lee del `$metadata`** |
 | Que `API_BUSINESS_PARTNER` sea V2 | Muy probable por la ruta, pero **confirmarlo leyendo la versión en el `$metadata`** |
 | El síntoma exacto de "campo no habilitado" | Razonado desde el contrato OData, sin fuente directa |
