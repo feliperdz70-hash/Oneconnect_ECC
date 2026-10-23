@@ -206,7 +206,7 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > | Catálogos en el panel izquierdo, pero sin `Custom Fields` | Falta el catálogo de Extensibility en el rol |
 > | Panel izquierdo solo con `All`, y `No apps to display` | **El usuario no tiene NINGÚN catálogo Fiori asignado** |
 
-#### Resultado verificado en S4H — 2026-10-23
+#### Resultado verificado — 2026-10-23
 
 🔴 **El prerrequisito 6.3 FALLA con `BPINST`.**
 
@@ -219,7 +219,11 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 
 **Diagnóstico:** no es que falte el catálogo de extensibilidad — es que `BPINST` **no tiene ningún catálogo Fiori**. Es coherente con lo que es: el usuario de procesos de negocio del appliance, no un key user. Se resuelve asignando el rol en `PFCG` / `SU01`; no hace falta tocar el contenido Fiori, que ya está desplegado.
 
-> **Acceso por red interna.** En esta sesión se llegó al sistema por `https://10.222.55.7` (sin puerto, 443) desde la red de Cemex, no por `http://34.228.25.48:50000`. Pendiente de confirmar con `Sistema → Status` que se trata del mismo S/4HANA. **Importa:** el Cloud Connector apunta a `34.228.25.48`, así que un campo creado en otra máquina no lo vería nunca la API expuesta por BTP.
+> ### 🔴 Cambio de sistema destino — 2026-10-23
+>
+> Esta comprobación **no** se hizo sobre el appliance `S4H` de AWS (`34.228.25.48`) del PoC-1, sino sobre un **servidor on-premise de Cemex, release 2025**, alcanzable en `https://10.222.55.7`, mandante `100`. **Ese es el sistema de pruebas de aquí en adelante.**
+>
+> Es una mejora de fondo —un on-premise real del cliente es más representativo que un appliance de SAP CAL, y 2025 trae la extensibilidad más madura que 2023—, pero **invalida tres supuestos del bloque C**. Ver sección 9.
 
 ### 6.4 🔴 El usuario `BPINST` puede estar bloqueado
 
@@ -302,6 +306,18 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 ---
 
 ## 9. Bloque C — Ampliar BTP
+
+> ### 🔴 Revisión obligatoria tras el cambio de servidor — 2026-10-23
+>
+> La tabla de abajo se escribió suponiendo el appliance de AWS. Con el on-premise de Cemex (`10.222.55.7`), **tres cosas dejan de ser ciertas** y hay que rehacerlas antes de dar nada por reaprovechado:
+>
+> | Supuesto del PoC-1 | Qué pasa ahora |
+> |---|---|
+> | El mapeo del Cloud Connector apunta a `34.228.25.48:50000` | ❌ **Hay que remapearlo** al servidor nuevo. El host virtual `s4h-poc.virtual` puede conservarse, pero el destino interno cambia |
+> | Se va por **HTTP/50000**, lo que evitaba la trampa 13 | ⚠️ El servidor nuevo responde por **HTTPS/443**. Si no expone también un puerto HTTP, **la trampa 13 vuelve**: hay que exportar el certificado del servidor y subirlo al `Back-End Trust Store` del Cloud Connector |
+> | El backend es alcanzable desde la red del puesto sin más | ⚠️ `10.222.55.7` es una **dirección privada de la red de Cemex**. El Cloud Connector solo llega si el puesto está en esa red o con la VPN levantada. Es la trampa 22 agravada: aquí no basta con reconectar el túnel, hace falta además la VPN |
+>
+> **Lo que sí sigue valiendo tal cual:** el runtime de API Management, las role collections, el Developer Hub y la colección de Postman. El API Provider `S4H_POC_PROVIDER` también, **siempre que se conserve el host virtual** y solo cambie el mapeo interno.
 
 Buena noticia: **casi todo se reaprovecha**.
 
