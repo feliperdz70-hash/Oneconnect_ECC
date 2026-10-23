@@ -14,14 +14,17 @@ Documento hermano de `ET-001` y del `RUNBOOK-reconstruccion.md`. Mismo formato: 
 | Dato | Valor |
 |---|---|
 | Host | `10.222.55.7` — **IP privada, red interna de Cemex** |
-| Protocolo / puerto en uso | `HTTPS` / `443` |
-| Puerto HTTP | ⏳ **Pendiente** — confirmar en `SMICM` → `Pasar a` → `Servicios` |
+| Protocolo / puerto en uso | `HTTPS` / `443` (navegador) · **`HTTP` / `50000` disponible** |
+| Puerto HTTP | ✅ **`50000`** — confirmado 2026-10-23 |
 | Mandante | `100` |
-| Release | S/4HANA **2025** — ⏳ confirmar el nivel exacto en `Sistema` → `Status` |
-| SID | ⏳ **Pendiente** |
+| Release | S/4HANA **2025** — ⏳ nivel exacto pendiente (`Sistema` → `Status`) |
+| SID | ✅ **`S4H`** |
 | Usuario | **`E0FLRODRIGZ`** — usuario nominal de Cemex |
-| Tipo | **On-premise real del cliente**, no appliance de SAP CAL |
+| Hostname interno | `vhcals4hci.dummy.nodomain` |
+| Tipo | On-premise de Cemex. El hostname y el SID siguen el patrón de appliance de SAP, así que lo más probable es un appliance desplegado en la infraestructura del cliente |
 | URL del launchpad | `https://10.222.55.7/sap/bc/ui2/flp?sap-client=100&sap-language=EN` |
+
+> **Cómo se obtuvieron estos datos, sin salir de SAP GUI.** El SID y el mandante salen de la barra de título (`S4H (5) 100`). El hostname interno y el **puerto HTTP** salen del atributo `xml:base` de la respuesta de `/IWFND/GW_CLIENT` — el service document lo trae escrito. Es más rápido que `SMICM` y no hace falta autorización para la transacción de administración del ICM.
 
 > **Por qué el cambio es una mejora.** Un on-premise real del cliente es mucho más representativo que un appliance, y **2025 trae el check de ATC `Allowed Enhancement Technologies`**, introducido en agosto de 2025, que es justamente el que marca los append structures. En 2023 no existía. Es decir: en este sistema el enfoque C de la sección 4 se puede **demostrar como inaceptable con una herramienta de SAP**, en vez de argumentarlo.
 
@@ -204,6 +207,18 @@ KNB1    →  I_CUSTOMERCOMPANY
 
 **Comprobación rápida:** pedir su `$metadata`. Si responde, está registrado.
 
+#### ✅ Verificado en S4H — 2026-10-23: el servicio YA está activo
+
+No hizo falta registrar nada. Desde **`/IWFND/GW_CLIENT`**, con `Protocol: HTTP`:
+
+```
+GET /sap/opu/odata/sap/API_BUSINESS_PARTNER/?$format=xml
+```
+
+→ **`200 OK`**, con el service document listando las colecciones (`A_AddressEmailAddress`, `A_AddressFaxNumber`, `A_AddressHomePageURL`, `A_AddressPhoneNumber`, …).
+
+> **`/IWFND/GW_CLIENT` es la forma más barata de comprobar esto**, y mejor que el navegador: se ejecuta dentro del sistema, así que aísla el servicio de cualquier problema de red, proxy o certificado. Si responde 200 aquí y falla desde fuera, el problema no es el servicio.
+
 > ### Trampa 24 — SAP_COM_0008 y los communication arrangements son de Cloud
 >
 > Si un tutorial pide crear un **Communication Arrangement** sobre el escenario **`SAP_COM_0008`**, o muestra una URL del tipo `<host>-api.s4hana.ondemand.com`, **está leyendo documentación de S/4HANA Cloud Public Edition**. En on-premise eso no existe: se activa el servicio en `/IWFND/MAINT_SERVICE` y se asignan permisos por PFCG.
@@ -355,7 +370,7 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > | Supuesto del PoC-1 | Qué pasa ahora |
 > |---|---|
 > | El mapeo del Cloud Connector apunta a `34.228.25.48:50000` | ❌ **Hay que remapearlo** al servidor nuevo. El host virtual `s4h-poc.virtual` puede conservarse, pero el destino interno cambia |
-> | Se va por **HTTP/50000**, lo que evitaba la trampa 13 | ⚠️ El servidor nuevo responde por **HTTPS/443**. Si no expone también un puerto HTTP, **la trampa 13 vuelve**: hay que exportar el certificado del servidor y subirlo al `Back-End Trust Store` del Cloud Connector |
+> | Se va por **HTTP/50000**, lo que evitaba la trampa 13 | ✅ **Resuelto el 2026-10-23: el servidor nuevo también expone HTTP en `50000`.** Se mantiene el mismo planteamiento que el PoC-1 y **la trampa 13 no llega a aplicar**. Queda por comprobar que ese puerto sea alcanzable desde donde corre el Cloud Connector |
 > | El backend es alcanzable desde la red del puesto sin más | ⚠️ `10.222.55.7` es una **dirección privada de la red de Cemex**. El Cloud Connector solo llega si el puesto está en esa red o con la VPN levantada. Es la trampa 22 agravada: aquí no basta con reconectar el túnel, hace falta además la VPN |
 >
 > **Lo que sí sigue valiendo tal cual:** el runtime de API Management, las role collections, el Developer Hub y la colección de Postman. El API Provider `S4H_POC_PROVIDER` también, **siempre que se conserve el host virtual** y solo cambie el mapeo interno.
@@ -390,6 +405,22 @@ Buena noticia: **casi todo se reaprovecha**.
 | URL (ruta en el backend) | `/sap/opu/odata/sap/API_BUSINESS_PARTNER` |
 | API Base Path | `/poc/bp/v1` |
 | Service Type | `REST` |
+
+> ### Trampa 39 — OData V2 devuelve URLs absolutas con el host interno
+>
+> El service document de este sistema viene con:
+>
+> ```xml
+> xml:base="http://vhcals4hci.dummy.nodomain:50000/sap/opu/odata/sap/API_BUSINESS_PARTNER/"
+> ```
+>
+> OData **V2** incrusta **URLs absolutas** en las respuestas (`xml:base`, y el `__metadata.uri` de cada entidad), construidas con el host que el ICM cree tener. A través de API Management, el cliente recibirá enlaces que apuntan a **`vhcals4hci.dummy.nodomain:50000`** — un hostname que **no resuelve fuera del servidor**.
+>
+> **Qué rompe y qué no.** El `GET` y el `PATCH` que hagamos por URL propia funcionan igual: no rompe el PoC. Lo que queda inservible es **navegar siguiendo los enlaces de la respuesta**, y cualquier cliente que lo haga automáticamente.
+>
+> El PoC-1 no se topó con esto porque OData **V4** usa referencias relativas.
+>
+> **Si hiciera falta arreglarlo:** una policy de API Management que reescriba el host en el cuerpo de la respuesta. No es necesario para los criterios de aceptación de la sección 12 — queda anotado para que, si alguien lo ve en la demo, se sepa qué es y no parezca un fallo del montaje.
 
 - [ ] **C3.** **`Deploy`**, y copiar la URL del campo `API Proxy URL` — **nunca componerla a mano** (trampa 18).
 
