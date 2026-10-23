@@ -7,6 +7,35 @@ Documento hermano de `ET-001` y del `RUNBOOK-reconstruccion.md`. Mismo formato: 
 
 ---
 
+## 0. Sistema destino
+
+**A partir del 2026-10-23 este escenario se ejecuta contra el S/4HANA on-premise de Cemex.** No contra el appliance de AWS del PoC-1.
+
+| Dato | Valor |
+|---|---|
+| Host | `10.222.55.7` — **IP privada, red interna de Cemex** |
+| Protocolo / puerto en uso | `HTTPS` / `443` |
+| Puerto HTTP | ⏳ **Pendiente** — confirmar en `SMICM` → `Pasar a` → `Servicios` |
+| Mandante | `100` |
+| Release | S/4HANA **2025** — ⏳ confirmar el nivel exacto en `Sistema` → `Status` |
+| SID | ⏳ **Pendiente** |
+| Usuario | **`E0FLRODRIGZ`** — usuario nominal de Cemex |
+| Tipo | **On-premise real del cliente**, no appliance de SAP CAL |
+| URL del launchpad | `https://10.222.55.7/sap/bc/ui2/flp?sap-client=100&sap-language=EN` |
+
+> **Por qué el cambio es una mejora.** Un on-premise real del cliente es mucho más representativo que un appliance, y **2025 trae el check de ATC `Allowed Enhancement Technologies`**, introducido en agosto de 2025, que es justamente el que marca los append structures. En 2023 no existía. Es decir: en este sistema el enfoque C de la sección 4 se puede **demostrar como inaceptable con una herramienta de SAP**, en vez de argumentarlo.
+
+> ### ⚠️ Lo que deja de ser cierto respecto al PoC-1
+>
+> | PoC-1 (appliance AWS) | Aquí |
+> |---|---|
+> | `34.228.25.48`, IP pública | `10.222.55.7`, privada — **el Cloud Connector solo llega con la VPN de Cemex levantada** |
+> | HTTP `50000`, que esquivaba el certificado | HTTPS `443` — **la trampa 13 vuelve** salvo que exista puerto HTTP |
+> | `BPINST`, usuario del appliance con amplios permisos | `E0FLRODRIGZ`, usuario nominal — **los permisos los controla Seguridad de Cemex** |
+> | Sistema de laboratorio, se toca sin pedir permiso | **Sistema del cliente**: toda asignación de rol pasa por su proceso |
+
+---
+
 ## 1. Veredicto
 
 **El escenario es posible y es el camino limpio.** La ruta confirmada es:
@@ -208,16 +237,28 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 
 #### Resultado verificado — 2026-10-23
 
-🔴 **El prerrequisito 6.3 FALLA con `BPINST`.**
+🔴 **El prerrequisito 6.3 FALLA con `E0FLRODRIGZ`.**
 
 | Comprobación | Resultado |
 |---|---|
 | El launchpad abre | ✅ Sí — luego Fiori está desplegado y los nodos ICF de UI2 están activos |
-| `BPINST` entra | ✅ Sí — **la trampa 25 no se produjo**: el usuario no está bloqueado para Fiori |
+| `E0FLRODRIGZ` entra | ✅ Sí — el usuario no está bloqueado. **La trampa 25 no aplica aquí**: no es un appliance ni un usuario demo |
 | Home del launchpad | ❌ Vacía, sin tiles |
 | App Finder → `Catalog` | ❌ `No apps to display`, con el panel de catálogos vacío |
 
-**Diagnóstico:** no es que falte el catálogo de extensibilidad — es que `BPINST` **no tiene ningún catálogo Fiori**. Es coherente con lo que es: el usuario de procesos de negocio del appliance, no un key user. Se resuelve asignando el rol en `PFCG` / `SU01`; no hace falta tocar el contenido Fiori, que ya está desplegado.
+**Diagnóstico:** no es que falte el catálogo de extensibilidad — es que `E0FLRODRIGZ` **no tiene ningún catálogo Fiori asignado**. Es lo normal en un usuario nominal de un sistema corporativo: se le dan los roles de lo que hace, y la extensibilidad key user no es uno de ellos.
+
+**El contenido Fiori está bien.** Que el launchpad abra y el App Finder responda prueba que los nodos ICF de UI2 están activos y que hay contenido desplegado. Lo único que falta es el rol.
+
+> ### 🔴 Trampa 38 — en el sistema del cliente, el rol no te lo das tú
+>
+> En el appliance bastaba con entrar en `PFCG` y asignarse lo que hiciera falta. **En el on-premise de Cemex no.** La asignación de roles la controla el equipo de Seguridad / Basis del cliente, y un usuario nominal normalmente **no tiene `PFCG` ni `SU01`**.
+>
+> Esto convierte un paso de dos minutos en un **trámite con plazo**, y es el tipo de cosa que descarrila una demo con fecha. Hay que pedirlo **ya**, en paralelo con el resto del trabajo, no cuando toque.
+>
+> **Qué pedir exactamente, para que no haya idas y venidas:** un rol que contenga el **business catalog de extensibilidad key user**, el que da acceso a la app **`Custom Fields`** (`F1481`). El identificador hay que sacarlo del sistema con la **F4 de `PFCG`** filtrando por `*EXT*` — los candidatos `SAP_CORE_BC_EXT`, `SAP_BASIS_BC_EXT` y `SAP_UI_FLEX_KEY_USER` provienen de documentación de Cloud y **ninguno está confirmado para on-premise 2025**.
+>
+> Conviene pedir en la misma petición el acceso a **`/IWFND/MAINT_SERVICE`**, que hará falta para el prerrequisito 6.2, y a **`SCFD_REGISTRY`** para resolver el business context de la sección 14.
 
 > ### 🔴 Cambio de sistema destino — 2026-10-23
 >

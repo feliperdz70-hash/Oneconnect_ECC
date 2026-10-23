@@ -2,6 +2,17 @@
 
 ## PoC: API OData V4 transaccional sobre S/4HANA expuesta vía BTP
 
+
+> ## ⚠️ Aviso — este documento describe el appliance de AWS, ya NO es el sistema de pruebas
+>
+> **Desde el 2026-10-23 el sistema de pruebas del proyecto es el S/4HANA 2025 on-premise de Cemex, en `10.222.55.7` (HTTPS/443, mandante 100, usuario `E0FLRODRIGZ`).**
+>
+> Todo lo que aquí figura como verificado **se verificó de verdad**, pero contra el appliance `S4H` de SAP CAL en `34.228.25.48:50000`. Esas IP, puertos y usuario **se conservan a propósito**: reescribirlos convertiría un registro de lo que pasó en una ficha de configuración falsa.
+>
+> **Si vas a ejecutar estos pasos hoy, lee antes la sección 0 del `ET-002-Extension-API-Estandar.md`.** Cambian tres cosas: el mapeo del Cloud Connector, el certificado (aquí se iba por HTTP justamente para esquivarlo) y el hecho de que la IP nueva es privada y exige VPN.
+
+---
+
 **Caso piloto para la migración de interfaces PI/PO hacia APIs y SAP BTP**
 
 | Campo | Valor |
