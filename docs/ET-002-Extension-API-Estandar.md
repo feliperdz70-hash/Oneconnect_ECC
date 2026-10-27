@@ -199,6 +199,12 @@ KNB1    →  I_CUSTOMERCOMPANY
 >
 > Una fuente indica que ATO solo hace falta en el sistema de desarrollo, no en QA ni producción.
 
+#### ✅ Verificado en S4H — 2026-10-27: el ATO ya está configurado
+
+No hizo falta ejecutar `S_ATO_SETUP` ni preguntar a Basis. **La prueba es indirecta pero concluyente:** la app `Custom Fields` abre sin el error `Key User Application is not Configured`, y su lista ya contiene campos creados antes por otras personas (`ZZ1_CustomFieldH…`, `ZZ1_Customerregio…`, `ZZ1_CutomZRegio…`). Si el ATO no estuviera configurado, ninguno de esos campos existiría.
+
+> **Atajo reutilizable:** antes de tramitar `S_ATO_SETUP` con Basis, mirar si la app ya lista campos `ZZ1_`. Si los hay, el ATO está hecho y la petición sobra.
+
 ### 6.2 El servicio estándar no está activo de serie
 
 `API_BUSINESS_PARTNER` **no responde** hasta registrarlo en el hub de Gateway:
@@ -322,6 +328,36 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 - [ ] **A3.** Rellenar etiqueta y tipo. `Create and Publish`, o `Save` y después `Publish`.
 
 > **`Publish` es obligatorio.** Un campo guardado pero no publicado **no entra en el `$metadata` ni en la base de datos**. La documentación de SAP es literal: *"Once the extended field has been successfully published, it'll be part of the metadata of the OData service and the corresponding database"*.
+
+> ### 🔴 Trampa 40 — `Publishing not possible. Upgrade preparation is running.`
+>
+> **Ocurrido en S4H el 2026-10-27.** El campo se crea y se guarda sin problema, aparece en la lista, y **el `Publish` falla** con:
+>
+> ```
+> ❌ Publishing not possible. Upgrade preparation is running.
+> ✅ Please check custom field log (transaction SCFD_LOG) for further messages
+> ```
+>
+> - Mensaje: **`CFD_DE_HANDLER026`**
+> - KBA específica: **3216699** — *"Custom Fields app error when publishing a field: Publishing not possible. Upgrade preparation is running."*
+>
+> **Qué es.** Un bloqueo **de sistema, no de usuario ni de permisos**. Mientras el sistema está marcado como en preparación de upgrade, la extensibilidad key user impide publicar, para no generar objetos que el upgrade no controle. No se arregla con roles, ni reintentando, ni cambiando de contexto.
+>
+> **Por qué despista.** Los dos pasos del bloque A se parecen pero son independientes: **crear el campo funciona y publicar no**. Como el campo queda visible en la lista, es fácil creer que salió bien y seguir al bloque B — donde `Enable Usage` tampoco servirá de nada, porque sin publicación el campo no llega ni a la base de datos ni al `$metadata`.
+>
+> **Qué hacer:**
+>
+> 1. **`SCFD_LOG`** — el log de custom fields, que es lo que pide el propio mensaje. Ahí está el detalle.
+> 2. Abrir la **KBA 3216699** con un S-user.
+> 3. Preguntar a Basis si hay un **SUM / preparación de upgrade realmente en curso** en S4H, o si quedó un **flag residual** de una preparación abortada. Son dos situaciones muy distintas: la primera se espera, la segunda se limpia.
+>
+> **Impacto en la planificación.** Si el upgrade está de verdad en marcha, **el escenario queda bloqueado hasta que termine**, y eso no depende del proyecto. Conviene tener identificado un sistema alternativo antes de comprometer una fecha de demo.
+
+> ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
+>
+> Verificado en S4H el 2026-10-27: los campos aparecen como **`ZZ1_…`**, tal como anticipaba la documentación para on-premise. **Todos los tutoriales que muestran `YY1_` son de Cloud** y no aplican aquí.
+>
+> El campo de este PoC se creó como **`ZZ1_PolicyNumber…`** — el nombre completo, con el sufijo del contexto, **sigue pendiente de leer del `$metadata`**, que es la única fuente válida.
 
 ---
 
