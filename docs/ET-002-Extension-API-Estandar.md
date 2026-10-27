@@ -205,6 +205,22 @@ No hizo falta ejecutar `S_ATO_SETUP` ni preguntar a Basis. **La prueba es indire
 
 > **Atajo reutilizable:** antes de tramitar `S_ATO_SETUP` con Basis, mirar si la app ya lista campos `ZZ1_`. Si los hay, el ATO está hecho y la petición sobra.
 
+**Configuración confirmada en pantalla — `S_ATO_SETUP`, 2026-10-27:**
+
+| Campo | Valor |
+|---|---|
+| Adaptation Transport Organizer configured | ✅ **Yes** |
+| Tipo de setup | `Prefix setup` (no namespace) |
+| Local package | `TEST_YY_KEY_USER_LOCAL` |
+| Sandbox package | `TEST_YY_KEY_USER_SANDBOX` |
+| **Prefix** | **`ZZ1_`** |
+| **Sandbox Prefix** | **`ZZ9_`** |
+| Acciones disponibles | `Setup read only`, **`Lock`**, **`Unlock`** |
+
+> **Trampa 31 cerrada.** El prefijo productivo es `ZZ1_` y el de sandbox `ZZ9_`, exactamente como anticipaba la documentación para on-premise. Los tutoriales que muestran `YY1_` son de Cloud. **Y los objetos `ZZ9_` no se transportan**, así que un campo creado por error en sandbox no llegaría nunca a QA ni a productivo.
+
+> **La pantalla no dice si el ATO está bloqueado.** `configured: Yes` y *bloqueado* son cosas distintas, y los botones `Lock` y `Unlock` aparecen ambos disponibles sin indicar el estado vigente. El estado hay que buscarlo en el botón **`Details`**.
+
 ### 6.2 El servicio estándar no está activo de serie
 
 `API_BUSINESS_PARTNER` **no responde** hasta registrarlo en el hub de Gateway:
