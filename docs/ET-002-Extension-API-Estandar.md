@@ -375,6 +375,30 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > 2. **`SM37`** → buscar jobs en estado `Activo` o `Liberado`, de cualquier usuario, filtrando por `*CFD*` y por nombres relacionados con extensibilidad o upgrade. Un job activo desde hace días es un zombie, no un upgrade.
 >
 > Con el nombre exacto del job en la mano, Basis sabe qué cancelar sin tener que adivinar.
+>
+> #### `SM37` descarta el job real — 2026-10-27
+>
+> Búsqueda con `Job Name: *`, `User Name: *`, estado **`Active`**, desde el 01.01.2026: **`No job matches the selection criteria`**. **No hay ni un solo job activo en el sistema.**
+>
+> Luego el bloqueo **no lo causa un job en ejecución**, sino un **estado persistido** que marca el sistema como en preparación de upgrade y que nadie retiró. Es la hipótesis buena: un flag se limpia, un upgrade se espera.
+>
+> **Pistas sobre dónde mirar** (de un índice de terceros de clases SAP, **a confirmar en `SE24`**):
+>
+> | Dato | Valor |
+> |---|---|
+> | Job que gestiona `CL_CFD_MANAGE_JOB` | **`CFD_FIELD_GENERATION`** |
+> | Report de adaptación de campos propios | **`CFD_REGENERATE_IN_ONPREMISE`** — SAP recomienda ejecutarlo **antes** de un upgrade |
+> | KBAs relacionadas | **3441040** (fallo de regeneración tras upgrade), **2400599** (programas para regenerar campos tras upgrade o patch), **3137922** (publicación bloqueada por dependencias) |
+>
+> **Siguientes comprobaciones, por orden de valor:**
+>
+> 1. **`SE24`** → `CL_CFD_MANAGE_JOB` → `ENSURE_NO_JOB_RUNNING`. Es lo único que da la respuesta exacta.
+> 2. **`SM37`** con `CFD*` y **todos los estados**, no solo `Active`: un `CFD_FIELD_GENERATION` cancelado o a medias explicaría el candado.
+> 3. **KBA 3216699** con un S-user. Tiene la resolución oficial.
+>
+> > ### ⚠️ Lo que NO se debe hacer
+> >
+> > **No modificar a mano la tabla de control** para quitar el flag, por tentador que resulte. Es el sistema del cliente, no hay documentación pública de cuál es esa tabla ni de qué más depende de ella, y un PoC cuyo argumento es *"no tocamos nada del estándar"* no puede empezar editando una tabla de control de SAP. Si la KBA no da un remedio limpio, esto va a Basis o a un incidente con SAP.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
