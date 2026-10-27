@@ -415,6 +415,42 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > Si el error fuera `foreign_lock_exists`, el mensaje traería el nombre del usuario que tiene el bloqueo: es el caso de *"otro key user está publicando ahora mismo"*, que se resuelve esperando un minuto.
 >
 > **El rastro sigue en `IS_UPGRADE_PREPARATION_RUNNING( )`**, de esa misma clase, que es quien sabe dónde vive el flag.
+>
+> #### El rastro completo — y el bloqueo NO es de Custom Fields
+>
+> `CL_CFD_MANAGE_JOB_ABSTRACT->IS_UPGRADE_PREPARATION_RUNNING` es una sola línea:
+>
+> ```abap
+> rv_upgrade_prep_is_running = cl_ato_service_factory=>get_ato_check( )->check_upgrade_lock_is_prepared( ).
+> ```
+>
+> La cadena completa queda así:
+>
+> ```
+> Publish del campo
+>   → CL_CFD_MANAGE_JOB->ENSURE_NO_JOB_RUNNING
+>     → IS_UPGRADE_PREPARATION_RUNNING
+>       → CL_ATO_SERVICE_FACTORY=>GET_ATO_CHECK( )->CHECK_UPGRADE_LOCK_IS_PREPARED( )
+> ```
+>
+> **Es el ATO quien bloquea**, no la app de campos propios. El mismo componente que Basis configura con `S_ATO_SETUP`.
+>
+> **Esto cambia cómo se pide el arreglo.** No es *"la app Custom Fields falla al publicar"* —que suena a problema de la herramienta y acaba en un ticket que nadie sabe atender— sino **"el ATO tiene un upgrade lock preparado y eso bloquea toda la extensibilidad key user"**, que un Basis reconoce de inmediato.
+>
+> **Dos causas candidatas, ambas con remedio de configuración:**
+>
+> | Causa | Dónde se ve | Remedio |
+> |---|---|---|
+> | El **ATO está en estado `Locked`** | `S_ATO_SETUP` | La propia transacción tiene la opción de bloquear/desbloquear. SAP documenta que con el ATO bloqueado **las apps de extensibilidad key user quedan bloqueadas** |
+> | El **lock de desarrollo del SUM** sigue puesto | Pasos `LOCKEU_PRE` / `LOCKEU` del upgrade — **nota SAP 1943694** | Lo levanta Basis. Síntoma hermano: *"Development function currently not available due to upgrade preparations"* al liberar una orden |
+>
+> **Ninguna de las dos requiere tocar una tabla**, que era el riesgo que preocupaba más arriba.
+>
+> > **Comprobación cruzada barata:** intentar liberar una orden de transporte cualquiera. Si también falla por preparación de upgrade, el lock es del sistema entero (SUM) y no algo específico del ATO. Eso distingue las dos causas en un minuto.
+>
+> > ### 🔴 Mirar sí, desbloquear no — todavía
+> >
+> > Ver el estado en `S_ATO_SETUP` es solo lectura y no tiene riesgo. **Desbloquear es otra cosa.** Si hay un upgrade realmente en marcha, quitar ese lock es exactamente lo que no se debe hacer, y no es una decisión del proyecto. Se mira, se informa a Basis y lo levantan ellos sabiendo en qué punto está su upgrade.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
