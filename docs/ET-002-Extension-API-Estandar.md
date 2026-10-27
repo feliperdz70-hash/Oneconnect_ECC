@@ -538,6 +538,45 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > - **Intentar liberar una orden** tampoco: en este sistema falla antes con `TK094` / return code `0208` de `tp`, un error del perfil de transporte `TP_DOMAIN_S4H.PFL`. Es un appliance aislado sin landscape, y el TMS nunca se terminó de configurar.
 >
 > > **Consecuencia aparte, que importa al cliente:** si el TMS no está operativo, **los campos key user creados aquí no se podrán transportar** a QA ni a productivo desde este sistema. Para el PoC da igual, porque todo ocurre en el mismo sistema y mandante. Para el despliegue real no: es el paso extra de registro para transporte que existe en on-premise y no en Cloud (sección 16, punto 3). Conviene decirlo antes de que lo pregunten.
+>
+> ---
+>
+> ### 🎯 La fila, y qué resultó ser — 2026-10-27
+>
+> | Campo | Valor |
+> |---|---|
+> | `SYSTEM_NAME` | `S4H` |
+> | `CLIENT_RANGE` | `*` — **todos los mandantes** |
+> | `PROCESS_TYPE` | **`ABAP_OCS_IMPORT`** |
+> | `PROCESS_ID` | `SAINT_S4HID_INITIAL_20251127084229` |
+> | `TOOL_NAME` | **`SAINT`** |
+> | `STATUS` | `R` (Running) |
+> | `START_TIMESTAMP` | **27/11/2025 08:42:29** |
+>
+> **No hay ningún upgrade.** Es un **semáforo huérfano de la instalación inicial del appliance**, con **once meses** de antigüedad. El `PROCESS_ID` lo dice: `INITIAL`, y la herramienta es `SAINT`, la de instalación de add-ons.
+>
+> El `STATUS = R` es **falso**: ningún `SAINT` lleva once meses ejecutándose. El proceso terminó, el semáforo no se retiró, y desde entonces **toda la extensibilidad key user del sistema está bloqueada** — en todos los mandantes, porque `CLIENT_RANGE = *`. Nadie se había dado cuenta, probablemente porque nadie había intentado publicar un campo propio hasta hoy.
+>
+> #### Procedimiento para Basis
+>
+> **Antes de tocar nada, confirmar que no hay nada en vuelo:**
+>
+> 1. **`SAINT`** y **`SPAM`** → ¿hay alguna cola pendiente o sin confirmar? Si ambas están limpias, el semáforo es puro residuo.
+> 2. Notas de referencia: **2751168** (dice que la entrada puede borrarse **si no hay ningún proceso en curso y la entrada no se necesita**) y **2824291** (un caso del mismo semáforo `ABAP_OCS_IMPORT` bloqueando otra operación).
+>
+> > ⚠️ **Las dos notas describen contextos vecinos, no exactamente éste.** El mecanismo del semáforo es el mismo, pero están escritas sobre client copy. Sirven como respaldo, no como procedimiento literal.
+>
+> 3. Si queda cualquier duda sobre el estado de la cola → **incidente a SAP en el componente `BC-UPG-OCS-SPA`**.
+>
+> #### 🔴 Lo que NO se debe hacer
+>
+> | No hacer | Por qué |
+> |---|---|
+> | **Resetear la cola de SPAM/SAINT sin mirar la fase** | Solo es seguro **antes de `DDIC_IMPORT`**. Después puede dejar el sistema inconsistente |
+> | **Editar `LMSEMAPHORE` con `SE16` en modo debug o por base de datos** | Circula como workaround en foros. El mantenimiento de esa tabla está restringido **a propósito**. Es saltarse el control, no resolverlo |
+> | **Tomar la decisión desde el proyecto** | Es el sistema del cliente. Nosotros aportamos el diagnóstico; la acción es de Basis |
+>
+> **Impacto real en el PoC: ninguno a medio plazo.** No hay upgrade, así que no hay espera indefinida. En cuanto Basis retire el semáforo, `Publish` funciona y el bloque A continúa — **el campo `ZZ1_POLICYNUMBER` ya está creado y no hay que rehacerlo**.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
