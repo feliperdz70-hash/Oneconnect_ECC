@@ -399,6 +399,22 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > > ### ⚠️ Lo que NO se debe hacer
 > >
 > > **No modificar a mano la tabla de control** para quitar el flag, por tentador que resulte. Es el sistema del cliente, no hay documentación pública de cuál es esa tabla ni de qué más depende de ella, y un PoC cuyo argumento es *"no tocamos nada del estándar"* no puede empezar editando una tabla de control de SAP. Si la KBA no da un remedio limpio, esto va a Basis o a un incidente con SAP.
+>
+> #### `SE24` identifica el chequeo exacto — 2026-10-27
+>
+> `CL_CFD_MANAGE_JOB->ENSURE_NO_JOB_RUNNING` hace **tres comprobaciones independientes**, cada una con su propia excepción:
+>
+> | # | Comprobación | Excepción | ¿Es la nuestra? |
+> |---|---|---|---|
+> | 1 | Error al consultar el job de activación | `cx_cfd_generation_handler=>field_activation_failed` | No |
+> | 2 | `lv_is_job_running = abap_true` | `cx_cfd_generation_lock=>foreign_lock_exists` — trae el **nombre del usuario** que tiene el bloqueo | No |
+> | 3 | **`is_upgrade_preparation_running( )`** | **`cx_cfd_generation_handler=>upgrade_prep_running`** | ✅ **Sí** |
+>
+> **Por qué importa la distinción:** las tres dan "no se puede publicar", pero por motivos que no tienen nada que ver entre sí. **`SM37` solo habría servido para el caso 2**, y por eso salió vacío — no estábamos mirando el chequeo que falla. El rodeo costó dos pantallas; con el código delante se habría evitado.
+>
+> Si el error fuera `foreign_lock_exists`, el mensaje traería el nombre del usuario que tiene el bloqueo: es el caso de *"otro key user está publicando ahora mismo"*, que se resuelve esperando un minuto.
+>
+> **El rastro sigue en `IS_UPGRADE_PREPARATION_RUNNING( )`**, de esa misma clase, que es quien sabe dónde vive el flag.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
