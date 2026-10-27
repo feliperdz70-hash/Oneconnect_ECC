@@ -467,6 +467,77 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > > ### 🔴 Mirar sí, desbloquear no — todavía
 > >
 > > Ver el estado en `S_ATO_SETUP` es solo lectura y no tiene riesgo. **Desbloquear es otra cosa.** Si hay un upgrade realmente en marcha, quitar ese lock es exactamente lo que no se debe hacer, y no es una decisión del proyecto. Se mira, se informa a Basis y lo levantan ellos sabiendo en qué punto está su upgrade.
+>
+> ---
+>
+> ### ✅ Causa raíz localizada: la tabla `LMSEMAPHORE`
+>
+> **Confirmado en S4H el 2026-10-27: existe un registro y está activo.**
+>
+> El rastro completo, salto a salto:
+>
+> ```
+> Publish del campo
+>   → CL_CFD_MANAGE_JOB->ENSURE_NO_JOB_RUNNING          (3er IF)
+>     → ..._ABSTRACT->IS_UPGRADE_PREPARATION_RUNNING
+>       → CL_ATO_SERVICE_FACTORY=>GET_ATO_CHECK( )      → CL_ATO_OBJECT_CHECKS
+>         → IF_ATO_CHECK~CHECK_UPGRADE_LOCK_IS_PREPARED
+>           → CL_ATO_LM_SEMAPHORE->CHECK_UPGRADE_SEMAPHORE_EXISTS
+>             → SELECT ... FROM LMSEMAPHORE WHERE system_name = sy-sysid
+> ```
+>
+> El `SELECT` final:
+>
+> ```abap
+> SELECT SINGLE process_type FROM lmsemaphore INTO @ev_process_type
+>   WHERE system_name = @sy-sysid AND (
+>     process_type = sapup OR process_type = soi OR
+>     process_type = abap_ocs_import OR process_type = spam_saint_update ).
+> ```
+>
+> #### El mensaje miente: no hace falta un upgrade
+>
+> La consulta acepta **cuatro** tipos de proceso, y solo uno es un upgrade:
+>
+> | `PROCESS_TYPE` | Qué es | Probabilidad |
+> |---|---|---|
+> | `sapup` | SAPup, el motor del SUM — **upgrade de verdad** | Baja |
+> | `soi` | Proceso de instalación / actualización | Baja |
+> | **`abap_ocs_import`** | **Importación OCS: Support Packages, add-ons** | **Alta** |
+> | **`spam_saint_update`** | **Actualización de SPAM/SAINT** | **Alta** |
+>
+> Basta con que alguien aplicara support packages o actualizara SPAM/SAINT y el semáforo quedara sin limpiar. El texto *"Upgrade preparation is running"* es engañoso: **lo que hay es un semáforo de ciclo de vida sin retirar**, de un proceso que puede haber terminado hace meses.
+>
+> ### 🎯 El atajo — 1 minuto en vez de dos horas
+>
+> **La próxima vez que `Publish` falle con `Upgrade preparation is running`, no hay que recorrer nada de lo anterior:**
+>
+> ```
+> SE16N  →  LMSEMAPHORE  →  filtrar SYSTEM_NAME = <SID>
+> ```
+>
+> - **Hay fila** → ésa es la causa. Mirar `PROCESS_TYPE` y la fecha.
+> - **No hay fila** → el bloqueo es otro, probablemente el 2º chequeo (`foreign_lock_exists`, otro key user publicando).
+>
+> El recorrido por `SE24` queda documentado arriba **solo para entender el mecanismo**, no para repetirlo.
+>
+> ### Qué hacer con la fila
+>
+> | Si `PROCESS_TYPE` es… | Entonces |
+> |---|---|
+> | `sapup` o `soi` | Hay un SUM en marcha o a medias. **Se espera.** Basis sabe en qué fase está |
+> | `abap_ocs_import` o `spam_saint_update` | Lo más probable: un import de SPs o una actualización de SPAM/SAINT **que no se cerró**. Basis lo resuelve desde `SPAM`/`SAINT`, donde existe un reinicio de estado para imports interrumpidos |
+>
+> En los dos casos **la acción es de Basis, no del proyecto**, y en ninguno hace falta editar la tabla a mano.
+>
+> #### Por qué `SM37` y la orden de transporte no sirvieron
+>
+> Dos rodeos que conviene ahorrarse:
+>
+> - **`SM37` sin jobs activos** no demuestra nada: cubre el 2º chequeo, no el 3º.
+> - **Intentar liberar una orden** tampoco: en este sistema falla antes con `TK094` / return code `0208` de `tp`, un error del perfil de transporte `TP_DOMAIN_S4H.PFL`. Es un appliance aislado sin landscape, y el TMS nunca se terminó de configurar.
+>
+> > **Consecuencia aparte, que importa al cliente:** si el TMS no está operativo, **los campos key user creados aquí no se podrán transportar** a QA ni a productivo desde este sistema. Para el PoC da igual, porque todo ocurre en el mismo sistema y mandante. Para el despliegue real no: es el paso extra de registro para transporte que existe en on-premise y no en Cloud (sección 16, punto 3). Conviene decirlo antes de que lo pregunten.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
