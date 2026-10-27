@@ -352,6 +352,29 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 > 3. Preguntar a Basis si hay un **SUM / preparación de upgrade realmente en curso** en S4H, o si quedó un **flag residual** de una preparación abortada. Son dos situaciones muy distintas: la primera se espera, la segunda se limpia.
 >
 > **Impacto en la planificación.** Si el upgrade está de verdad en marcha, **el escenario queda bloqueado hasta que termine**, y eso no depende del proyecto. Conviene tener identificado un sistema alternativo antes de comprometer una fecha de demo.
+>
+> #### Lo que dice `SCFD_LOG`, y por qué el mensaje engaña
+>
+> El log da el stack completo:
+>
+> | Campo | Valor |
+> |---|---|
+> | Exception Class | **`CX_CFD_GENERATION_HANDLER`** |
+> | Class | **`CL_CFD_MANAGE_JOB`** |
+> | Method | **`ENSURE_NO_JOB_RUNNING`** |
+> | Field Name | `ZZ1_POLICYNUMBER` |
+> | Host ID | `vhcals4hci` · Client `100` |
+>
+> **El texto del mensaje habla de un upgrade, pero el código comprueba otra cosa.** La clase gestiona el *job* de generación de campos propios y el método se llama, literalmente, *"asegúrate de que no haya un job en ejecución"*. `Upgrade preparation is running` es la etiqueta del mensaje, no necesariamente lo que ocurre.
+>
+> **Eso abre un escenario mucho mejor que esperar a un upgrade:** que haya un **job colgado** que nunca terminó y dejó el candado puesto. Se limpia en minutos en vez de en semanas.
+>
+> **Cómo distinguirlo:**
+>
+> 1. **`SE24`** → `CL_CFD_MANAGE_JOB` → método `ENSURE_NO_JOB_RUNNING`. Leer qué comprueba exactamente: el nombre del job o la tabla de control. Es **lectura de código estándar para diagnosticar** — no tiene nada que ver con el compromiso de no escribir ABAP, que se refiere a no crear código propio.
+> 2. **`SM37`** → buscar jobs en estado `Activo` o `Liberado`, de cualquier usuario, filtrando por `*CFD*` y por nombres relacionados con extensibilidad o upgrade. Un job activo desde hace días es un zombie, no un upgrade.
+>
+> Con el nombre exacto del job en la mano, Basis sabe qué cancelar sin tener que adivinar.
 
 > ### ✅ Trampa 31 confirmada — el prefijo es `ZZ1_`
 >
