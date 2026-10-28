@@ -809,6 +809,36 @@ Buena noticia: **casi todo se reaprovecha**.
 >
 > El fallo es traicionero: **la lectura funciona, el alta funciona, y solo falla la actualización.**
 
+> ### 🔴 Trampa 42 — la cookie de sesión es `Secure`, y eso obliga a ir por HTTPS
+>
+> **Ocurrido en S4H el 2026-10-28.** El `PATCH` devuelve **`403 CSRF token validation failed`** aunque el token sea exactamente el que acaba de devolver el `GET`. No es el token: es la cookie.
+>
+> El `GET` del token responde con:
+>
+> ```
+> Set-Cookie: SAP_SESSIONID_S4H_100=...; Path=/; Secure; HttpOnly;
+> ```
+>
+> **La bandera `Secure` hace que la cookie solo viaje por HTTPS.** Yendo por `http://<host>:50000`, el cliente la guarda pero **no la envía** —hace lo correcto—, SAP recibe la escritura sin sesión, abre una nueva, y el token deja de corresponder a nada.
+>
+> **Cómo reconocerlo sin dudar:** mirar el valor de `SAP_SESSIONID` en dos peticiones seguidas. Si **cambia en cada una**, no se está reutilizando la sesión y el CSRF no tiene ninguna posibilidad de funcionar.
+>
+> **Por qué engaña:** el `GET` funciona perfectamente —una lectura no necesita ni token ni sesión—, así que todo parece correcto hasta la primera escritura. Y el mensaje acusa al token, que es lo único que está bien.
+>
+> #### Consecuencia sobre el Cloud Connector — anula una decisión del PoC-1
+>
+> El PoC-1 mapeaba **HTTP/50000 a propósito**, para esquivar el certificado autofirmado (trampa 13). **Con una cookie `Secure` esa decisión ya no es válida:** el flujo CSRF tampoco funcionará por HTTP a través de BTP.
+>
+> | | PoC-1 | Aquí |
+> |---|---|---|
+> | Protocolo del mapeo | `HTTP` / `50000` | **`HTTPS`** |
+> | `Use TLS` en el Cloud Connector | Desmarcado | **Marcado** |
+> | Trampa 13 (certificado) | Esquivada | **Hay que afrontarla**: exportar el certificado del servidor y subirlo a `Configuration` → `ON-PREMISES` → `Back-End Trust Store` → `Allowlist` |
+>
+> Conviene resolverlo **antes** de montar el proxy. Si no, el `PATCH` fallará a través de BTP con un `403` idéntico y se buscará la causa en las policies, que es donde no está.
+>
+> > **Lo que lo provoca** es la política de seguridad del sistema —típicamente `login/ticket_only_by_https`—, no un defecto. En el sistema de un cliente es lo normal y lo deseable. El appliance del PoC-1 no la tenía activada, y de ahí que allí HTTP funcionara.
+
 ### 10.3 Lo que ya se sabe del PoC-1 y aplica igual
 
 - `Accept-Encoding: gzip, deflate` — el gateway **no soporta Brotli**
