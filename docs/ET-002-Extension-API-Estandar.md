@@ -755,6 +755,37 @@ Buena noticia: **casi todo se reaprovecha**.
 > **Sufijo.** Al nombre se le añade un sufijo derivado del contexto de negocio. Un ejemplo real documentado en esta API: el consultor escribió `TEST_EXT_DEMO` y la propiedad que aparece es **`YY1_TEST_EXT_DEMO_bus`**.
 >
 > **Regla:** el nombre se **lee del `$metadata`**, nunca se supone. Buscar en el `$metadata` el nombre que uno escribió lleva directo a concluir, erróneamente, que el campo "no salió".
+
+> ### ✅ Trampa 31 confirmada por completo — 2026-10-28
+>
+> El campo tecleado como `PolicyNumber` aparece en el `$metadata` de `API_BUSINESS_PARTNER` como:
+>
+> ```xml
+> <Property sap:label="Policy Number" Name="ZZ1_PolicyNumber_bus" MaxLength="20" Type="Edm.String"
+>           sap:is-extension-field="true" sap:field-control="ZZ1_PolicyNumber_busF"/>
+> ```
+>
+> **`ZZ1_PolicyNumber_bus`** — prefijo `ZZ1_` **y** sufijo **`_bus`**, el mismo sufijo del ejemplo documentado `YY1_TEST_EXT_DEMO_bus`. Las dos transformaciones que anticipaba la trampa, confirmadas en el mismo nombre.
+>
+> **Para encontrarlo, buscar `ZZ1` en el `$metadata`**, nunca el nombre que uno escribió.
+
+> ### Trampa 41 — el campo trae un *field control* de regalo, y es read-only
+>
+> Junto a la propiedad aparece una segunda, generada automáticamente:
+>
+> ```xml
+> <Property sap:creatable="false" sap:label="UI Field Control" Name="ZZ1_PolicyNumber_busF"
+>           Type="Edm.Byte" sap:updatable="false" sap:is-extension-field="true"
+>           sap:filterable="false" sap:visible="false"/>
+> ```
+>
+> `ZZ1_PolicyNumber_busF` —con **`F`** final— es el *field control* de UI. Es **`creatable="false"` y `updatable="false"`**.
+>
+> **Dónde muerde:** viaja en las respuestas del `GET`. Si alguien construye la actualización con el patrón *leer la entidad, cambiar un valor y devolverla entera*, estará enviando un campo read-only y el `PATCH` **fallará aunque el valor no haya cambiado** — es la trampa 34, nota 3569467.
+>
+> **Regla:** en el `PATCH` va **solo** `ZZ1_PolicyNumber_bus`. Nunca el `…busF`.
+>
+> **Dato favorable:** `ZZ1_PolicyNumber_bus` **no** declara `sap:updatable="false"`, así que es actualizable. El `PATCH` tiene vía libre.
 >
 > *Ojo adicional:* el setup del ATO distingue el prefijo transportable (`ZZ1_`) del de sandbox (`ZZ9_`). **Los objetos `ZZ9_` no se transportan.**
 
@@ -815,7 +846,7 @@ Es el fallo más común del escenario y **delante del cliente es donde se pierde
 
 El PoC-2 está demostrado cuando:
 
-1. El campo propio aparece en el `$metadata` de la **API estándar**, sin una línea de ABAP.
+1. ✅ **CUMPLIDO 2026-10-28.** El campo propio aparece en el `$metadata` de la **API estándar**, sin una línea de ABAP — `ZZ1_PolicyNumber_bus` en `A_BusinessPartnerType`.
 2. Un `GET` desde Postman **a través de BTP** devuelve un cliente existente con el campo nuevo.
 3. Un `PATCH` desde Postman **a través de BTP** cambia su valor **sin tocar ningún otro dato**.
 4. El cambio se verifica en el sistema, sobre el maestro estándar.
@@ -852,7 +883,7 @@ Honestidad sobre los límites de esta especificación. Hay que comprobarlo en el
 | El nombre y código exactos del business context para cliente/BP | ✅ **Confirmado en S4H 2025, 2026-10-28:** existe **`Master Data: Business Partner (BP_CUSTVEND1)`** — el mismo código que la documentación de Cloud, que resulta válido también en on-premise. No hizo falta `SCFD_REGISTRY` |
 | Que los contextos de BP/Cliente estén **liberados para key user** | ✅ **Confirmado:** el campo se creó bajo `BP_CUSTVEND1` sin restricción |
 | El identificador exacto del catálogo/rol de extensibilidad | **Sigue sin confirmar.** Existe la familia `SAP_CORE_BC_EXT` con subcatálogos `_CBO`, `_CCE` y `_TST` (este último SAP dice expresamente que no se asigne fuera de un tenant de test), pero **toda la documentación localizable es de Cloud**. Un ejemplo de SAP para on-premise usa `SAP_BASIS_BC_EXT` + grupo `SAP_BASIS_BCG_EXT`. Se resuelve con la **F4 de `PFCG`** sobre el catálogo, filtrando por `*EXT*` |
-| El nombre completo del campo generado | Depende del sufijo del contexto. **Se lee del `$metadata`** |
+| El nombre completo del campo generado | ✅ **Confirmado 2026-10-28: `ZZ1_PolicyNumber_bus`** — prefijo `ZZ1_` y sufijo `_bus` |
 | Que `API_BUSINESS_PARTNER` sea V2 | Muy probable por la ruta, pero **confirmarlo leyendo la versión en el `$metadata`** |
 | El síntoma exacto de "campo no habilitado" | Razonado desde el contrato OData, sin fuente directa |
 
