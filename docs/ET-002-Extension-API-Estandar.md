@@ -590,10 +590,33 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 
 **Éste es el paso crítico de todo el escenario.**
 
-- [ ] **B1.** Abrir el campo recién creado → pestaña **`UIs and Reports`**.
-- [ ] **B2.** Localizar la fila **`API_BUSINESS_PARTNER 0001`**.
-- [ ] **B3.** Pulsar **`Enable Usage`**.
-- [ ] **B4.** **`Publish`** otra vez.
+- [x] **B1.** Abrir el campo recién creado → pestaña **`User Interfaces`** *(antes `UIs and Reports`)*.
+- [x] **B2.** Localizar la fila **`API_BUSINESS_PARTNER`**.
+- [x] **B3.** Pulsar **`Enable Usage`** — **no hizo falta, ver abajo**.
+- [ ] **B4.** **`Publish`** otra vez — solo si se cambió algo.
+
+#### ✅ Verificado en S4H — 2026-10-28: con `BP_CUSTVEND1` ya viene habilitado
+
+Con el business context **`Master Data: Business Partner (BP_CUSTVEND1)`**, la pestaña `User Interfaces` muestra:
+
+| Data Source | Descripción | Tipo | Status |
+|---|---|---|---|
+| **`API_BUSINESS_PARTNER`** | *Odata extension model for Business Partner API* | OData Service | **`Enabled`** |
+| **`A_BusinessPartnerType`** | Business Partner | OData Entity | **`Enabled`** |
+| `C_BUSSOLUTIONORDER` | Solution Order Service Binding | OData Service | `Enabled` |
+| `I_BUSINESSPARTNERType` | Business Partner | OData Entity | `Enabled` |
+| `CMD_QLTY_BP_CUST_CCODE_ALP_SRV` | Evaluation Results… Company Code | OData Service | `Disabled` |
+| `CMD_QLTY_BP_CUST_SALES_ALP_SRV` | Evaluation Results… Sales Area | OData Service | `Disabled` |
+
+**El botón que aparece es `Disable Usage`, no `Enable Usage`:** ya está habilitado de serie para este contexto. La trampa 29 —que el campo no se expone solo— **no se produjo con `BP_CUSTVEND1`**, aunque sigue siendo cierta para otros contextos y otros servicios: en la misma lista hay servicios en `Disabled` que sí habría que habilitar uno a uno.
+
+> ### 🔴 La entidad habilitada es `A_BusinessPartnerType`, NO `A_Customer`
+>
+> Es la consecuencia de diseño más importante de haber elegido `BP_CUSTVEND1`:
+>
+> - El `PATCH` de mantenimiento irá contra **`A_BusinessPartner`**, no contra `A_Customer`.
+> - Es coherente con S/4HANA, donde el cliente **es** un business partner y el BP es el único punto de entrada (nota 2265093, sección 2.3).
+> - **Pendiente de verificar:** si `A_Customer` aparece o no más abajo en la lista de 19. De ello depende si la póliza se puede **leer** desde `A_Customer` o solo desde `A_BusinessPartner`.
 
 > ### Trampa 28 — el servicio NO está en la pestaña "OData APIs"
 >
@@ -601,7 +624,23 @@ El rol necesario lleva el catálogo de herramientas key user. Las fuentes se con
 >
 > SAP tiene una KBA cuyo título es literalmente: **"For the Business Context Master Data: Business Partner, the OData Service API_BUSINESS_PARTNER is not available in the tab OData APIs"** — **KBA 3233361**. El caso descrito es exactamente éste: el usuario no lo encuentra bajo `OData APIs` aunque sí aparece bajo **`UIs and Reports`**.
 >
-> Las pestañas reales son: `UIs and Reports`, `Email Templates`, `Form Templates`, `Business Scenarios`, `OData APIs`, `SOAP APIs`, `BAPIs` e `IDocs`. **No existe ninguna pestaña llamada "Service Integration"**, pese a lo que digan algunos tutoriales.
+> **No existe ninguna pestaña llamada "Service Integration"**, pese a lo que digan algunos tutoriales.
+
+> ### ⚠️ Trampa 28 actualizada — en 2025 las pestañas se llaman de otra forma
+>
+> **Verificado en S4H el 2026-10-28.** La lista de pestañas que circula en la documentación es de releases anteriores. En **S/4HANA 2025** son:
+>
+> `General Information` · **`User Interfaces`** · `Analytics` · **`APIs`** · `Operations` · `Email Templates` · `Form Templates` · `Business Scenarios` · `SOAP APIs` · `BAPIs` · `IDocs` · `Where-Used`
+>
+> | Nombre antiguo | Nombre en 2025 |
+> |---|---|
+> | `UIs and Reports` | **`User Interfaces`** |
+> | `OData APIs` | **`APIs`** |
+> | — | `Analytics`, `Operations`, `Where-Used` son nuevas |
+>
+> **El fondo de la KBA 3233361 sigue siendo cierto:** `API_BUSINESS_PARTNER` aparece bajo **`User Interfaces`**, no bajo `APIs`. Lo que cambia son los nombres, no el sitio. Quien busque la pestaña `OData APIs` no la encontrará, y quien la encuentre como `APIs` mirará donde no está.
+>
+> Dentro de `User Interfaces` hay además subfiltros: **`All`**, **`Services`**, **`CDS Views`** y **`SAP GUI`**. El de `CDS Views` es el que dice en qué vistas CDS estándar aparece el campo.
 
 > ### Trampa 29 — el campo no se expone solo, y el fallo es SILENCIOSO
 >
@@ -810,8 +849,8 @@ Honestidad sobre los límites de esta especificación. Hay que comprobarlo en el
 
 | Punto | Por qué no se confirmó |
 |---|---|
-| El nombre y código exactos del business context para cliente/BP en **on-premise 2023** | Los códigos documentados son de Cloud. **Abrir `SCFD_REGISTRY`** |
-| Que los contextos de BP/Cliente estén **liberados para key user** en ese release | No se encontró una página que lo confirme para 2023 on-premise |
+| El nombre y código exactos del business context para cliente/BP | ✅ **Confirmado en S4H 2025, 2026-10-28:** existe **`Master Data: Business Partner (BP_CUSTVEND1)`** — el mismo código que la documentación de Cloud, que resulta válido también en on-premise. No hizo falta `SCFD_REGISTRY` |
+| Que los contextos de BP/Cliente estén **liberados para key user** | ✅ **Confirmado:** el campo se creó bajo `BP_CUSTVEND1` sin restricción |
 | El identificador exacto del catálogo/rol de extensibilidad | **Sigue sin confirmar.** Existe la familia `SAP_CORE_BC_EXT` con subcatálogos `_CBO`, `_CCE` y `_TST` (este último SAP dice expresamente que no se asigne fuera de un tenant de test), pero **toda la documentación localizable es de Cloud**. Un ejemplo de SAP para on-premise usa `SAP_BASIS_BC_EXT` + grupo `SAP_BASIS_BCG_EXT`. Se resuelve con la **F4 de `PFCG`** sobre el catálogo, filtrando por `*EXT*` |
 | El nombre completo del campo generado | Depende del sufijo del contexto. **Se lee del `$metadata`** |
 | Que `API_BUSINESS_PARTNER` sea V2 | Muy probable por la ruta, pero **confirmarlo leyendo la versión en el `$metadata`** |
