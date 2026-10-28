@@ -692,6 +692,40 @@ Buena noticia: **casi todo se reaprovecha**.
 | URL Path | **`/sap/opu/odata`** |
 | Access Policy | **`Path and All Sub-Paths`** |
 
+#### ✅ Bloque C completado — 2026-10-28
+
+| | Valor final |
+|---|---|
+| Virtual Host / Port | `s4h-poc.virtual` / `50000` — **igual que el PoC-1**, para no tocar el API Provider |
+| **Internal Host / Port** | **`vhcals4hci.dummy.nodomain`** / **`443`** |
+| Protocol | **`HTTPS`** (`Use TLS` ✅) |
+| System Cert. for Logon | **Desmarcado** |
+| Host in Request Header | `Use Virtual Host` |
+| System ID | `S4H` |
+| Check Result | ✅ **`Reachable`** |
+| Recurso | `/sap/opu/odata` · `Path and All Sub-Paths` |
+
+> ### 🔴 Trampa 43 — el mapeo HTTPS exige el HOSTNAME, no la IP
+>
+> **Con `10.222.55.7:443` el mapeo queda en `Not Reachable`. Con `vhcals4hci.dummy.nodomain:443`, en `Reachable`.** Misma máquina, mismo puerto, misma red.
+>
+> **El motivo:** el certificado del servidor está emitido para su hostname. Conectando por IP, la validación TLS falla por **desajuste de nombre** aunque la red funcione perfectamente y el navegador llegue sin problema.
+>
+> **Por qué cuesta encontrarlo:** `Not Reachable` es el mismo mensaje para un cortafuegos cerrado, un puerto mal escrito, un certificado no confiable y un desajuste de nombre. Cuatro causas distintas, un solo síntoma.
+>
+> `.dummy.nodomain` es un dominio ficticio del appliance: **si no resuelve, hay que añadirlo al `hosts` del equipo donde corre el Cloud Connector.**
+
+> ### Trampa 44 — cuatro obstáculos en el diálogo del mapeo
+>
+> | Obstáculo | Qué pasa |
+> |---|---|
+> | **El protocolo no se puede editar** | El diálogo avisa: *"Protocol as well as virtual host and port cannot be changed"*. **Hay que borrar el mapeo y crearlo de nuevo**, marcando `Use TLS` **en el asistente de creación** |
+> | **Al recrear se pierden los recursos** | `Resources (0)`. Y sin recurso, todo devuelve `403` con el túnel en verde — trampa 11 otra vez |
+> | **`System Cert. for Logon` se marca solo** | Hace que el conector presente un certificado de cliente al backend. Con Basic Auth **debe ir desmarcado** |
+> | **El puerto HTTPS no es el del PoC-1** | Aquí **no existe el `44300`**. El HTTPS del servidor está en **`443`**. No se asume: se comprueba abriendo `https://<host>:<puerto>/sap/bc/ping` en el navegador |
+>
+> **Orden que funciona:** comprobar primero qué puerto responde de verdad en el navegador → crear el mapeo con `Use TLS` y **hostname** → comprobar `Reachable` → **y solo entonces** añadir el recurso, que es lo que se olvida después de pelearse con lo anterior.
+
 > ### Trampa 30 — el recurso actual no cubre la API estándar
 >
 > La API estándar es OData **V2** y cuelga de **`/sap/opu/odata`**. El PoC-1 usa **`/sap/opu/odata4`**. **Son rutas distintas y el recurso declarado hoy no cubre la nueva.**
