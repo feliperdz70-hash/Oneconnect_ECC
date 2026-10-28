@@ -746,6 +746,26 @@ Buena noticia: **casi todo se reaprovecha**.
 - [ ] **D4.** `PATCH {base}/A_BusinessPartner('<id>')` con el campo nuevo → **204 No Content**.
 - [ ] **D5.** Verificar con un `GET`.
 
+#### ✅ Validación contra el backend directo — 2026-10-28
+
+**Baseline de aislamiento de fallos, igual que el bloque D del PoC-1. No es el entregable**, pero deja demostrado que la parte SAP está completa y que cualquier fallo posterior es de BTP.
+
+| Paso | Petición | Resultado |
+|---|---|---|
+| Metadatos | `GET …/$metadata` | ✅ `200` — `ZZ1_PolicyNumber_bus` presente en `A_BusinessPartnerType` |
+| Lectura | `GET …/A_BusinessPartner?$top=3&$select=…,ZZ1_PolicyNumber_bus` | ✅ `200` — campo vacío, BP `1` *Earth Link Communication* |
+| Token | `GET …/?sap-client=100` con `X-CSRF-Token: Fetch` | ✅ `200` + token + `SAP_SESSIONID` |
+| **Escritura** | `PATCH …/A_BusinessPartner('1')` | ✅ **`204 No Content`** |
+
+**Configuración que lo hizo funcionar:**
+
+- **`https://10.222.55.7`** — por HTTP el `PATCH` siempre devuelve `403`, por la trampa 42
+- `SSL certificate verification` en **OFF** (certificado autofirmado)
+- Cabeceras: `X-CSRF-Token`, `Content-Type: application/json`, **`If-Match: *`**, `Accept: application/json`
+- Body con **solo** `ZZ1_PolicyNumber_bus` — nunca el `…busF` de la trampa 41
+
+> **Lo que esto demuestra y lo que no.** Demuestra que un campo creado con `Custom Fields`, sin una línea de ABAP, **se lee y se escribe por la API estándar de SAP**. No demuestra ninguno de los criterios de aceptación de la sección 12, que exigen que todo pase **por BTP**. El valor de este paso es de diagnóstico: a partir de aquí, cualquier fallo tiene su causa en la cadena de BTP, no en SAP.
+
 > ### Trampa 31 — el nombre del campo NO es el que escribiste
 >
 > Dos transformaciones, y las dos despistan:
