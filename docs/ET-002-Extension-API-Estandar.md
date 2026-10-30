@@ -692,6 +692,52 @@ Buena noticia: **casi todo se reaprovecha**.
 | URL Path | **`/sap/opu/odata`** |
 | Access Policy | **`Path and All Sub-Paths`** |
 
+> ### 🔴 Trampa 45 — el túnel a una subcuenta nueva no resuelve por DNS
+>
+> **Ocurrido con `POC-CEMEX` el 2026-10-29.** La subcuenta se registra bien (*"Subaccount was added"*), pero al conectar el estado parpadea unos segundos y **vuelve a rojo sin mensaje**. Las alertas solo dicen *"Tunnel connection … is broken and cannot be used"*, que no explica nada.
+>
+> **El error real está en `scc_core.trc`** (no `ljs_trace.log`, que es el nombre antiguo), bajo `<subcuenta>` → `Logging and Tracing`:
+>
+> ```
+> ERROR ...AbstractReconnectableClient#notification-client
+>   Connect client to 'connectivitynotification.cf.us21.hana.ondemand.com/48.216.153.6:443' failed:
+>   Failed to resolve 'connectivitynotification.cf.us21.hana.ondemand.com' [A(1), AAAA(28)] after 4 queries
+> java.net.UnknownHostException
+> ```
+>
+> **El host del túnel NO es `cf.<region>.hana.ondemand.com`.** Ese es solo la etiqueta de la región. Los hosts reales son **`connectivitynotification.cf.<region>…`** y `connectivitytunnel.cf.<region>…`. Comprobar el primero no prueba nada sobre los segundos — un rodeo que cuesta su rato.
+>
+> #### Por qué una subcuenta conecta y otra no
+>
+> | Subcuenta | Región | Proveedor | Endpoint |
+> |---|---|---|---|
+> | Trial | `us10` | **AWS** | `connectivitynotification.cf.us10…` ✅ |
+> | `POC-CAL` / `POC-CEMEX` | **`us21`** | **Azure** | `connectivitynotification.cf.us21…` ❌ |
+>
+> **Son zonas DNS distintas.** Que el conector lleve meses conectando contra `us10` no dice nada de `us21`: la red corporativa puede resolver una y no la otra.
+>
+> > ⚠️ **Azure y AWS comparten nombre de región.** En el desplegable del Cloud Connector, `US East (VA) - AWS` y `US East (VA) - Azure` se parecen muchísimo y son entradas distintas. El proveedor sale del `Overview` de la subcuenta, no se adivina.
+>
+> #### Cómo confirmarlo en 30 segundos
+>
+> ```
+> nslookup connectivitynotification.cf.us10.hana.ondemand.com      (control: funciona)
+> nslookup connectivitynotification.cf.us21.hana.ondemand.com      (el que falla)
+> nslookup connectivitynotification.cf.us21.hana.ondemand.com 8.8.8.8
+> ```
+>
+> Si con el DNS público resuelve y con el corporativo no, **es filtrado de red** y no hay nada que tocar en el Cloud Connector ni en BTP.
+>
+> #### Qué pedir a Redes
+>
+> Resolución DNS y salida por **443** a **`*.cf.us21.hana.ondemand.com`**, en particular `connectivitynotification.*` y `connectivitytunnel.*`.
+>
+> **Por dominio, no por IP.** Es la recomendación expresa de SAP, y el propio Cloud Connector lo avisa: *"upcoming changes in Connectivity service domain names and IP addresses"*. Las IPs del servicio de Connectivity cambian periódicamente — hubo una tanda documentada en enero de 2025 — y una regla por IP se rompe sin avisar.
+>
+> > ### 🔴 No metas la IP en el fichero `hosts`
+> >
+> > El log regala la IP (`48.216.153.6`) y es tentador: arregla la demo de hoy en un minuto. **Pero SAP cambia esas IPs y acaba de avisar de que lo hará.** El túnel se caerá sin previo aviso, con este mismo error, y con la pista falsa de que "antes funcionaba". Si se usa como parche para una demo, que sea con fecha de caducidad y escrito.
+
 #### ✅ Bloque C completado — 2026-10-28
 
 | | Valor final |
