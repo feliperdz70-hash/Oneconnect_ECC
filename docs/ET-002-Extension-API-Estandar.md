@@ -728,11 +728,21 @@ Buena noticia: **casi todo se reaprovecha**.
 >
 > Si con el DNS público resuelve y con el corporativo no, **es filtrado de red** y no hay nada que tocar en el Cloud Connector ni en BTP.
 >
-> #### Qué pedir a Redes
+> #### ✅ La causa real: caché negativa de la JVM — resuelto 2026-10-30
 >
-> Resolución DNS y salida por **443** a **`*.cf.us21.hana.ondemand.com`**, en particular `connectivitynotification.*` y `connectivitytunnel.*`.
+> **El `nslookup` resolvió los tres hosts correctamente**, con el DNS de Cemex y con el público, devolviendo la misma IP (`48.216.153.6`). **No era filtrado de red y no hizo falta pedir nada a Redes.**
 >
-> **Por dominio, no por IP.** Es la recomendación expresa de SAP, y el propio Cloud Connector lo avisa: *"upcoming changes in Connectivity service domain names and IP addresses"*. Las IPs del servicio de Connectivity cambian periódicamente — hubo una tanda documentada en enero de 2025 — y una regla por IP se rompe sin avisar.
+> **Lo que pasaba:** el Cloud Connector corre sobre Java, que **cachea los fallos de resolución DNS**. Falló una vez —por un problema transitorio— y siguió dando el mismo `UnknownHostException` indefinidamente, aunque el DNS ya resolviera bien.
+>
+> **La solución: reiniciar el servicio del Cloud Connector.** En Windows, `services.msc` → servicio del Cloud Connector → `Reiniciar`. Eso vacía la caché y fuerza una resolución nueva. El túnel levantó a la primera.
+>
+> > **La pista que lo delataba, y que conviene saber leer:** el error traía la IP correcta — `Connect client to '…/48.216.153.6:443' failed: Failed to resolve '…'`. **Decía no poder resolver un nombre cuya dirección estaba imprimiendo en el mismo mensaje.** Esa contradicción es la firma de una caché envenenada, no de un problema de red.
+>
+> **Antes de escalar a Redes, reiniciar el servicio.** Cuesta un minuto y ahorra un ticket; una petición de reglas de cortafuegos en una empresa grande se mide en días.
+>
+> #### Si aun así fuera de red, esto es lo que habría que pedir
+>
+> Resolución DNS y salida por **443** a **`*.cf.us21.hana.ondemand.com`**, en particular `connectivitynotification.*` y `connectivitytunnel.*`. **Por dominio, no por IP** — es la recomendación expresa de SAP, y el propio conector lo avisa: *"upcoming changes in Connectivity service domain names and IP addresses"*. Las IPs cambian periódicamente (hubo una tanda en enero de 2025) y una regla por IP se rompe sin avisar.
 >
 > > ### 🔴 No metas la IP en el fichero `hosts`
 > >
