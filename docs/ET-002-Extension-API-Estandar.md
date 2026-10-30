@@ -748,6 +748,22 @@ Buena noticia: **casi todo se reaprovecha**.
 > >
 > > El log regala la IP (`48.216.153.6`) y es tentador: arregla la demo de hoy en un minuto. **Pero SAP cambia esas IPs y acaba de avisar de que lo hará.** El túnel se caerá sin previo aviso, con este mismo error, y con la pista falsa de que "antes funcionaba". Si se usa como parche para una demo, que sea con fecha de caducidad y escrito.
 
+#### ✅ Replicado en la subcuenta de Cemex — 2026-10-30
+
+El PoC cambia de subcuenta: del trial a **`POC-CAL`** (`POC-CEMEX` en el Cloud Connector), en el BTP real de Cemex. El trial se conserva como respaldo hasta que Cemex funcione de punta a punta.
+
+| | Trial | **`POC-CEMEX`** |
+|---|---|---|
+| Región | `us10` — **AWS** | `us21` — **Azure** |
+| Subaccount ID | `1a7df9be-…` | `f2685d1b-ccac-43a3-b9a4-3772bfc774f6` |
+| Subdominio | `e5a2c3d7trial` | `poc-cal-cmx` |
+| Mapeo | ✅ | ✅ `Reachable` |
+| Recurso | ✅ | ✅ |
+
+> **Los mapeos y recursos son POR SUBCUENTA.** Es un despiste fácil y caro: configurarlos en la subcuenta equivocada deja todo con aspecto de estar listo, y el fallo aparece después, en API Management, como un `503` o un `403` que parecen otra cosa. La subcuenta activa se lee junto al botón `Select Subaccount`, arriba.
+
+> **El `Back-End Trust Store` SÍ es del conector, no de la subcuenta.** El certificado subido para el trial valió tal cual, y el mapeo de `POC-CEMEX` dio `Reachable` a la primera.
+
 #### ✅ Bloque C completado — 2026-10-28
 
 | | Valor final |
