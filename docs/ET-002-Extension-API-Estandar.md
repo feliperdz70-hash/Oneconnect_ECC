@@ -748,6 +748,38 @@ Buena noticia: **casi todo se reaprovecha**.
 > >
 > > El log regala la IP (`48.216.153.6`) y es tentador: arregla la demo de hoy en un minuto. **Pero SAP cambia esas IPs y acaba de avisar de que lo hará.** El túnel se caerá sin previo aviso, con este mismo error, y con la pista falsa de que "antes funcionaba". Si se usa como parche para una demo, que sea con fecha de caducidad y escrito.
 
+> ### 🔴 BLOQUEO — `POC-CAL` no tiene entitlement de Integration Suite
+>
+> **Verificado el 2026-10-30.** De los 34 entitlements de la subcuenta, **ninguno es API Management**. Es el pendiente que arrastra el runbook desde septiembre.
+>
+> **Lo que sí hay, y se confunde con facilidad:**
+>
+> | Entitlement | Qué es |
+> |---|---|
+> | `connectivity` (`api_access`, `lite`, `connectivity_proxy`) | El **servicio de Connectivity** — es lo que hace funcionar el túnel del Cloud Connector |
+> | `destination` (`lite`) | Destinations |
+> | `cloudfoundry` (`standard`) | Entorno CF |
+> | `sapappstudio` | Business Application Studio |
+>
+> **Ver `connectivity` en la lista no significa tener API Management.** Son servicios distintos: uno abre el túnel, el otro publica la API. De ahí que el Cloud Connector esté en `Reachable` y aun así no haya dónde montar el proxy.
+>
+> #### Dos situaciones muy distintas tras "falta el entitlement"
+>
+> | Caso | Qué implica |
+> |---|---|
+> | La **global account ya tiene cuota** sin asignar | Dos clics. Se resuelve el mismo día |
+> | La global account **no tiene Integration Suite** | **Licencia a adquirir.** Semanas o meses, y decisión comercial |
+>
+> **Es la primera pregunta que hay que hacer**, porque cambia el pronóstico entero del PoC. Se mira en la global account → `Entitlements`.
+>
+> #### La alternativa, y por qué se descartó
+>
+> Con `cloudfoundry` y `destination` se podría desplegar una app en CF que consuma el Destination y exponga la API. Pasaría por BTP y cumpliría la **letra** del criterio de aceptación.
+>
+> **Pero lo desvirtúa:** exige escribir código y pierde lo que da valor al escenario —API key, policies, trazabilidad, gobierno—. El mensaje dejaría de ser *"se expone con una herramienta de gestión de APIs"* y pasaría a ser *"nos hemos hecho un proxy"*, que se parece demasiado al PI/PO del que se viene huyendo.
+>
+> **Plan mientras llega:** la demo queda lista en el trial, que está completo. Si la fecha aprieta, se enseña ahí diciendo con claridad que la réplica en el entorno de Cemex es mecánica — y lo es, porque el Cloud Connector ya está hecho.
+
 #### ✅ Replicado en la subcuenta de Cemex — 2026-10-30
 
 El PoC cambia de subcuenta: del trial a **`POC-CAL`** (`POC-CEMEX` en el Cloud Connector), en el BTP real de Cemex. El trial se conserva como respaldo hasta que Cemex funcione de punta a punta.
