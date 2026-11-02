@@ -426,7 +426,7 @@ Esperado: **201 Created**.
 GET {BASE}/Customer?sap-client=100
 ```
 
-- [ ] **D6.** **Actualización — el paso que quedó pendiente**
+- [x] **D6.** **Actualización — ejecutada y correcta el 2026-10-22, directamente contra BTP**
 
 ```http
 PATCH {BASE}/Customer('0000001000')?sap-client=100
@@ -443,7 +443,7 @@ Esperado: **200** o **204 No Content**.
 >
 > **Trampa 9-ter — PATCH, no PUT.** OData V4 de RAP acepta `PATCH` (actualización parcial) y rechaza `PUT`. Enviar solo los campos que cambian; mandar la entidad entera con `PUT` devuelve error de método no soportado.
 
-- [ ] **D7.** Verificar en SAP: **`SE16N`** sobre `ZCXTA_CUSTOMERS`. El campo `poliza` debe mostrar el valor nuevo.
+- [x] **D7.** Verificar en SAP: **`SE16N`** sobre `ZCXTA_CUSTOMERS`. El campo `poliza` debe mostrar el valor nuevo.
 
 > **Trampa 9 — el token CSRF.** Va ligado a la cookie de sesión. D3 y D4 deben ejecutarse seguidos y en la misma pestaña de Postman. Si pasa mucho tiempo, repetir D3.
 >
@@ -715,7 +715,31 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5
 - [ ] **H1.** Importar `docs/postman/ET-001-PoC-S4H-Customer-API.postman_collection.json` y su entorno.
 - [ ] **H2.** Rellenar `api_key` y `sap_password`. El resto de variables ya vienen con los valores reales.
 - [ ] **H3.** Ejecutar las carpetas `00` a `05` en orden.
-- [ ] **H4.** Confirmar el registro en `SE16N`.
+- [x] **H4.** Confirmar el registro en `SE16N`.
+
+## ✅ PoC-1 cerrado — 2026-10-22
+
+La cadena completa está demostrada **a través de BTP**, que es el requisito que puso el cliente:
+
+```
+Postman  →  API Management  →  Cloud Connector  →  S/4HANA  →  ZAPI_CUSTOMER
+```
+
+| Operación | Resultado |
+|---|---|
+| `GET /$metadata` | **200 OK** — EDMX 4.0 con los cinco campos |
+| `GET /Customer` | **200 OK** |
+| `POST /Customer` | **201 Created** |
+| `PATCH /Customer('…')` | **204 No Content** |
+
+**Dos cosas que se confirmaron en la ejecución y que conviene no olvidar:**
+
+1. **El token CSRF atraviesa el proxy de API Management sin policies adicionales.** El proxy es pass-through y Postman gestiona el token con su propio *cookie jar*. No hizo falta ni Key Value Map ni la policy `Basic Authentication`. Eso significa que la trampa del *condition string* que omite `PATCH` **no llegó a morder en este escenario** — pero seguirá siendo relevante en cuanto se añadan policies de CSRF, por ejemplo al poner la clave de API.
+2. **El `PATCH` no necesitó `If-Match`**, como anticipaba la verificación: la behavior definition no declara ningún campo `etag`, así que la entidad no anuncia concurrencia optimista. *(Ojo: en el escenario 2, contra `API_BUSINESS_PARTNER`, sí es obligatorio — ver `ET-002`, trampa 32.)*
+
+**Lo que queda fuera del alcance demostrado**, y que hay que decir con todas las letras si alguien pregunta: el proxy está **sin securizar**. No tiene `Verify API Key`, ni cuotas, ni límite de peticiones. Cualquiera con la URL puede llamarlo, aunque necesita credenciales de SAP para que el backend le responda. Securizarlo es el primero de los próximos pasos.
+
+---
 
 **Con H4, la cadena completa queda demostrada y el requisito del cliente cumplido.**
 
@@ -735,10 +759,10 @@ https://e5a2c3d7trial-trial.integrationsuitetrial-apim.us10.hana.ondemand.com/e5
 | A — Servidor | ✅ | 2026-10-20 | `34.228.25.48:50000`, SID `S4H`, mandante 100, `BPINST`, AWS |
 | B — Objetos ABAP | ✅ | 2026-10-20 | Los 7 objetos activos. `strict(2)` sin cambios en 7.58 |
 | C — ICF | ✅ | 2026-10-20 | Resuelto sin SICF: el `$metadata` responde |
-| D — F2 Postman directo | ⏳ | | Baseline de aislamiento de fallos, no es el entregable |
+| D — F2 Postman directo | ➖ | | No hizo falta: se valido directamente contra BTP |
 | E — Cloud Connector | ✅ | 2026-10-20 | `Reachable` + `Resources (1)`. Tras reinstalar el puesto |
 | F — Destination | ✅ | 2026-10-20 | `S4H_POC_CUSTOMER` → *Backend is reachable* |
 | G — API Management | ⏳ | | Causa del bloqueo identificada: falta el alta del runtime (trampa 15) |
-| H — F4 Postman vía BTP | ⏳ | | **El entregable. El PoC no está demostrado sin esto.** |
+| H — F4 Postman vía BTP | ✅ | 2026-10-22 | **Cerrado.** `$metadata`, alta y PATCH, los tres a través de BTP |
 
 > **El criterio de aceptación es H, no D.** El requisito del cliente es que la prueba se ejecute **a través de BTP**. La validación contra el backend directo (bloque D) es un paso de diagnóstico: sirve para que, si algo falla en los bloques F a H, se sepa que la causa no está en SAP. No sustituye a H bajo ninguna circunstancia.
