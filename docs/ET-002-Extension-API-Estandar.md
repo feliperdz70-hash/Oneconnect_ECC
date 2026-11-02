@@ -778,7 +778,18 @@ Buena noticia: **casi todo se reaprovecha**.
 >
 > **Pero lo desvirtúa:** exige escribir código y pierde lo que da valor al escenario —API key, policies, trazabilidad, gobierno—. El mensaje dejaría de ser *"se expone con una herramienta de gestión de APIs"* y pasaría a ser *"nos hemos hecho un proxy"*, que se parece demasiado al PI/PO del que se viene huyendo.
 >
-> **Plan mientras llega:** la demo queda lista en el trial, que está completo. Si la fecha aprieta, se enseña ahí diciendo con claridad que la réplica en el entorno de Cemex es mecánica — y lo es, porque el Cloud Connector ya está hecho.
+> #### ✅ Decisión — 2026-11-02: el PoC se demuestra en el trial
+>
+> **No se podrá usar el BTP de Cemex.** El entitlement no llega a tiempo, así que el escenario se completa en la subcuenta trial.
+>
+> **Lo que ya estaba hecho allí:** túnel, mapeo al servidor nuevo por HTTPS, recurso `/sap/opu/odata`, runtime de API Management y el API Provider `S4H_POC_PROVIDER`. Queda el proxy, las policies y Postman.
+>
+> **Lo que NO se pierde:** el montaje en `POC-CEMEX` queda hecho y en `Reachable`. El día que haya entitlement, solo falta crear provider y proxy.
+>
+> ##### Dos cosas que hay que decir delante del cliente
+>
+> 1. **Que es un trial, y por qué.** No como disculpa: *"el patrón está demostrado de punta a punta; replicarlo en vuestro entorno es mecánico, y lo único que falta allí es el entitlement de Integration Suite"*. Es cierto y comprobable. Si no se dice y alguien lo pregunta, parece que se ocultaba.
+> 2. **Que el trial caduca.** La subcuenta se creó el 11 de septiembre de 2026 y las trial de BTP viven 90 días prorrogables. Hacia mediados de diciembre hay que renovarla o la demo deja de existir.
 
 #### ✅ Replicado en la subcuenta de Cemex — 2026-10-30
 
