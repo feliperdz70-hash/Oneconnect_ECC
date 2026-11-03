@@ -229,6 +229,33 @@ No hizo falta ejecutar `S_ATO_SETUP` ni preguntar a Basis. **La prueba es indire
 
 **Comprobación rápida:** pedir su `$metadata`. Si responde, está registrado.
 
+> ### 🔴 Trampa 49 — el nombre técnico de las APIs de SAP empieza por `ZAPI_`
+>
+> **Buscar una API por su nombre conocido no la encuentra.** En `/IWFND/MAINT_SERVICE`, los servicios OData de las APIs **A2X** de SAP tienen **dos nombres distintos**:
+>
+> | Columna | Valor |
+> |---|---|
+> | **Technical Service Name** | **`ZAPI_SALES_ORDER_SRV`** ← con `Z`, aunque sea de SAP |
+> | **External Service Name** | **`API_SALES_ORDER_SRV`** ← el que todo el mundo conoce |
+> | Service Description | `Sales Order (A2X)` |
+>
+> **En la URL se usa el EXTERNO:** `/sap/opu/odata/sap/API_SALES_ORDER_SRV`.
+>
+> **Por qué cuesta tanto:** filtrar por `Technical Service Name = API_*` devuelve **`No Backend Services found`**, y uno concluye que la API no existe en el sistema — cuando está registrada y funcionando. La `Z` despista doblemente, porque sugiere desarrollo propio y no lo es: es la convención de nombre de los servicios generados para las APIs A2X.
+>
+> **Cómo buscar bien:**
+> - Filtrar por **`External Service Name`**, no por el técnico
+> - O por **`*SALES_ORDER*`** sin anclar al principio
+> - O mirar la columna `Service Description`, que trae el nombre de negocio y el sufijo `(A2X)`
+>
+> **El sufijo `(A2X)` es la señal de que es una API de integración**, frente a los servicios de apps Fiori (`CB_*`, `C_*`, `UI_*`), cuyo contrato SAP puede cambiar entre releases sin compromiso alguno.
+>
+> #### Catálogo confirmado en S4H — 2026-11-03
+>
+> Entre las APIs ya registradas y disponibles sin tocar nada: `API_SALES_ORDER_SRV`, `API_SALES_SCHEDULING_AGREEMENT`, `API_SEGMENT_SRV`, `API_WAREHOUSE`, `API_WAREHOUSE_ORDER_TASK`, `API_WHSE_INBOUND_DELIVERY`, `API_WHSE_OUTB_DLV_ORDER`, `API_WORK_CENTERS`…
+>
+> **Para exponer cualquiera de ellas solo hace falta un API Proxy nuevo.** El Cloud Connector no se toca: el recurso `/sap/opu/odata` con `Path and All Sub-Paths` las cubre todas. Es la demostración práctica de que el patrón se replica — la primera interfaz cuesta semanas, la segunda cinco minutos.
+
 #### ✅ Verificado en S4H — 2026-10-23: el servicio YA está activo
 
 No hizo falta registrar nada. Desde **`/IWFND/GW_CLIENT`**, con `Protocol: HTTP`:
