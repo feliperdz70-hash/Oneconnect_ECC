@@ -791,6 +791,50 @@ Buena noticia: **casi todo se reaprovecha**.
 > 1. **Que es un trial, y por qué.** No como disculpa: *"el patrón está demostrado de punta a punta; replicarlo en vuestro entorno es mecánico, y lo único que falta allí es el entitlement de Integration Suite"*. Es cierto y comprobable. Si no se dice y alguien lo pregunta, parece que se ocultaba.
 > 2. **Que el trial caduca.** La subcuenta se creó el 11 de septiembre de 2026 y las trial de BTP viven 90 días prorrogables. Hacia mediados de diciembre hay que renovarla o la demo deja de existir.
 
+#### 🔴 El trial se había caído solo — reconstrucción del 2026-11-02
+
+Al volver, **Integration Suite ya no estaba suscrito** en la subcuenta trial: solo quedaba Business Application Studio. BTP **suspende las cuentas trial tras 30 días de inactividad**, y al reactivarse se perdió la suscripción.
+
+> **El Cloud Connector seguía conectado**, con el mapeo en `Reachable`. Túnel y suscripción son cosas distintas: que el conector esté verde no dice nada de si API Management existe.
+
+**La reconstrucción, con las cuatro trampas que trajo:**
+
+| # | Paso | Lo que muerde |
+|---|---|---|
+| 1 | `Service Marketplace` → `Integration Suite` → `Create`, plan `trial` | — |
+| 2 | Asignar **`Integration_Provisioner`** en la subcuenta | Sin ella, el launchpad devuelve `/unauthorized` y **una página en blanco**, sin mensaje |
+| 3 | `Add Capabilities` → **`Manage APIs`** y **`Developer Hub`** | **`Developer Hub` viene desmarcado** y hace falta para el Product y la API key |
+| 4 | Asignar `APIManagement.SelfService.Administrator`, `APIPortal.Administrator`, `AuthGroup.API.Admin` | **No existen hasta que las capacidades están activas.** De ahí que haya que asignar roles en dos tandas |
+
+> ### 🔴 Trampa 46 — cerrar sesión en el cockpit NO cierra la sesión en Integration Suite
+>
+> Tras asignar `Integration_Provisioner` y hacer logout/login en el cockpit, **el launchpad seguía devolviendo `unauthorized`**. La asignación era correcta: el usuario estaba en la role collection y la role collection tenía su rol.
+>
+> **Son tokens distintos.** El del cockpit y el de la aplicación se renuevan por separado.
+>
+> **La solución: una ventana de incógnito.** Entró a la primera. Para seguir usando el navegador normal, hay que borrar las cookies de `hana.ondemand.com`.
+>
+> **Es el primer remedio a probar ante cualquier `unauthorized` en BTP**, antes de revisar role collections que probablemente estén bien.
+
+> ### Trampa 47 — `Runtimes` tiene dos pestañas y solo una es la nuestra
+>
+> | Pestaña | Qué es |
+> |---|---|
+> | **`Integration Cell`** | Runtime sobre Kubernetes. **NO es el del PoC.** Sale primero y con un `Activate` muy a mano |
+> | **`Classic API Management`** | ✅ **Ésta** |
+>
+> La pantalla de `Classic API Management` **dice literalmente qué falta**: *"Assign the APIManagement.SelfService.Administrator role to yourself, then follow the help documentation and log in again."* Conviene leerla antes de buscar por otro lado.
+
+**Lo que sobrevivió:** el **API Provider `S4H_POC_PROVIDER`**, con su configuración intacta (`On Premise`, `s4h-poc.virtual:50000`). No hubo que recrearlo.
+
+> ### Trampa 48 — el `Test Connection` del provider falla y no significa nada
+>
+> `Test Connection` sobre `S4H_POC_PROVIDER` devuelve **`503 Service Unavailable`**… **con el túnel verde y el mapeo en `Reachable`**.
+>
+> **Y el proxy funciona igual.** El `Test Connection` prueba la **raíz `/`** del host virtual, que el recurso `/sap/opu/odata` no autoriza. Las peticiones reales, que sí van a la ruta permitida, pasan sin problema.
+>
+> **No bloquearse ahí.** Crear el proxy y probar de verdad.
+
 #### ✅ Replicado en la subcuenta de Cemex — 2026-10-30
 
 El PoC cambia de subcuenta: del trial a **`POC-CAL`** (`POC-CEMEX` en el Cloud Connector), en el BTP real de Cemex. El trial se conserva como respaldo hasta que Cemex funcione de punta a punta.
